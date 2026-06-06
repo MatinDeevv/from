@@ -1,0 +1,40 @@
+# Build
+build/
+build-cuda/
+build-vs/
+*.exe
+*.obj
+*.o
+*.lib
+*.dll
+*.pdb
+*.ilk
+*.exp
+
+# Data
+*.parquet
+*.cache
+*.csv
+
+# Model weights
+*.from
+
+# Logs
+*.log
+*.err.log
+
+# IDE
+.vs/
+.vscode/
+*.suo
+*.user
+
+# Temp
+cmd
+turbo_test.log
+
+# Dead code (unused models)
+include/gpu/
+include/model/renaissance_model.hpp
+include/model/market_model.hpp
+include/model/trader_network.hpp
