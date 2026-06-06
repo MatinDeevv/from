@@ -70,7 +70,7 @@ int run_train(const CliArgs& args) {
     Config cfg;
     if (!config_path.empty() && std::filesystem::exists(config_path)) cfg.load(config_path);
 
-    size_t chunk_size = arg_size(args, "--chunk-size", cfg.get_size("data.chunk_size", 2000000));
+    size_t chunk_size = arg_size(args, "--chunk-size", cfg.get_size("data.chunk_size", 50000000));
     size_t window = arg_size(args, "--window", cfg.get_size("data.window_size", 512));
     size_t stride = arg_size(args, "--stride", cfg.get_size("data.stride", 64));
     size_t horizon = arg_size(args, "--horizon", cfg.get_size("data.horizon", 256));
@@ -270,11 +270,14 @@ int run_train(const CliArgs& args) {
         float total = static_cast<float>(train_count);
         for (int c = 0; c < 3; ++c) {
             float freq = static_cast<float>(train_cls[c]) / total;
-            class_weight[c] = 1.0f / (3.0f * freq + 1e-8f);
+            class_weight[c] = 1.0f / (freq + 1e-8f);
         }
         // Normalize so mean weight = 1
         float mean_w = (class_weight[0] + class_weight[1] + class_weight[2]) / 3.0f;
         for (int c = 0; c < 3; ++c) class_weight[c] /= mean_w;
+        // Cap max ratio to 4x to prevent neutral suppression
+        float max_w = std::max({class_weight[0], class_weight[1], class_weight[2]});
+        for (int c = 0; c < 3; ++c) class_weight[c] = std::max(class_weight[c], max_w / 4.0f);
         std::cout << "\033[33m[WEIGHTS] class_w=[" << std::setprecision(3)
                   << class_weight[0] << "," << class_weight[1] << "," << class_weight[2] << "]\033[0m" << std::endl;
     }
@@ -503,8 +506,9 @@ int run_train(const CliArgs& args) {
                 size_t pred_count[3] = {0,0,0};
                 size_t pred_correct[3] = {0,0,0};
                 size_t conf_trades = 0, conf_correct = 0;
-                float conf_threshold = 0.50f;  // Only trade when >50% confident
+                float conf_threshold = 0.40f;  // Trade threshold (relaxed during early training)
                 float total_edge = 0.0f;
+                double prob_sum[3] = {0.0, 0.0, 0.0};  // Track mean softmax output per class
 
                 for (size_t vb = 0; vb < val_batches; ++vb) {
                     size_t vstart = train_count + vb * batch_size;
@@ -532,6 +536,11 @@ int run_train(const CliArgs& args) {
                         // Trading metrics: only count UP/DOWN predictions (not neutral)
                         pred_count[pred]++;
                         if (pred == truth) pred_correct[pred]++;
+
+                        // Accumulate softmax probabilities for mean calculation
+                        for (size_t c = 0; c < SEQ_NUM_CLASSES; ++c) {
+                            prob_sum[c] += batch_probs[i * SEQ_NUM_CLASSES + c];
+                        }
 
                         // Confidence-gated trading
                         if (pred != 1 && max_prob >= conf_threshold) {
@@ -582,6 +591,14 @@ int run_train(const CliArgs& args) {
                     SequenceModelIO::save(model, best_path);
                 }
 
+                // Compute mean softmax probabilities
+                double inv_val = 1.0 / static_cast<double>(val_batches * batch_size);
+                float mean_prob[3] = {
+                    static_cast<float>(prob_sum[0] * inv_val),
+                    static_cast<float>(prob_sum[1] * inv_val),
+                    static_cast<float>(prob_sum[2] * inv_val)
+                };
+
                 std::cout << "\033[35m[VAL] loss=" << std::setprecision(4) << val_loss
                           << " acc=" << std::setprecision(3) << va
                           << " dir_acc=" << col_hi(dir_acc, 0.52f, 0.48f) << dir_acc << RST
@@ -592,7 +609,8 @@ int run_train(const CliArgs& args) {
                           << " kelly=" << col_hi(kelly, 0.05f, 0.0f) << std::setprecision(3) << kelly << RST
                           << "\033[35m | prec_UP=" << std::setprecision(3) << prec_up
                           << " prec_DN=" << prec_dn
-                          << " preds=[" << pred_count[0] << "," << pred_count[1] << "," << pred_count[2] << "]" << RST << "\n";
+                          << " preds=[" << pred_count[0] << "," << pred_count[1] << "," << pred_count[2] << "]"
+                          << " mean_p=[" << std::setprecision(3) << mean_prob[0] << "," << mean_prob[1] << "," << mean_prob[2] << "]" << RST << "\n";
                 if (improved) {
                     std::cout << "\033[32m[BEST] edge=" << std::setprecision(4) << best_edge
                               << " → " << best_path << RST << "\n";
