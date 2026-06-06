@@ -3,6 +3,13 @@
 #include <cstdio>
 #include <cfloat>
 
+#include "common.h"
+
+// Mirror SEQ constants from sequence_model.hpp (can't include due to AVX2 intrinsics)
+#define SEQ_IN_FEATURES_CU FROM_MAX_FEATURES
+#define SEQ_NUM_SCALES_CU 9
+#define SEQ_SUMMARY_DIM_CU (SEQ_NUM_SCALES_CU * SEQ_IN_FEATURES_CU)
+
 namespace from::cuda {
 
 // Gather batch from pre-loaded data
@@ -241,8 +248,8 @@ void gpu_rand_indices(uint32_t* indices, int batch, uint32_t n_samples, uint32_t
 // This eliminates ~20 kernel launches per step.
 // ============================================================
 
-// Dimensions baked in for max speed
-#define FUSED_IN 176
+// Dimensions from model constants
+#define FUSED_IN SEQ_SUMMARY_DIM_CU  // 243
 #define FUSED_H1 256
 #define FUSED_H2 128
 #define FUSED_OUT 3
@@ -293,10 +300,12 @@ __global__ void fused_train_kernel(
     for (int j = 0; j < FUSED_H1; ++j) {
         float sum = b1[j];
         const float* wrow = w1 + j * FUSED_IN;
-        for (int k = 0; k < FUSED_IN; k += 4) {
+        int k = 0;
+        for (; k + 3 < FUSED_IN; k += 4) {
             sum += input[k] * wrow[k] + input[k+1] * wrow[k+1]
                  + input[k+2] * wrow[k+2] + input[k+3] * wrow[k+3];
         }
+        for (; k < FUSED_IN; ++k) sum += input[k] * wrow[k];
         my_h1[j] = sum > 0.0f ? sum : 0.0f;
     }
 

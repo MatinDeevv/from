@@ -61,7 +61,7 @@ int run_infer(const CliArgs& args) {
     }
 
     // Sequence model inference with ensemble + regime + confidence
-    out << "timestamp_ms,direction,confidence,ensemble_agree,regime,ood_flag,size_multiplier\n";
+    out << "timestamp_ms,direction,confidence,ensemble_agree,regime,ood_flag,size_multiplier,session\n";
 
     std::vector<SequenceModel> models;
     if (use_ensemble) {
@@ -82,6 +82,9 @@ int run_infer(const CliArgs& args) {
         std::cout << "[INFER] Loaded " << p << "\n";
     }
 
+    // Verify feat_norm is available
+    require(models[0].feat_norm_ready, "Model was saved without feat_norm; retrain with updated code.");
+
     size_t emitted = 0;
     while (reader.has_next_chunk() && reader.rows_read() < tick_limit) {
         TickChunk ticks = reader.read_chunk(std::min<size_t>(tick_limit - reader.rows_read(), 500000));
@@ -95,6 +98,8 @@ int run_infer(const CliArgs& args) {
             for (auto& m : models) {
                 float summary[SEQ_SUMMARY_DIM];
                 MultiScaleSummarizer::summarize(s, summary);
+                // Apply second-pass normalization (critical for correct inference)
+                m.apply_feat_norm(summary, 1);
                 float logits[SEQ_NUM_CLASSES];
                 m.forward(summary, 1, logits, false);
                 float probs[SEQ_NUM_CLASSES];
@@ -116,11 +121,28 @@ int run_infer(const CliArgs& args) {
             float conf = (agree == models.size()) ? 1.0f : (agree >= 2) ? 0.5f : 0.0f;
             float size_mult = (!ood && agree == models.size()) ? 1.0f : (!ood && agree >= 2) ? 0.5f : 0.0f;
 
-            const char* dir = (conf < threshold || ood) ? "flat" : (best_dir == 0 ? "long" : (best_dir == 2 ? "short" : "flat"));
+            // Always emit — use "flat" for no-trade signals
+            const char* dir = "flat";
+            if (!ood && conf >= threshold) {
+                if (best_dir == 0) dir = "long";
+                else if (best_dir == 2) dir = "short";
+            }
+
             int64_t ts = features.time_ms.empty() ? 0 : features.time_ms[std::min(features.time_ms.size() - 1, emitted * 64 + 512)];
 
+            // Session from timestamp (UTC hour)
+            int64_t ms_day = 24LL * 60LL * 60LL * 1000LL;
+            int64_t t_day = ((ts % ms_day) + ms_day) % ms_day;
+            int hour = static_cast<int>(t_day / (60LL * 60LL * 1000LL));
+            const char* session = "other";
+            if (hour >= 7 && hour < 12) session = "london";
+            else if (hour >= 13 && hour < 17) session = "newyork";
+            else if (hour >= 12 && hour < 13) session = "overlap";
+            else if (hour >= 23 || hour < 4) session = "asian";
+
             out << ts << "," << dir << "," << std::fixed << std::setprecision(4) << conf
-                << "," << agree << "," << regime << "," << (ood ? 1 : 0) << "," << size_mult << "\n";
+                << "," << agree << "," << regime << "," << (ood ? 1 : 0) << "," << size_mult
+                << "," << session << "\n";
             ++emitted;
         }
     }

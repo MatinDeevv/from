@@ -124,6 +124,9 @@ int run_train(const CliArgs& args) {
                 } else if (dim == SEQ_SUMMARY_DIM && n > 0 && n < max_samples) {
                     std::cout << "\033[33m[CACHE] Stale: has " << n << " samples but need " << max_samples
                               << " — regenerating...\033[0m" << std::endl;
+                } else if (dim != SEQ_SUMMARY_DIM && n > 0) {
+                    std::cout << "\033[33m[CACHE] Stale: dim=" << dim << " but SEQ_SUMMARY_DIM=" << SEQ_SUMMARY_DIM
+                              << " — features changed, regenerating cache...\033[0m" << std::endl;
                 }
             }
         }
@@ -286,6 +289,10 @@ int run_train(const CliArgs& args) {
 
     auto train_one = [&](uint32_t seed_val) -> float {
         SequenceModel model(lr, seed_val);
+        // Store second-pass normalization into model for serialization
+        model.feat_mean = feat_mean;
+        model.feat_std = feat_std;
+        model.feat_norm_ready = true;
         std::string prefix = use_ensemble ? "weights_seed" + std::to_string(seed_val) : "weights";
         std::string best_path = prefix + "_best.from";
 
@@ -549,10 +556,23 @@ int run_train(const CliArgs& args) {
                 // Confidence-gated win rate
                 float conf_winrate = conf_trades > 0 ? static_cast<float>(conf_correct) / static_cast<float>(conf_trades) : 0.0f;
                 float edge = conf_trades > 0 ? total_edge / static_cast<float>(conf_trades) : 0.0f;
+                size_t conf_wrong = conf_trades - conf_correct;
 
                 // Precision per class
                 float prec_up = pred_count[0] > 0 ? static_cast<float>(pred_correct[0]) / static_cast<float>(pred_count[0]) : 0.0f;
                 float prec_dn = pred_count[2] > 0 ? static_cast<float>(pred_correct[2]) / static_cast<float>(pred_count[2]) : 0.0f;
+
+                // Profit factor: gross_profit / gross_loss
+                float gross_profit = (conf_correct > 0) ? total_edge : 0.0f;
+                float gross_loss_val = (conf_wrong > 0) ? static_cast<float>(conf_wrong) - total_edge : 1e-6f;
+                float profit_factor = (gross_loss_val > 1e-6f) ? std::abs(gross_profit) / gross_loss_val : 0.0f;
+
+                // Kelly fraction: p - (1-p)/b where b = avg_win/avg_loss
+                float avg_win = (conf_correct > 0) ? total_edge / static_cast<float>(conf_correct) : 0.0f;
+                float avg_loss = (conf_wrong > 0) ? (static_cast<float>(conf_wrong) * 1.0f - total_edge) / static_cast<float>(conf_wrong) : 1.0f;
+                float kelly = (avg_loss > 1e-6f)
+                    ? conf_winrate - (1.0f - conf_winrate) / (avg_win / avg_loss + 1e-6f)
+                    : 0.0f;
 
                 bool improved = (edge > best_edge && conf_trades > 50);
                 if (improved || (best_edge < 0.0f && val_loss < best_val_loss)) {
@@ -568,6 +588,8 @@ int run_train(const CliArgs& args) {
                           << "\033[35m | trades=" << conf_trades
                           << " winrate=" << col_hi(conf_winrate, 0.55f, 0.50f) << std::setprecision(3) << conf_winrate << RST
                           << "\033[35m edge=" << col_hi(edge, 0.02f, 0.0f) << std::setprecision(4) << edge << RST
+                          << " pf=" << col_hi(profit_factor, 1.3f, 1.0f) << std::setprecision(2) << profit_factor << RST
+                          << " kelly=" << col_hi(kelly, 0.05f, 0.0f) << std::setprecision(3) << kelly << RST
                           << "\033[35m | prec_UP=" << std::setprecision(3) << prec_up
                           << " prec_DN=" << prec_dn
                           << " preds=[" << pred_count[0] << "," << pred_count[1] << "," << pred_count[2] << "]" << RST << "\n";

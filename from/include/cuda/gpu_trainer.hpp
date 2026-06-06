@@ -12,6 +12,8 @@
 #include <string>
 #include <vector>
 
+#include "model/sequence_model.hpp"
+
 namespace from::cuda {
 
 #define GPU_CHECK(x) do { cudaError_t e = (x); if (e != cudaSuccess) { \
@@ -54,7 +56,7 @@ void gpu_fused_train(
 // Full 3-layer MLP trainer on GPU: 176 → 256 → 128 → 3
 // Entire forward+backward+adam on GPU. Only upload batch, download loss.
 class GpuTrainer {
-    static constexpr int IN = 176;
+    static constexpr int IN = static_cast<int>(SEQ_SUMMARY_DIM);  // 243
     static constexpr int H1 = 256;
     static constexpr int H2 = 128;
     static constexpr int OUT = 3;

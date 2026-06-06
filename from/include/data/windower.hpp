@@ -11,11 +11,13 @@ namespace from {
 
 struct Sample {
     Tensor<float> X;
-    std::vector<float> summary;  // pre-computed [176] if available
+    std::vector<float> summary;  // pre-computed [SEQ_SUMMARY_DIM] if available
     std::array<float, 3> y_dir{0.0f, 1.0f, 0.0f};
     float y_mag = 0.0f;
     float y_vol = 0.0f;
     float y_spread = 0.0f;
+    double entry_mid = 0.0;   // mid price at window end (trade entry)
+    double exit_mid  = 0.0;   // mid price at horizon end (trade exit)
     int env_id = 0;
     float difficulty = 0.0f;
 };
@@ -81,10 +83,26 @@ public:
                 future_rv = std::sqrt(future_rv);
                 double delta = mid_[window_ + horizon_ - 1] - mid_[window_];
                 double threshold = threshold_mult_ * mean_spread;
+
+                // Store entry/exit mid for real PnL calculation
+                s.entry_mid = mid_[window_];
+                s.exit_mid  = mid_[window_ + horizon_ - 1];
+
+                // Label smoothing: confidence scales with distance from threshold
+                float delta_f = static_cast<float>(delta);
+                float thresh_f = static_cast<float>(threshold);
+                float margin = std::abs(delta_f) - thresh_f;
+                float confidence = std::min(1.0f, 0.5f + margin / (thresh_f + 1e-6f) * 0.5f);
+                float residual = (1.0f - confidence) / 2.0f;
+
                 if (delta > threshold) {
-                    s.y_dir = {1.0f, 0.0f, 0.0f};
+                    s.y_dir = {confidence, residual, residual};
                 } else if (delta < -threshold) {
-                    s.y_dir = {0.0f, 0.0f, 1.0f};
+                    s.y_dir = {residual, residual, confidence};
+                } else {
+                    float neutral_conf = 1.0f - std::abs(delta_f) / (thresh_f + 1e-6f) * 0.3f;
+                    neutral_conf = std::max(0.4f, neutral_conf);
+                    s.y_dir = {(1.0f - neutral_conf) / 2.0f, neutral_conf, (1.0f - neutral_conf) / 2.0f};
                 }
                 s.y_mag = static_cast<float>(std::abs(delta) / (mean_spread + FROM_EPS_D));
                 s.y_vol = static_cast<float>(future_rv);

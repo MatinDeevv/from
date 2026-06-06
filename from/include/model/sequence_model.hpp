@@ -30,8 +30,8 @@ namespace from {
 static constexpr size_t SEQ_IN_FEATURES = FROM_MAX_FEATURES;  // 22
 static constexpr size_t SEQ_WINDOW = 512;
 static constexpr size_t SEQ_NUM_CLASSES = 3;
-static constexpr size_t SEQ_NUM_SCALES = 8;
-static constexpr size_t SEQ_SUMMARY_DIM = SEQ_NUM_SCALES * SEQ_IN_FEATURES;  // 176
+static constexpr size_t SEQ_NUM_SCALES = 9;
+static constexpr size_t SEQ_SUMMARY_DIM = SEQ_NUM_SCALES * SEQ_IN_FEATURES;  // 243
 static constexpr size_t SEQ_HIDDEN1 = 256;
 static constexpr size_t SEQ_HIDDEN2 = 128;
 
@@ -42,17 +42,14 @@ struct MultiScaleSummarizer {
         const size_t D = SEQ_IN_FEATURES;
         const float* data = s.X.data_ptr();
 
-        // Accumulators
-        alignas(32) float sum_all[24] = {};
-        alignas(32) float sum_sq_all[24] = {};
-        alignas(32) float sum_64[24] = {};
-        alignas(32) float sum_sq_64[24] = {};
-        alignas(32) float sum_16[24] = {};
-        alignas(32) float sum_sq_16[24] = {};
-        alignas(32) float mx[24];
-
-        const float* row0 = data;
-        for (size_t d = 0; d < D; ++d) mx[d] = row0[d];
+        // Accumulators (pad to 32 for AVX alignment)
+        alignas(32) float sum_all[32] = {};
+        alignas(32) float sum_sq_all[32] = {};
+        alignas(32) float sum_64[32] = {};
+        alignas(32) float sum_sq_64[32] = {};
+        alignas(32) float sum_16[32] = {};
+        alignas(32) float sum_sq_16[32] = {};
+        alignas(32) float sum_tx[32] = {};  // sum of t*x[d] for slope computation
 
         const size_t start_64 = seq > 64 ? seq - 64 : 0;
         const size_t start_16 = seq > 16 ? seq - 16 : 0;
@@ -60,16 +57,18 @@ struct MultiScaleSummarizer {
         // Single pass over all timesteps (row-major friendly)
         for (size_t t = 0; t < seq; ++t) {
             const float* row = data + t * D;
+            float tf = static_cast<float>(t);
             size_t d = 0;
             // AVX2: process 8 features at a time
+            __m256 vt = _mm256_set1_ps(tf);
             for (; d + 7 < D; d += 8) {
                 __m256 v = _mm256_loadu_ps(row + d);
                 __m256 sa = _mm256_loadu_ps(sum_all + d);
                 __m256 sqa = _mm256_loadu_ps(sum_sq_all + d);
-                __m256 m = _mm256_loadu_ps(mx + d);
+                __m256 stx = _mm256_loadu_ps(sum_tx + d);
                 _mm256_storeu_ps(sum_all + d, _mm256_add_ps(sa, v));
                 _mm256_storeu_ps(sum_sq_all + d, _mm256_fmadd_ps(v, v, sqa));
-                _mm256_storeu_ps(mx + d, _mm256_max_ps(m, v));
+                _mm256_storeu_ps(sum_tx + d, _mm256_fmadd_ps(vt, v, stx));
                 if (t >= start_64) {
                     __m256 s64 = _mm256_loadu_ps(sum_64 + d);
                     __m256 sq64 = _mm256_loadu_ps(sum_sq_64 + d);
@@ -87,14 +86,20 @@ struct MultiScaleSummarizer {
                 float v = row[d];
                 sum_all[d] += v;
                 sum_sq_all[d] += v * v;
-                if (v > mx[d]) mx[d] = v;
+                sum_tx[d] += tf * v;
                 if (t >= start_64) { sum_64[d] += v; sum_sq_64[d] += v * v; }
                 if (t >= start_16) { sum_16[d] += v; sum_sq_16[d] += v * v; }
             }
         }
 
+        // Precompute slope denominator: n*sum_t2 - sum_t^2
+        float fseq = static_cast<float>(seq);
+        float sum_t = fseq * (fseq - 1.0f) * 0.5f;
+        float sum_t2 = fseq * (fseq - 1.0f) * (2.0f * fseq - 1.0f) / 6.0f;
+        float slope_denom = fseq * sum_t2 - sum_t * sum_t;
+
         // Compute means and stds from sums
-        float inv_all = 1.0f / static_cast<float>(seq);
+        float inv_all = 1.0f / fseq;
         float inv_64 = 1.0f / static_cast<float>(seq - start_64);
         float inv_16 = 1.0f / static_cast<float>(seq - start_16);
         const float* last_row = data + (seq - 1) * D;
@@ -114,7 +119,17 @@ struct MultiScaleSummarizer {
             out[4 * D + d] = mean_1;
             out[5 * D + d] = std::sqrt(std::max(var_1, 0.0f) + 1e-8f);
             out[6 * D + d] = last_row[d];
-            out[7 * D + d] = mx[d];
+
+            // Scale 7: linear regression slope (replaces max)
+            float slope = (slope_denom > 1e-8f)
+                ? (fseq * sum_tx[d] - sum_t * sum_all[d]) / slope_denom
+                : 0.0f;
+            out[7 * D + d] = slope;
+
+            // Scale 8: short-term/long-term ratio (mean_16 / mean_all)
+            float ratio = (std::abs(mean_a) > 1e-6f) ? mean_1 / mean_a : 0.0f;
+            ratio = std::max(-3.0f, std::min(3.0f, ratio));
+            out[8 * D + d] = ratio;
         }
     }
 };
@@ -238,6 +253,24 @@ public:
     std::vector<float> grad_h1_buf;   // [batch × 256] reused
 
     RegimeGate regime;
+
+    // Second-pass normalization (z-score on summary features)
+    std::vector<float> feat_mean;   // [SEQ_SUMMARY_DIM]
+    std::vector<float> feat_std;    // [SEQ_SUMMARY_DIM]
+    bool feat_norm_ready = false;
+
+    void apply_feat_norm(float* summary, size_t n) const {
+        if (!feat_norm_ready) return;
+        for (size_t i = 0; i < n; ++i) {
+            float* row = summary + i * SEQ_SUMMARY_DIM;
+            for (size_t d = 0; d < SEQ_SUMMARY_DIM; ++d) {
+                row[d] = (row[d] - feat_mean[d]) / feat_std[d];
+                if (row[d] >  5.0f) row[d] =  5.0f;
+                if (row[d] < -5.0f) row[d] = -5.0f;
+            }
+        }
+    }
+
     float lr = 0.00005f;
     float last_grad_norm = 0.0f;
     size_t total_params = 0;
@@ -584,9 +617,9 @@ public:
         std::ofstream out(path, std::ios::binary);
         if (!out) return;
 
-        char magic[4] = {'F', 'S', 'Q', '2'};
+        char magic[4] = {'F', 'S', 'Q', '3'};
         out.write(magic, 4);
-        uint32_t version = 2;
+        uint32_t version = 3;
         out.write(reinterpret_cast<const char*>(&version), 4);
         out.write(reinterpret_cast<const char*>(&model.seed), 4);
         out.write(reinterpret_cast<const char*>(&model.lr), 4);
@@ -609,6 +642,14 @@ public:
         out.write(reinterpret_cast<const char*>(&model.regime.distance_95pct), 4);
         uint8_t cal = model.regime.calibrated ? 1 : 0;
         out.write(reinterpret_cast<const char*>(&cal), 1);
+
+        // Second-pass normalization (v3+)
+        uint8_t has_fn = model.feat_norm_ready ? 1 : 0;
+        out.write(reinterpret_cast<const char*>(&has_fn), 1);
+        if (model.feat_norm_ready) {
+            write_vec(model.feat_mean);
+            write_vec(model.feat_std);
+        }
     }
 
     static bool load(const std::string& path, SequenceModel& model) {
@@ -617,11 +658,17 @@ public:
 
         char magic[4];
         in.read(magic, 4);
-        if (std::memcmp(magic, "FSQ2", 4) != 0) return false;
-
-        uint32_t version;
-        in.read(reinterpret_cast<char*>(&version), 4);
-        if (version != 2) return false;
+        // Accept both v2 (FSQ2) and v3 (FSQ3)
+        uint32_t version = 0;
+        if (std::memcmp(magic, "FSQ3", 4) == 0) {
+            in.read(reinterpret_cast<char*>(&version), 4);
+        } else if (std::memcmp(magic, "FSQ2", 4) == 0) {
+            in.read(reinterpret_cast<char*>(&version), 4);
+            version = 2;
+        } else {
+            return false;
+        }
+        if (version < 2 || version > 3) return false;
 
         in.read(reinterpret_cast<char*>(&model.seed), 4);
         in.read(reinterpret_cast<char*>(&model.lr), 4);
@@ -651,6 +698,16 @@ public:
         uint8_t cal;
         in.read(reinterpret_cast<char*>(&cal), 1);
         model.regime.calibrated = cal != 0;
+
+        // Second-pass normalization (v3+)
+        if (version >= 3) {
+            uint8_t has_fn = 0;
+            if (in.read(reinterpret_cast<char*>(&has_fn), 1) && has_fn) {
+                read_vec(model.feat_mean);
+                read_vec(model.feat_std);
+                model.feat_norm_ready = true;
+            }
+        }
 
         return true;
     }

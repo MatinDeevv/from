@@ -22,7 +22,7 @@ int run_backtest(const CliArgs& args) {
     std::string data_path = args.get("--data", "XAUUSD_ticks_all.parquet");
     size_t ticks = static_cast<size_t>(std::stoull(args.get("--ticks", "5000000")));
     float conf_threshold = std::stof(args.get("--threshold", "0.55"));
-    float spread_cost = std::stof(args.get("--spread-cost", "0.30"));
+    float spread_cost = std::stof(args.get("--spread-cost", "3.0"));
 
     require(std::filesystem::exists(model_path), "Model not found: " + model_path);
     require(std::filesystem::exists(data_path), "Data not found: " + data_path);
@@ -155,11 +155,12 @@ int run_backtest(const CliArgs& args) {
                 if (pred_dir == 1) ++signals_long;
                 else ++signals_short;
 
-                // Simulate trade: entry at window end, PnL from label magnitude
-                double pnl_raw = static_cast<double>(s.y_mag) * (pred_dir == truth_dir ? 1.0 : -1.0);
-                double pnl_net = pnl_raw - spread_cost;
+                // Simulate trade: PnL from actual price delta in pips
+                // XAUUSD: 1 pip = $0.01, so price_delta * 100 = pips
+                double price_delta_pips = (s.exit_mid - s.entry_mid) * 100.0;
+                double pnl_net = static_cast<double>(pred_dir) * price_delta_pips - spread_cost;
 
-                trades.push_back({pred_dir, 0.0, 0.0, pnl_net});
+                trades.push_back({pred_dir, s.entry_mid, s.exit_mid, pnl_net});
             }
         }
 
@@ -215,10 +216,11 @@ int run_backtest(const CliArgs& args) {
               << " short=" << signals_short << " flat=" << signals_flat << ")\n";
     std::cout << "Trades:        " << trades.size() << "\n";
     std::cout << "Win rate:      " << std::setprecision(2) << (win_rate * 100.0) << "%\n";
-    std::cout << "Total PnL:     " << std::setprecision(2) << total_pnl << " (spread-adjusted)\n";
-    std::cout << "Avg PnL/trade: " << std::setprecision(4) << avg_pnl << "\n";
-    std::cout << "Max Drawdown:  " << std::setprecision(2) << max_drawdown << "\n";
+    std::cout << "Total PnL:     " << std::setprecision(2) << total_pnl << " pips (spread-adjusted)\n";
+    std::cout << "Avg PnL/trade: " << std::setprecision(4) << avg_pnl << " pips\n";
+    std::cout << "Max Drawdown:  " << std::setprecision(2) << max_drawdown << " pips\n";
     std::cout << "Sharpe (ann):  " << std::setprecision(3) << sharpe << "\n";
+    std::cout << "Spread cost:   " << std::setprecision(1) << spread_cost << " pips/trade\n";
     std::cout << "=======================================================================\n";
 
     return 0;

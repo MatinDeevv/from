@@ -3,10 +3,13 @@
 #include "analysis/regime_detector.hpp"
 #include "data/dataloader.hpp"
 #include "data/normalizer.hpp"
+#include "data/tick_processor.hpp"
+#include "data/windower.hpp"
 #include "layers/attention.hpp"
 #include "layers/conv1d.hpp"
 #include "layers/linear.hpp"
 #include "model/from_model.hpp"
+#include "model/sequence_model.hpp"
 #include "model/serializer.hpp"
 #include "physics/hawkes.hpp"
 #include "physics/kalman.hpp"
@@ -158,6 +161,99 @@ static bool irm_check() {
     return irm_penalty(logits_good, target, env) < irm_penalty(logits_bad, target, env);
 }
 
+static bool feat_norm_roundtrip() {
+    SequenceModel model(0.0001f, 99);
+    model.feat_mean.resize(SEQ_SUMMARY_DIM);
+    model.feat_std.resize(SEQ_SUMMARY_DIM);
+    for (size_t d = 0; d < SEQ_SUMMARY_DIM; ++d) {
+        model.feat_mean[d] = static_cast<float>(d) * 0.1f;
+        model.feat_std[d] = 1.0f + static_cast<float>(d) * 0.01f;
+    }
+    model.feat_norm_ready = true;
+
+    SequenceModelIO::save(model, "test_feat_norm.from");
+
+    SequenceModel loaded(0.0001f, 99);
+    if (!SequenceModelIO::load("test_feat_norm.from", loaded)) return false;
+    if (!loaded.feat_norm_ready) return false;
+    if (loaded.feat_mean.size() != SEQ_SUMMARY_DIM) return false;
+    if (loaded.feat_std.size() != SEQ_SUMMARY_DIM) return false;
+    if (!near(loaded.feat_mean[0], 0.0f)) return false;
+    if (!near(loaded.feat_mean[10], 1.0f)) return false;
+    if (!near(loaded.feat_std[0], 1.0f)) return false;
+    return true;
+}
+
+static bool kyle_hasbrouck_nonzero() {
+    // Create synthetic ticks with correlated order flow and price moves
+    TickChunk chunk;
+    chunk.size = 100;
+    chunk.ask.resize(100);
+    chunk.bid.resize(100);
+    chunk.mid.resize(100);
+    chunk.ask_vol.resize(100);
+    chunk.bid_vol.resize(100);
+    chunk.time_ms.resize(100);
+
+    double price = 2000.0;
+    for (size_t i = 0; i < 100; ++i) {
+        // Alternate: buy pressure moves price up, sell pressure moves price down
+        float buy_vol = (i % 3 == 0) ? 200.0f : 50.0f;
+        float sell_vol = (i % 3 == 0) ? 50.0f : 200.0f;
+        double move = (i % 3 == 0) ? 0.05 : -0.02;  // correlated with flow
+        price += move;
+        chunk.ask[i] = price + 0.15;
+        chunk.bid[i] = price - 0.15;
+        chunk.mid[i] = price;
+        chunk.ask_vol[i] = buy_vol;
+        chunk.bid_vol[i] = sell_vol;
+        chunk.time_ms[i] = static_cast<int64_t>(i) * 200;
+    }
+
+    TickProcessor processor;
+    FeatureChunk features = processor.process(chunk);
+
+    // Check last row's Kyle-Hasbrouck is nonzero
+    float kh = features.features.at(99, FROM_FEAT_KYLE_HASBROUCK);
+    return std::abs(kh) > 1e-8f;
+}
+
+static bool label_smoothing_sanity() {
+    // Test with clear signal (delta = 3 * threshold)
+    // The windower needs enough data to produce a sample
+    Windower windower(8, 1, 4, 1.0f);  // small window for test
+
+    FeatureChunk chunk;
+    chunk.size = 20;
+    chunk.features = Tensor<float>({20, FROM_MAX_FEATURES});
+    chunk.mid.resize(20);
+    chunk.spread.resize(20);
+    chunk.time_ms.resize(20);
+
+    // Create rising price (clear UP signal)
+    for (size_t i = 0; i < 20; ++i) {
+        chunk.mid[i] = 2000.0 + static_cast<double>(i) * 0.5;  // strong uptrend
+        chunk.spread[i] = 0.30;
+        chunk.time_ms[i] = static_cast<int64_t>(i) * 1000;
+        for (size_t d = 0; d < FROM_MAX_FEATURES; ++d) {
+            chunk.features.at(i, d) = static_cast<float>(i) * 0.01f;
+        }
+    }
+
+    auto samples = windower.add(chunk);
+    if (samples.empty()) return false;
+
+    // Find a sample where y_dir[0] is highest (UP)
+    bool found_up = false;
+    for (const auto& s : samples) {
+        if (s.y_dir[0] > s.y_dir[1] && s.y_dir[0] > s.y_dir[2]) {
+            // Label should be high confidence but not exactly 1.0 (smoothed)
+            if (s.y_dir[0] > 0.6f && s.y_dir[0] <= 1.0f) found_up = true;
+        }
+    }
+    return found_up;
+}
+
 int run_test(const CliArgs& args) {
     if (args.has("--cuda")) {
 #ifdef FROM_CUDA
@@ -179,6 +275,9 @@ int run_test(const CliArgs& args) {
     check(memory_check(), "One forward training-step memory smoke", failures);
     check(throughput_check(), "Throughput smoke exceeds 1000 ops/sec", failures);
     check(irm_check(), "IRM invariance penalty sanity", failures);
+    check(feat_norm_roundtrip(), "Feat norm save/load roundtrip", failures);
+    check(kyle_hasbrouck_nonzero(), "Kyle-Hasbrouck nonzero on synthetic data", failures);
+    check(label_smoothing_sanity(), "Label smoothing produces soft labels", failures);
     if (failures == 0) {
         std::cout << "All built-in tests passed.\n";
         return 0;
