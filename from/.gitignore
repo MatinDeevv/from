@@ -32,9 +32,3 @@ build-vs/
 # Temp
 cmd
 turbo_test.log
-
-# Dead code (unused models)
-include/gpu/
-include/model/renaissance_model.hpp
-include/model/market_model.hpp
-include/model/trader_network.hpp
