@@ -61,6 +61,31 @@ class TickProcessor {
 
     static double rolling_rv(const std::deque<double>& xs, size_t n);
 
+    // ---- 100-feature expansion state (features 27..126) -------------------
+    // Compact per-tick history; all expansion features are computed by a
+    // bounded backward scan over this ring (longest window = 1024).
+    struct HistRow {
+        double ret, absret, mid, ofi, svol, vol, vel, accel;
+        double spread, microdev, amihud, kyle, rate;
+        float bounce;
+        int dir;
+    };
+    std::deque<HistRow> hist_;
+    static constexpr size_t HIST_CAP = 1024;
+
+    // Persistent EMA-of-mid state (spans 16/64/256/1024) — survive chunks.
+    double ema_mid_[4] = {0.0, 0.0, 0.0, 0.0};
+    bool   ema_init_ = false;
+
+    // Wilder RSI running averages (periods 14/32/64).
+    double rsi_ag_[3] = {0.0, 0.0, 0.0};  // avg gain
+    double rsi_al_[3] = {0.0, 0.0, 0.0};  // avg loss
+    bool   rsi_init_ = false;
+
+    double prev_spread_ = 0.0;
+    double prev_accel_  = 0.0;
+    int    dir_run_     = 0;   // signed consecutive same-direction tick count
+
 public:
     FeatureChunk process(const TickChunk& chunk);
 };

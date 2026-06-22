@@ -23,7 +23,7 @@ int main(int argc, char** argv) {
     SetConsoleCP(65001);
 #endif
     if (argc < 2) {
-        std::cerr << "Usage: from <train|train-full|infer|inspect|bench|test> [options]\n";
+        std::cerr << "Usage: from <train|train-full|infer|backtest|walkforward|wfdeep|inspect|bench|test> [options]\n";
         return 2;
     }
     from::CliArgs args;
@@ -34,6 +34,9 @@ int main(int argc, char** argv) {
         if (cmd == "train-full") return from::run_train_full(args);
         if (cmd == "infer") return from::run_infer(args);
         if (cmd == "backtest") return from::run_backtest(args);
+        if (cmd == "validate-adversarial") return from::run_validate_adversarial(args);
+        if (cmd == "walkforward") return from::run_walkforward(args);
+        if (cmd == "wfdeep") return from::run_wfdeep(args);
         if (cmd == "inspect") return from::run_inspect(args);
         if (cmd == "bench") return from::run_bench(args);
         if (cmd == "test") return from::run_test(args);
@@ -44,4 +47,3 @@ int main(int argc, char** argv) {
         return 1;
     }
 }
-

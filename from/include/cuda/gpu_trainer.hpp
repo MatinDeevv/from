@@ -5,6 +5,7 @@
 #include <cublas_v2.h>
 #include <cuda_runtime.h>
 
+#include <algorithm>
 #include <cstdint>
 #include <cstring>
 #include <iostream>
@@ -38,6 +39,13 @@ void gpu_compute_metrics(const float* probs, const uint8_t* labels, float* loss_
 void gpu_gather_batch(const float* all_summaries, const uint8_t* all_labels,
                       const uint32_t* indices, float* out_input, uint8_t* out_labels,
                       int batch, int dim, cudaStream_t s);
+// wfdeep (P2): raw per-tick window gather + fold-subset offset/label resolver.
+void gpu_gather_window(const float* tickfeat, const uint32_t* batch_off,
+                       float* out, int batch, int window, int feat,
+                       uint32_t n_ticks, cudaStream_t s);
+void gpu_resolve_offsets(const uint32_t* entry_off, const uint8_t* labels_all,
+                         const uint32_t* indices, uint32_t* out_off, uint8_t* out_labels,
+                         int batch, cudaStream_t s);
 void gpu_bias_grad(const float* grad, float* gb, int batch, int dim, cudaStream_t s);
 void gpu_rand_indices(uint32_t* indices, int batch, uint32_t n_samples, uint32_t seed, cudaStream_t s);
 void gpu_fused_train(
@@ -78,6 +86,9 @@ class GpuTrainer {
     float *d_gw1, *d_gb1;
     float *d_gw2, *d_gb2;
     float *d_gw3, *d_gb3;
+
+    // Scratch scalar for gradient clipping (device-side L2 norm)
+    float* d_grad_norm = nullptr;
 
     // Activations (batch workspace)
     float *d_input;   // [batch, IN]
@@ -121,6 +132,7 @@ public:
     GpuTrainer() = default;
 
     bool initialize(int batch_size, const std::vector<float>& summaries, const std::vector<uint8_t>& labels,
+                    size_t training_samples,
                     const float* w1, const float* b1, const float* w2, const float* b2,
                     const float* w3, const float* b3) {
         int dev_count = 0;
@@ -132,7 +144,9 @@ public:
         CUBLAS_CHECK(cublasCreate(&handle_));
         CUBLAS_CHECK(cublasSetStream(handle_, stream_));
 
-        n_samples_ = labels.size();
+        // Only upload/sample the temporal training partition. Uploading every
+        // label here would silently train on the validation tail.
+        n_samples_ = training_samples > 0 ? std::min(training_samples, labels.size()) : labels.size();
         batch_cap_ = batch_size;
 
         // Allocate weights
@@ -158,6 +172,9 @@ public:
         alloc(&d_gw1, H1*IN); alloc(&d_gb1, H1);
         alloc(&d_gw2, H2*H1); alloc(&d_gb2, H2);
         alloc(&d_gw3, OUT*H2); alloc(&d_gb3, OUT);
+
+        // Gradient-clip scratch scalar
+        GPU_CHECK(cudaMalloc(&d_grad_norm, sizeof(float)));
 
         // Batch workspace
         alloc(&d_input, batch_size * IN);
@@ -268,6 +285,11 @@ public:
             IN, H1, batch, &alpha, d_input, IN, d_grad1, H1, &beta, d_gw1, IN));
         gpu_bias_grad(d_grad1, d_gb1, batch, H1, stream_);
 
+        // Clip weight gradients by global L2 norm (biases left unclipped)
+        gpu_grad_clip(d_gw1, H1*IN, 1.0f, d_grad_norm, stream_);
+        gpu_grad_clip(d_gw2, H2*H1, 1.0f, d_grad_norm, stream_);
+        gpu_grad_clip(d_gw3, OUT*H2, 1.0f, d_grad_norm, stream_);
+
         gpu_adam_update(d_w1, d_gw1, d_mw1, d_vw1, lr, 0.9f, 0.999f, 1e-8f, bc1, bc2, H1*IN, stream_);
         gpu_adam_update(d_b1, d_gb1, d_mb1, d_vb1, lr, 0.9f, 0.999f, 1e-8f, bc1, bc2, H1, stream_);
         gpu_adam_update(d_w2, d_gw2, d_mw2, d_vw2, lr, 0.9f, 0.999f, 1e-8f, bc1, bc2, H2*H1, stream_);
@@ -330,6 +352,11 @@ public:
         CUBLAS_CHECK(cublasSgemm(handle_, CUBLAS_OP_N, CUBLAS_OP_T,
             IN, H1, batch, &alpha, d_input, IN, d_grad1, H1, &beta, d_gw1, IN));
         gpu_bias_grad(d_grad1, d_gb1, batch, H1, stream_);
+
+        // Clip weight gradients by global L2 norm (biases left unclipped)
+        gpu_grad_clip(d_gw1, H1*IN, 1.0f, d_grad_norm, stream_);
+        gpu_grad_clip(d_gw2, H2*H1, 1.0f, d_grad_norm, stream_);
+        gpu_grad_clip(d_gw3, OUT*H2, 1.0f, d_grad_norm, stream_);
 
         gpu_adam_update(d_w1, d_gw1, d_mw1, d_vw1, lr, 0.9f, 0.999f, 1e-8f, bc1, bc2, H1*IN, stream_);
         gpu_adam_update(d_b1, d_gb1, d_mb1, d_vb1, lr, 0.9f, 0.999f, 1e-8f, bc1, bc2, H1, stream_);
@@ -444,6 +471,11 @@ public:
             IN, H1, batch, &alpha, d_input, IN, d_grad1, H1, &beta, d_gw1, IN));
         gpu_bias_grad(d_grad1, d_gb1, batch, H1, stream_);
 
+        // Clip weight gradients by global L2 norm (biases left unclipped)
+        gpu_grad_clip(d_gw1, H1*IN, 1.0f, d_grad_norm, stream_);
+        gpu_grad_clip(d_gw2, H2*H1, 1.0f, d_grad_norm, stream_);
+        gpu_grad_clip(d_gw3, OUT*H2, 1.0f, d_grad_norm, stream_);
+
         gpu_adam_update(d_w1, d_gw1, d_mw1, d_vw1, lr, 0.9f, 0.999f, 1e-8f, bc1, bc2, H1*IN, stream_);
         gpu_adam_update(d_b1, d_gb1, d_mb1, d_vb1, lr, 0.9f, 0.999f, 1e-8f, bc1, bc2, H1, stream_);
         gpu_adam_update(d_w2, d_gw2, d_mw2, d_vw2, lr, 0.9f, 0.999f, 1e-8f, bc1, bc2, H2*H1, stream_);
@@ -463,6 +495,8 @@ public:
         gpu_compute_metrics(d_logits, d_labels, d_loss_scalar, d_correct_scalar, batch, OUT, stream_);
         GPU_CHECK(cudaMemcpyAsync(h_loss, d_loss_scalar, sizeof(float), cudaMemcpyDeviceToHost, stream_));
         GPU_CHECK(cudaMemcpyAsync(h_correct, d_correct_scalar, sizeof(int), cudaMemcpyDeviceToHost, stream_));
+        // Surface last clipped weight-grad L2 norm for the console
+        GPU_CHECK(cudaMemcpyAsync(&last_grad_norm, d_grad_norm, sizeof(float), cudaMemcpyDeviceToHost, stream_));
         GPU_CHECK(cudaStreamSynchronize(stream_));
         *accuracy = static_cast<float>(*h_correct) / static_cast<float>(batch);
         return *h_loss;
@@ -564,6 +598,12 @@ public:
             d_input, IN, d_grad1, H1, &beta, d_gw1, IN));
         gpu_bias_grad(d_grad1, d_gb1, batch, H1, stream_);
 
+        // ===== GRAD CLIP =====
+        // Clip weight gradients by global L2 norm (biases left unclipped)
+        gpu_grad_clip(d_gw1, H1*IN, 1.0f, d_grad_norm, stream_);
+        gpu_grad_clip(d_gw2, H2*H1, 1.0f, d_grad_norm, stream_);
+        gpu_grad_clip(d_gw3, OUT*H2, 1.0f, d_grad_norm, stream_);
+
         // ===== ADAM UPDATE =====
         gpu_adam_update(d_w1, d_gw1, d_mw1, d_vw1, lr, 0.9f, 0.999f, 1e-8f, bc1, bc2, H1*IN, stream_);
         gpu_adam_update(d_b1, d_gb1, d_mb1, d_vb1, lr, 0.9f, 0.999f, 1e-8f, bc1, bc2, H1, stream_);
@@ -591,6 +631,28 @@ public:
         GPU_CHECK(cudaMemcpy(b3, d_b3, OUT*sizeof(float), cudaMemcpyDeviceToHost));
     }
 
+    // Re-upload CPU weights to GPU (mirror of download_weights)
+    void upload_weights(const float* w1, const float* b1, const float* w2,
+                        const float* b2, const float* w3, const float* b3) {
+        GPU_CHECK(cudaMemcpy(d_w1, w1, H1*IN*sizeof(float), cudaMemcpyHostToDevice));
+        GPU_CHECK(cudaMemcpy(d_b1, b1, H1*sizeof(float), cudaMemcpyHostToDevice));
+        GPU_CHECK(cudaMemcpy(d_w2, w2, H2*H1*sizeof(float), cudaMemcpyHostToDevice));
+        GPU_CHECK(cudaMemcpy(d_b2, b2, H2*sizeof(float), cudaMemcpyHostToDevice));
+        GPU_CHECK(cudaMemcpy(d_w3, w3, OUT*H2*sizeof(float), cudaMemcpyHostToDevice));
+        GPU_CHECK(cudaMemcpy(d_b3, b3, OUT*sizeof(float), cudaMemcpyHostToDevice));
+    }
+
+    // Reset Adam moment state and step counter
+    void reset_adam() {
+        cudaMemsetAsync(d_mw1,0,H1*IN*sizeof(float),stream_); cudaMemsetAsync(d_vw1,0,H1*IN*sizeof(float),stream_);
+        cudaMemsetAsync(d_mb1,0,H1*sizeof(float),stream_);    cudaMemsetAsync(d_vb1,0,H1*sizeof(float),stream_);
+        cudaMemsetAsync(d_mw2,0,H2*H1*sizeof(float),stream_); cudaMemsetAsync(d_vw2,0,H2*H1*sizeof(float),stream_);
+        cudaMemsetAsync(d_mb2,0,H2*sizeof(float),stream_);    cudaMemsetAsync(d_vb2,0,H2*sizeof(float),stream_);
+        cudaMemsetAsync(d_mw3,0,OUT*H2*sizeof(float),stream_);cudaMemsetAsync(d_vw3,0,OUT*H2*sizeof(float),stream_);
+        cudaMemsetAsync(d_mb3,0,OUT*sizeof(float),stream_);   cudaMemsetAsync(d_vb3,0,OUT*sizeof(float),stream_);
+        adam_t_ = 0;
+    }
+
     ~GpuTrainer() {
         if (!ready_) return;
         cublasDestroy(handle_);
@@ -600,6 +662,7 @@ public:
         cudaFree(d_mw2); cudaFree(d_vw2); cudaFree(d_mb2); cudaFree(d_vb2);
         cudaFree(d_mw3); cudaFree(d_vw3); cudaFree(d_mb3); cudaFree(d_vb3);
         cudaFree(d_gw1); cudaFree(d_gb1); cudaFree(d_gw2); cudaFree(d_gb2); cudaFree(d_gw3); cudaFree(d_gb3);
+        cudaFree(d_grad_norm);
         cudaFree(d_input); cudaFree(d_h1); cudaFree(d_h2); cudaFree(d_logits);
         cudaFree(d_mask1); cudaFree(d_mask2);
         cudaFree(d_grad3); cudaFree(d_grad2); cudaFree(d_grad1);

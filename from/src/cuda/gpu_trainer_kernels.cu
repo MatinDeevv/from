@@ -33,6 +33,73 @@ void gpu_gather_batch(const float* all_summaries, const uint8_t* all_labels,
     gather_kernel<<<blocks, threads, 0, s>>>(all_summaries, all_labels, indices, out_input, out_labels, batch, dim);
 }
 
+// ============================================================================
+// wfdeep (P2) — raw per-tick window gather from a resident feature stream.
+//
+//   tickfeat : [n_ticks x feat] row-major (resident on device, NORMALIZED).
+//   batch_off[i] = window-start ROW offset of sample i into tickfeat.
+//   out      : [batch x (window*feat)] row-major, timestep-major feature-fastest:
+//                out[i, t*feat + d] = tickfeat[(batch_off[i] + t)*feat + d]
+//   This flattened layout is the first GEMM's contiguous IN vector. Because j runs
+//   feature-fastest then timestep, the source read tickfeat[off*feat + j] is exactly
+//   contiguous for j in [0, window*feat) -> fully coalesced on both sides.
+//   Bounds guard: if (off + window > n_ticks) the sample window is written as zeros
+//   (the host index sets MUST also exclude such samples; this is belt-and-suspenders).
+// ============================================================================
+__global__ void gather_window_kernel(const float* __restrict__ tickfeat,
+                                      const uint32_t* __restrict__ batch_off,
+                                      float* __restrict__ out,
+                                      int batch, int window, int feat, uint32_t n_ticks) {
+    long long tid = (long long)blockIdx.x * blockDim.x + threadIdx.x;
+    long long d_in = (long long)window * feat;
+    long long total = (long long)batch * d_in;
+    if (tid >= total) return;
+    int i = (int)(tid / d_in);          // sample
+    long long j = tid - (long long)i * d_in;  // flat index within window (0 .. window*feat-1)
+    uint32_t off = batch_off[i];
+    // Bounds guard: window must fit inside the resident stream.
+    if ((uint64_t)off + (uint64_t)window > (uint64_t)n_ticks) {
+        out[tid] = 0.0f;
+        return;
+    }
+    out[tid] = tickfeat[(long long)off * feat + j];
+}
+
+void gpu_gather_window(const float* tickfeat, const uint32_t* batch_off,
+                       float* out, int batch, int window, int feat,
+                       uint32_t n_ticks, cudaStream_t s) {
+    long long total = (long long)batch * window * feat;
+    int threads = 256;
+    long long blocks = (total + threads - 1) / threads;
+    gather_window_kernel<<<(unsigned int)blocks, threads, 0, s>>>(
+        tickfeat, batch_off, out, batch, window, feat, n_ticks);
+}
+
+// Resolve per-batch window offsets + labels from a fold subset using random
+// sample indices into that subset:
+//   out_off[i]    = entry_off[indices[i]]
+//   out_labels[i] = labels_all[indices[i]]
+__global__ void resolve_offsets_kernel(const uint32_t* __restrict__ entry_off,
+                                       const uint8_t* __restrict__ labels_all,
+                                       const uint32_t* __restrict__ indices,
+                                       uint32_t* __restrict__ out_off,
+                                       uint8_t* __restrict__ out_labels, int batch) {
+    int i = blockIdx.x * blockDim.x + threadIdx.x;
+    if (i >= batch) return;
+    uint32_t idx = indices[i];
+    out_off[i] = entry_off[idx];
+    out_labels[i] = labels_all[idx];
+}
+
+void gpu_resolve_offsets(const uint32_t* entry_off, const uint8_t* labels_all,
+                         const uint32_t* indices, uint32_t* out_off, uint8_t* out_labels,
+                         int batch, cudaStream_t s) {
+    int threads = 256;
+    int blocks = (batch + threads - 1) / threads;
+    resolve_offsets_kernel<<<blocks, threads, 0, s>>>(entry_off, labels_all, indices,
+                                                      out_off, out_labels, batch);
+}
+
 // ReLU forward: x = max(0, x), write mask
 __global__ void relu_fwd_kernel(float* x, char* mask, int n) {
     int i = blockIdx.x * blockDim.x + threadIdx.x;
@@ -211,6 +278,48 @@ void gpu_adam_update(float* w, const float* g, float* m, float* v,
     adam_kernel<<<blocks, threads, 0, s>>>(w, g, m, v, lr, beta1, beta2, eps, bc1, bc2, n);
 }
 
+// Gradient clipping by global L2 norm.
+// Kernel A: block-reduce sum-of-squares, atomicAdd into accumulator (norm_out holds sumsq).
+// Kernel B: read sumsq, compute norm, scale each element if norm>max_norm.
+// Kernel C: single thread overwrites *norm_out with the final (pre-clip) L2 norm.
+__global__ void grad_clip_sumsq_kernel(const float* __restrict__ data, int n, float* __restrict__ sumsq) {
+    extern __shared__ float sdata[];
+    int tid = threadIdx.x;
+    int i = blockIdx.x * blockDim.x + threadIdx.x;
+    float v = (i < n) ? data[i] : 0.0f;
+    sdata[tid] = v * v;
+    __syncthreads();
+    for (int s = blockDim.x / 2; s > 0; s >>= 1) {
+        if (tid < s) sdata[tid] += sdata[tid + s];
+        __syncthreads();
+    }
+    if (tid == 0) atomicAdd(sumsq, sdata[0]);
+}
+
+__global__ void grad_clip_scale_kernel(float* __restrict__ data, int n, float max_norm, const float* __restrict__ sumsq) {
+    int i = blockIdx.x * blockDim.x + threadIdx.x;
+    if (i >= n) return;
+    float norm = sqrtf(*sumsq);
+    if (norm > max_norm) {
+        data[i] *= max_norm / norm;
+    }
+}
+
+// Single thread: overwrite *norm_out (which holds sumsq) with the final L2 norm.
+__global__ void grad_clip_finalize_kernel(float* __restrict__ norm_out) {
+    *norm_out = sqrtf(*norm_out);
+}
+
+void gpu_grad_clip(float* data, int n, float max_norm, float* norm_out, cudaStream_t s) {
+    int threads = 256;
+    int blocks = (n + threads - 1) / threads;
+    size_t shared_sz = threads * sizeof(float);
+    cudaMemsetAsync(norm_out, 0, sizeof(float), s);
+    grad_clip_sumsq_kernel<<<blocks, threads, shared_sz, s>>>(data, n, norm_out);
+    grad_clip_scale_kernel<<<blocks, threads, 0, s>>>(data, n, max_norm, norm_out);
+    grad_clip_finalize_kernel<<<1, 1, 0, s>>>(norm_out);
+}
+
 // Bias gradient: gb[d] = sum over batch of grad[i*dim + d]
 __global__ void bias_grad_kernel(const float* grad, float* gb, int batch, int dim) {
     int d = blockIdx.x * blockDim.x + threadIdx.x;
@@ -230,8 +339,10 @@ void gpu_bias_grad(const float* grad, float* gb, int batch, int dim, cudaStream_
 __global__ void rand_indices_kernel(uint32_t* indices, int batch, uint32_t n_samples, uint32_t seed) {
     int i = blockIdx.x * blockDim.x + threadIdx.x;
     if (i >= batch) return;
-    uint32_t s = seed + i * 2654435761u;
-    s ^= s << 13; s ^= s >> 17; s ^= s << 5;
+    // Strong, well-mixed hash of (seed, i) using constants DECOUPLED from the
+    // caller's K=2654435761 to break cross-step index-stream correlation.
+    uint32_t s = seed ^ ((uint32_t)i * 0x9E3779B9u);
+    s ^= s >> 16; s *= 0x7feb352du; s ^= s >> 15; s *= 0x846ca68bu; s ^= s >> 16;
     indices[i] = s % n_samples;
 }
 

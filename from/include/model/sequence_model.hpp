@@ -42,14 +42,16 @@ struct MultiScaleSummarizer {
         const size_t D = SEQ_IN_FEATURES;
         const float* data = s.X.data_ptr();
 
-        // Accumulators (pad to 32 for AVX alignment)
-        alignas(32) float sum_all[32] = {};
-        alignas(32) float sum_sq_all[32] = {};
-        alignas(32) float sum_64[32] = {};
-        alignas(32) float sum_sq_64[32] = {};
-        alignas(32) float sum_16[32] = {};
-        alignas(32) float sum_sq_16[32] = {};
-        alignas(32) float sum_tx[32] = {};  // sum of t*x[d] for slope computation
+        // Accumulators. Sized to cover all feature columns plus AVX2 8-wide
+        // tail slack (a store at offset d touches d..d+7), rounded up to 8.
+        constexpr size_t ACC = ((SEQ_IN_FEATURES + 7) / 8) * 8 + 8;
+        alignas(32) float sum_all[ACC] = {};
+        alignas(32) float sum_sq_all[ACC] = {};
+        alignas(32) float sum_64[ACC] = {};
+        alignas(32) float sum_sq_64[ACC] = {};
+        alignas(32) float sum_16[ACC] = {};
+        alignas(32) float sum_sq_16[ACC] = {};
+        alignas(32) float sum_tx[ACC] = {};  // sum of t*x[d] for slope computation
 
         const size_t start_64 = seq > 64 ? seq - 64 : 0;
         const size_t start_16 = seq > 16 ? seq - 16 : 0;

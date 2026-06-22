@@ -37,10 +37,9 @@ void from_gemm_tile_f32(
     const float* A, const float* B, float* C,
     size_t M, size_t K, size_t N,
     size_t lda, size_t ldb, size_t ldc) {
-    const int threads = 20;
     int ii = 0;
 #if defined(_OPENMP)
-#pragma omp parallel for schedule(dynamic, 4) num_threads(threads)
+#pragma omp parallel for schedule(dynamic, 4)
 #endif
     for (ii = 0; ii < (int)M; ii++) {
         size_t i = (size_t)ii;

@@ -27,7 +27,9 @@ __global__ void gemm_kernel(const float* __restrict__ A, const float* __restrict
     if (row < M && col < N) C[row * N + col] = acc;
 }
 
-__global__ void softmax_kernel(float* __restrict__ x, int rows, int cols) {
+// static: internal linkage — gpu_trainer_kernels.cu defines its own from::cuda::softmax_kernel,
+// and GNU ld rejects the duplicate external symbol (MSVC tolerated it). Only launched here.
+static __global__ void softmax_kernel(float* __restrict__ x, int rows, int cols) {
     int r = blockIdx.x;
     if (r >= rows) return;
     float* row = x + r * cols;

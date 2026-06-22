@@ -16,12 +16,21 @@ class GpuMonitor {
     std::thread monitor_thread_;
     std::atomic<bool> running_{false};
 
+#ifdef _WIN32
+#define FROM_POPEN _popen
+#define FROM_PCLOSE _pclose
+#define FROM_NVSMI_REDIR "2>NUL"
+#else
+#define FROM_POPEN popen
+#define FROM_PCLOSE pclose
+#define FROM_NVSMI_REDIR "2>/dev/null"
+#endif
     static bool query_nvidia_smi(float* util, float* vram_gb) {
-        FILE* pipe = _popen("nvidia-smi --query-gpu=utilization.gpu,memory.used --format=csv,noheader,nounits 2>NUL", "r");
+        FILE* pipe = FROM_POPEN("nvidia-smi --query-gpu=utilization.gpu,memory.used --format=csv,noheader,nounits " FROM_NVSMI_REDIR, "r");
         if (!pipe) return false;
         char buf[256] = {};
         bool ok = fgets(buf, sizeof(buf), pipe) != nullptr;
-        int rc = _pclose(pipe);
+        int rc = FROM_PCLOSE(pipe);
         if (!ok || rc != 0) return false;
         std::string s(buf);
         for (char& c : s) if (c == ',') c = ' ';

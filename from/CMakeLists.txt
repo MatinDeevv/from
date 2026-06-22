@@ -41,7 +41,11 @@ if(FROM_CUDA)
         list(APPEND FROM_SOURCES ${FROM_CUDA_SOURCES})
         set(CMAKE_CUDA_STANDARD 17)
         set(CMAKE_CUDA_STANDARD_REQUIRED ON)
-        set(CMAKE_CUDA_ARCHITECTURES 86)
+        # Keep the local RTX 3050 default, but allow deployment builds to select
+        # the target GPU (the G2/L4 launcher passes 89).
+        if(NOT DEFINED CMAKE_CUDA_ARCHITECTURES)
+            set(CMAKE_CUDA_ARCHITECTURES 86)
+        endif()
     else()
         message(WARNING "FROM_CUDA=ON requested, but nvcc/CUDA Toolkit was not found. Building CPU-only.")
         set(FROM_CUDA OFF)
@@ -54,12 +58,18 @@ target_include_directories(from PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include")
 if(FROM_CUDA)
     target_compile_definitions(from PRIVATE FROM_CUDA=1)
     set_source_files_properties(${FROM_CUDA_SOURCES} PROPERTIES COMPILE_OPTIONS "")
-    target_compile_options(from PRIVATE
-        $<$<COMPILE_LANGUAGE:CUDA>:
-            -O3;--use_fast_math;--generate-line-info;
-            -Xcompiler=/O2;-Xcompiler=/EHsc
-        >
-    )
+    if(MSVC)
+        # nvcc forwards host flags to cl.exe — MSVC syntax.
+        target_compile_options(from PRIVATE
+            $<$<COMPILE_LANGUAGE:CUDA>:-O3;--use_fast_math;--generate-line-info;-Xcompiler=/O2;-Xcompiler=/EHsc>
+        )
+    else()
+        # nvcc forwards host flags to gcc/clang — POSIX syntax. Passing /O2 /EHsc
+        # here makes gcc treat them as input filenames ("cannot specify -o with -c").
+        target_compile_options(from PRIVATE
+            $<$<COMPILE_LANGUAGE:CUDA>:-O3;--use_fast_math;--generate-line-info;-Xcompiler=-O3>
+        )
+    endif()
     target_link_libraries(from PRIVATE CUDA::cudart CUDA::cublas)
 else()
     target_compile_definitions(from PRIVATE FROM_CPU_ONLY=1)
@@ -86,6 +96,13 @@ else()
         $<$<AND:$<CONFIG:Release>,$<COMPILE_LANGUAGE:CXX>>:-O3;-ffast-math>
         $<$<AND:$<CONFIG:Release>,$<COMPILE_LANGUAGE:C>>:-O3;-ffast-math>
     )
+    # The summarizer / kernels use AVX2 + FMA intrinsics (__m256, _mm256_fmadd_ps)
+    # unconditionally, so these ISA flags are mandatory on GCC/Clang — without them
+    # the always_inline intrinsics fail with "target specific option mismatch".
+    target_compile_options(from PRIVATE
+        $<$<COMPILE_LANGUAGE:CXX>:-mavx2;-mfma;-mf16c>
+        $<$<COMPILE_LANGUAGE:C>:-mavx2;-mfma;-mf16c>
+    )
     if(FROM_NATIVE_ARCH)
         target_compile_options(from PRIVATE
             $<$<AND:$<CONFIG:Release>,$<COMPILE_LANGUAGE:CXX>>:-march=native>
@@ -110,4 +127,3 @@ endif()
 if(OpenMP_C_FOUND)
     target_link_libraries(from PRIVATE OpenMP::OpenMP_C)
 endif()
-

@@ -4,6 +4,7 @@
 #include "data/parquet_reader.hpp"
 #include "data/tick_processor.hpp"
 #include "data/windower.hpp"
+#include "io/artifact.hpp"
 #include "model/direction_model.hpp"
 #include "model/sequence_model.hpp"
 
@@ -64,6 +65,7 @@ int run_infer(const CliArgs& args) {
     out << "timestamp_ms,direction,confidence,ensemble_agree,regime,ood_flag,size_multiplier,session\n";
 
     std::vector<SequenceModel> models;
+    std::string loaded_model_path;  // first model file actually loaded (for norm1 sidecar resolution)
     if (use_ensemble) {
         for (uint32_t seed : Ensemble::SEEDS) {
             std::ostringstream p;
@@ -72,6 +74,7 @@ int run_infer(const CliArgs& args) {
             require(std::filesystem::exists(p.str()), "Missing ensemble model: " + p.str());
             models.emplace_back(0.00005f, seed);
             SequenceModelIO::load(p.str(), models.back());
+            if (loaded_model_path.empty()) loaded_model_path = p.str();
             std::cout << "[ENSEMBLE] Loaded " << p.str() << "\n";
         }
     } else {
@@ -79,11 +82,31 @@ int run_infer(const CliArgs& args) {
         std::string p = std::filesystem::exists(model_path) ? model_path : "weights_best.from";
         require(std::filesystem::exists(p), "No model: " + p);
         SequenceModelIO::load(p, models.back());
+        loaded_model_path = p;
         std::cout << "[INFER] Loaded " << p << "\n";
     }
 
     // Verify feat_norm is available
     require(models[0].feat_norm_ready, "Model was saved without feat_norm; retrain with updated code.");
+
+    // Load FIRST-PASS Normalizer (norm1.bin) so inference re-derives the SAME
+    // raw->normalized feature mapping the model trained on. The walk-forward /
+    // train artifacts write it next to the weights. Without it the fresh
+    // Normalizer above stays at its default (mean 0 / var 1) and feeds raw-scale
+    // features into a model trained on z-scored inputs => meaningless signals.
+    // --norm1 overrides the sidecar location.
+    std::string norm1_path = args.get("--norm1", "");
+    if (norm1_path.empty()) {
+        std::filesystem::path sidecar = std::filesystem::path(loaded_model_path).parent_path() / "norm1.bin";
+        norm1_path = sidecar.string();
+    }
+    require(std::filesystem::exists(norm1_path),
+            "First-pass normalizer not found: " + norm1_path +
+            " (expected norm1.bin beside the model; pass --norm1 <path> to override). "
+            "Inference without it produces wrong-scale inputs.");
+    require(from::io::load_norm1(norm1_path, normalizer),
+            "Failed to load first-pass normalizer (bad/truncated NRM1): " + norm1_path);
+    std::cout << "[INFER] Loaded first-pass normalizer: " << norm1_path << "\n";
 
     size_t emitted = 0;
     while (reader.has_next_chunk() && reader.rows_read() < tick_limit) {
