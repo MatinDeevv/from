@@ -1,0 +1,31 @@
+{
+  "created_utc": "2026-06-18T03:24:23.310410+00:00",
+  "master": "C:\\Users\\marti\\Documents\\Quant Lab\\Data\\data\\MASTER_DATASET_FILLED_PASS2.parquet",
+  "interval": "60m",
+  "range": "730d",
+  "exact_only": true,
+  "no_gap_fill": true,
+  "leader_ffill_bars": 0,
+  "symbols_loaded": [
+    "SPY",
+    "TLT",
+    "GC=F",
+    "GLD",
+    "IAU",
+    "SI=F",
+    "DX-Y.NYB",
+    "EURUSD=X",
+    "ZN=F",
+    "ZB=F",
+    "CL=F"
+  ],
+  "leader_errors": {},
+  "rows_aligned": 1434,
+  "time_start": "2024-01-25 09:00:00+00:00",
+  "time_end": "2026-05-22 13:00:00+00:00",
+  "candidate_count": 0,
+  "qualified_count": 0,
+  "promotion_rule": "leader signal lagged one completed bar; train/val/test pnl positive; frequency inside requested band; actual spread cost included",
+  "top": [],
+  "controls": []
+}

@@ -1,0 +1,4 @@
+name,title,company,location,category,profile_score,reachability_score,priority_score,status,why_add,message_angle,linkedin_url,connection_status,last_contacted,next_action,notes
+Ada Example,Managing Director,J.P. Morgan,Toronto,elite_banking,100,40,79,elite target,Managing Director at J.P. Morgan with global markets keywords in Toronto.,Ask about their work in global markets.,https://www.linkedin.com/in/ada-example/,not_contacted,,Review profile and personalize outreach.,
+Grace Example,VP Engineering,OpenAI,San Francisco,big_tech_ai,100,15,70,elite target,VP Engineering at OpenAI with machine learning keywords in San Francisco.,Ask about their work in machine learning.,https://www.linkedin.com/in/grace-example/,not_contacted,,Review profile and personalize outreach.,
+Student Example,Intern,Google,Waterloo,big_tech_ai,0,0,0,rejected,Rejected: hard rejection keyword: student.,,https://www.linkedin.com/in/student-example/,skip,,No action.,

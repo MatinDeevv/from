@@ -1,0 +1,35 @@
+{
+  "verdict":"KILL",
+  "data":{"path":"C:\\Users\\marti\\Documents\\Quant Lab\\Data\\from\\XAUUSD_ticks_all.parquet","sha256":"711FD022131D8A9186C7E85F3C625B87A1049EC9625FA732693D985FE48AEDB4","file_size_bytes":6459689198,"total_rows":539637174,"evaluated_ticks":2000000,"samples":31239},
+  "model":{"path":"C:\\Users\\marti\\from\\outputs\\checkpoints\\cuda-release\\weights_best.from","feat_norm_ready":true,"confidence_threshold":0.00000000},
+  "data_integrity":{"duplicate_timestamps":0,"backward_timestamps":6,"large_gaps_over_60s":19888,"max_gap_seconds":2059433.07200000,"feature_checks":24576,"feature_mismatches":0,"mean_spread_pips":44.03353899},
+  "label_counts":{"long":1214,"flat":28899,"short":1126},
+  "pred_counts":{"long":31239,"flat":0,"short":0},
+  "metrics":{
+    "model": {"samples":31239,"trades":31239,"accuracy":0.03886168,"win_rate":0.14097762,"pnl_pips":-1357023.72440457,"avg_pnl_pips":-43.44005008,"max_drawdown_pips":1357050.98143704,"sharpe":-9.23914974},
+    "model_2x_cost": {"samples":31239,"trades":31239,"accuracy":0.03886168,"win_rate":0.03886168,"pnl_pips":-2732587.44880913,"avg_pnl_pips":-87.47358907,"max_drawdown_pips":2732587.44880913,"sharpe":-18.59886293},
+    "momentum_baseline": {"samples":31239,"trades":31236,"accuracy":0.03777692,"win_rate":0.11973364,"pnl_pips":-1488192.10799871,"avg_pnl_pips":-47.64349174,"max_drawdown_pips":1488192.10799871,"sharpe":-10.14601769},
+    "contrarian_baseline": {"samples":31239,"trades":31236,"accuracy":0.03710462,"win_rate":0.15427712,"pnl_pips":-1262670.90799871,"avg_pnl_pips":-40.42357882,"max_drawdown_pips":1262831.70486977,"sharpe":-8.60849575}
+  },
+  "cpcv_style":{"folds":10,"worst_decile_sharpe":-13.47302501,"median_fold_sharpe":-10.33490993},
+  "permutation":{"trials":100,"observed_trade_accuracy":0.03886168,"p_value":1.00000000},
+  "regimes":[
+    {"env":0,"trades":7260,"pnl_pips":-319251.96064506,"sharpe":-10.85083269},
+    {"env":1,"trades":5505,"pnl_pips":-237214.80004032,"sharpe":-8.66025231},
+    {"env":2,"trades":5735,"pnl_pips":-252896.13671327,"sharpe":-10.68179665},
+    {"env":3,"trades":12739,"pnl_pips":-547660.82700594,"sharpe":-8.35420128},
+    {"env":4,"trades":0,"pnl_pips":0.00000000,"sharpe":0.00000000},
+    {"env":5,"trades":0,"pnl_pips":0.00000000,"sharpe":0.00000000},
+    {"env":6,"trades":0,"pnl_pips":0.00000000,"sharpe":0.00000000}
+  ],
+  "sessions":[
+    {"session":"other","trades":23427,"pnl_pips":-1018746.63211503,"sharpe":-8.90421076},
+    {"session":"london","trades":0,"pnl_pips":0.00000000,"sharpe":0.00000000},
+    {"session":"newyork","trades":0,"pnl_pips":0.00000000,"sharpe":0.00000000},
+    {"session":"overlap","trades":0,"pnl_pips":0.00000000,"sharpe":0.00000000},
+    {"session":"asian","trades":7812,"pnl_pips":-338277.09228954,"sharpe":-10.54073960}
+  ],
+  "kill_reasons":["timestamp order/duplicate failure","CPCV-style worst-decile Sharpe is non-positive","edge does not survive 2x spread/slippage stress","model does not beat dumb contrarian baseline","label permutation does not distinguish model accuracy from shuffled labels","performance is concentrated in at most one regime"],
+  "limitations":["This is a fixed-checkpoint adversarial validation, not nested retraining CPCV.","DSR/PBO/SPA are approximated by fold distribution, baselines, and permutation because the repo does not track the full configuration trial universe.","Feature importance stability is not available for this hand-written MLP checkpoint format."],
+  "elapsed_seconds":11.10649410
+}

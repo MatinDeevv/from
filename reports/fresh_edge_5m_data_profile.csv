@@ -1,0 +1,50 @@
+timeframe,symbol,source_file,rows,start,end,large_gap_count,large_gap_pct,exclude,reason
+5m,ACWI,C:\Users\marti\from\data\cache\yahoo\ACWI_5m_60d.csv,5654,2026-03-25 12:00:00+00:00,2026-06-18 14:38:08+00:00,560,9.906244471961791,True,large internal gaps >0.5%
+5m,BTC-USD,C:\Users\marti\from\data\cache\yahoo\BTC_USD_5m_60d.csv,17146,2026-04-20 00:00:00+00:00,2026-06-18 14:38:41+00:00,1,0.005832604257801108,False,
+5m,CL=F,C:\Users\marti\from\data\cache\yahoo\CL_F_5m_60d.csv,13562,2026-04-08 04:00:00+00:00,2026-06-18 03:12:58+00:00,50,0.3687043728338618,False,
+5m,DBC,C:\Users\marti\from\data\cache\yahoo\DBC_5m_60d.csv,7522,2026-03-25 08:30:00+00:00,2026-06-18 14:37:32+00:00,450,5.983246908655763,True,large internal gaps >0.5%
+5m,DIA,C:\Users\marti\from\data\cache\yahoo\DIA_5m_60d.csv,10961,2026-03-25 08:00:00+00:00,2026-06-18 14:38:03+00:00,119,1.0857664233576643,True,large internal gaps >0.5%
+5m,DX-Y.NYB,C:\Users\marti\from\data\cache\yahoo\DX_Y_NYB_5m_60d.csv,13422,2026-04-08 04:00:00+00:00,2026-06-18 03:13:01+00:00,52,0.38745249981372476,False,
+5m,EEM,C:\Users\marti\from\data\cache\yahoo\EEM_5m_60d.csv,9496,2026-03-25 08:00:00+00:00,2026-06-18 14:38:34+00:00,191,2.0115850447604005,True,large internal gaps >0.5%
+5m,EFA,C:\Users\marti\from\data\cache\yahoo\EFA_5m_60d.csv,7462,2026-03-25 08:45:00+00:00,2026-06-18 14:38:42+00:00,440,5.8973327972121705,True,large internal gaps >0.5%
+5m,ETH-USD,C:\Users\marti\from\data\cache\yahoo\ETH_USD_5m_60d.csv,17146,2026-04-20 00:00:00+00:00,2026-06-18 14:38:46+00:00,1,0.005832604257801108,False,
+5m,EURUSD=X,C:\Users\marti\from\data\cache\yahoo\EURUSD_X_5m_60d.csv,16705,2026-03-27 00:00:00+00:00,2026-06-18 03:22:48+00:00,14,0.08381226053639847,False,
+5m,EWG,C:\Users\marti\from\data\cache\yahoo\EWG_5m_60d.csv,6365,2026-03-25 09:15:00+00:00,2026-06-18 14:38:29+00:00,565,8.87806411062225,True,large internal gaps >0.5%
+5m,EWJ,C:\Users\marti\from\data\cache\yahoo\EWJ_5m_60d.csv,9211,2026-03-25 08:10:00+00:00,2026-06-18 14:38:38+00:00,258,2.801302931596091,True,large internal gaps >0.5%
+5m,EWU,C:\Users\marti\from\data\cache\yahoo\EWU_5m_60d.csv,6068,2026-03-25 12:00:00+00:00,2026-06-18 14:38:18+00:00,480,7.911653205867809,True,large internal gaps >0.5%
+5m,EWZ,C:\Users\marti\from\data\cache\yahoo\EWZ_5m_60d.csv,9945,2026-03-25 08:00:00+00:00,2026-06-18 14:38:36+00:00,176,1.7699115044247788,True,large internal gaps >0.5%
+5m,FXE,C:\Users\marti\from\data\cache\yahoo\FXE_5m_60d.csv,4894,2026-03-25 11:55:00+00:00,2026-06-18 14:36:00+00:00,335,6.846515430206418,True,large internal gaps >0.5%
+5m,FXI,C:\Users\marti\from\data\cache\yahoo\FXI_5m_60d.csv,10194,2026-03-25 08:00:00+00:00,2026-06-18 14:38:42+00:00,175,1.7168645148631412,True,large internal gaps >0.5%
+5m,FXY,C:\Users\marti\from\data\cache\yahoo\FXY_5m_60d.csv,6164,2026-03-25 08:00:00+00:00,2026-06-18 14:36:05+00:00,404,6.555249067012818,True,large internal gaps >0.5%
+5m,GC=F,C:\Users\marti\from\data\cache\yahoo\GC_F_5m_60d.csv,13616,2026-04-08 04:00:00+00:00,2026-06-18 03:12:32+00:00,51,0.374586852735953,False,
+5m,GDX,C:\Users\marti\from\data\cache\yahoo\GDX_5m_60d.csv,11185,2026-03-25 08:00:00+00:00,2026-06-18 14:38:17+00:00,119,1.0640200286123032,True,large internal gaps >0.5%
+5m,GDXJ,C:\Users\marti\from\data\cache\yahoo\GDXJ_5m_60d.csv,10399,2026-03-25 08:00:00+00:00,2026-06-18 14:38:08+00:00,140,1.3464127716868628,True,large internal gaps >0.5%
+5m,GLD,C:\Users\marti\from\data\cache\yahoo\GLD_5m_60d.csv,11325,2026-03-24 08:00:00+00:00,2026-06-17 23:59:48+00:00,119,1.050865418580007,True,large internal gaps >0.5%
+5m,HYG,C:\Users\marti\from\data\cache\yahoo\HYG_5m_60d.csv,7690,2026-03-25 08:30:00+00:00,2026-06-18 14:38:11+00:00,371,4.825074782156327,True,large internal gaps >0.5%
+5m,IAU,C:\Users\marti\from\data\cache\yahoo\IAU_5m_60d.csv,11300,2026-03-24 08:00:00+00:00,2026-06-17 23:59:28+00:00,119,1.0531905478360917,True,large internal gaps >0.5%
+5m,IEF,C:\Users\marti\from\data\cache\yahoo\IEF_5m_60d.csv,7320,2026-03-25 08:10:00+00:00,2026-06-18 14:38:05+00:00,524,7.159448012023501,True,large internal gaps >0.5%
+5m,IWM,C:\Users\marti\from\data\cache\yahoo\IWM_5m_60d.csv,11209,2026-03-25 08:00:00+00:00,2026-06-18 14:38:04+00:00,119,1.061741613133476,True,large internal gaps >0.5%
+5m,LQD,C:\Users\marti\from\data\cache\yahoo\LQD_5m_60d.csv,7260,2026-03-25 08:00:00+00:00,2026-06-18 14:38:11+00:00,366,5.042016806722689,True,large internal gaps >0.5%
+5m,QQQ,C:\Users\marti\from\data\cache\yahoo\QQQ_5m_60d.csv,11390,2026-03-25 08:00:00+00:00,2026-06-18 14:38:04+00:00,59,0.5180437264026693,True,large internal gaps >0.5%
+5m,SHY,C:\Users\marti\from\data\cache\yahoo\SHY_5m_60d.csv,6661,2026-03-25 09:25:00+00:00,2026-06-18 14:37:44+00:00,556,8.348348348348349,True,large internal gaps >0.5%
+5m,SI=F,C:\Users\marti\from\data\cache\yahoo\SI_F_5m_60d.csv,13604,2026-04-08 04:00:00+00:00,2026-06-18 03:12:33+00:00,52,0.3822686172167904,False,
+5m,SLV,C:\Users\marti\from\data\cache\yahoo\SLV_5m_60d.csv,11213,2026-03-25 08:00:00+00:00,2026-06-18 14:38:19+00:00,119,1.06136282554406,True,large internal gaps >0.5%
+5m,SPY,C:\Users\marti\from\data\cache\yahoo\SPY_5m_60d.csv,11325,2026-03-24 08:00:00+00:00,2026-06-18 00:00:00+00:00,119,1.050865418580007,True,large internal gaps >0.5%
+5m,TLT,C:\Users\marti\from\data\cache\yahoo\TLT_5m_60d.csv,11305,2026-03-24 08:00:00+00:00,2026-06-17 23:47:25+00:00,63,0.5573248407643312,True,large internal gaps >0.5%
+5m,UNG,C:\Users\marti\from\data\cache\yahoo\UNG_5m_60d.csv,10670,2026-03-25 08:00:00+00:00,2026-06-18 14:38:18+00:00,127,1.1903646077420564,True,large internal gaps >0.5%
+5m,USDJPY=X,C:\Users\marti\from\data\cache\yahoo\USDJPY_X_5m_60d.csv,16771,2026-03-27 00:00:00+00:00,2026-06-18 14:38:49+00:00,14,0.08348240906380441,False,
+5m,USO,C:\Users\marti\from\data\cache\yahoo\USO_5m_60d.csv,11213,2026-03-25 08:00:00+00:00,2026-06-18 14:38:06+00:00,119,1.06136282554406,True,large internal gaps >0.5%
+5m,UUP,C:\Users\marti\from\data\cache\yahoo\UUP_5m_60d.csv,6814,2026-03-25 09:50:00+00:00,2026-06-18 14:36:46+00:00,457,6.707764567738147,True,large internal gaps >0.5%
+5m,VXX,C:\Users\marti\from\data\cache\yahoo\VXX_5m_60d.csv,10842,2026-03-25 08:00:00+00:00,2026-06-18 14:38:05+00:00,123,1.134581680656766,True,large internal gaps >0.5%
+5m,XLB,C:\Users\marti\from\data\cache\yahoo\XLB_5m_60d.csv,8105,2026-03-25 08:05:00+00:00,2026-06-18 14:38:34+00:00,391,4.824777887462981,True,large internal gaps >0.5%
+5m,XLC,C:\Users\marti\from\data\cache\yahoo\XLC_5m_60d.csv,7322,2026-03-25 11:20:00+00:00,2026-06-18 14:38:35+00:00,482,6.583800027318672,True,large internal gaps >0.5%
+5m,XLE,C:\Users\marti\from\data\cache\yahoo\XLE_5m_60d.csv,11186,2026-03-25 08:00:00+00:00,2026-06-18 14:38:25+00:00,119,1.0639248994188646,True,large internal gaps >0.5%
+5m,XLF,C:\Users\marti\from\data\cache\yahoo\XLF_5m_60d.csv,10810,2026-03-25 08:00:00+00:00,2026-06-18 14:38:23+00:00,124,1.1471921546859098,True,large internal gaps >0.5%
+5m,XLI,C:\Users\marti\from\data\cache\yahoo\XLI_5m_60d.csv,8829,2026-03-25 09:50:00+00:00,2026-06-18 14:38:28+00:00,327,3.704123244222927,True,large internal gaps >0.5%
+5m,XLK,C:\Users\marti\from\data\cache\yahoo\XLK_5m_60d.csv,11020,2026-03-25 08:00:00+00:00,2026-06-18 14:38:28+00:00,120,1.0890280424720935,True,large internal gaps >0.5%
+5m,XLP,C:\Users\marti\from\data\cache\yahoo\XLP_5m_60d.csv,9468,2026-03-25 08:05:00+00:00,2026-06-18 14:38:32+00:00,226,2.38723988591951,True,large internal gaps >0.5%
+5m,XLU,C:\Users\marti\from\data\cache\yahoo\XLU_5m_60d.csv,10347,2026-03-25 08:00:00+00:00,2026-06-18 14:38:32+00:00,136,1.3145176879953604,True,large internal gaps >0.5%
+5m,XLV,C:\Users\marti\from\data\cache\yahoo\XLV_5m_60d.csv,10066,2026-03-25 08:15:00+00:00,2026-06-18 14:38:26+00:00,163,1.6194734227521113,True,large internal gaps >0.5%
+5m,XLY,C:\Users\marti\from\data\cache\yahoo\XLY_5m_60d.csv,8689,2026-03-25 08:00:00+00:00,2026-06-18 14:38:31+00:00,284,3.268876611418048,True,large internal gaps >0.5%
+5m,ZB=F,C:\Users\marti\from\data\cache\yahoo\ZB_F_5m_60d.csv,13426,2026-04-08 04:00:00+00:00,2026-06-18 03:13:03+00:00,53,0.39478584729981375,False,
+5m,ZN=F,C:\Users\marti\from\data\cache\yahoo\ZN_F_5m_60d.csv,13569,2026-04-08 04:00:00+00:00,2026-06-18 03:12:41+00:00,51,0.3758844339622642,False,

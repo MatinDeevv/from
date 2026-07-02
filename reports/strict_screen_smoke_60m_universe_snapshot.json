@@ -1,0 +1,15 @@
+{
+  "snapshot_created_utc": "2026-06-18T17:32:09.691131+00:00",
+  "availability_asof_policy": "Uses local Yahoo cache files already present before this rebuild run; not a true pre-forward vendor snapshot.",
+  "cache_dir": "C:\\Users\\marti\\from\\data\\cache\\yahoo",
+  "requested_symbols": [
+    "SPY",
+    "TLT"
+  ],
+  "included_symbols": [
+    "SPY",
+    "TLT"
+  ],
+  "excluded_symbols": {},
+  "leader_errors": {}
+}

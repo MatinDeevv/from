@@ -1,0 +1,51 @@
+{
+  "created_utc": "2026-06-18T04:26:37.641024+00:00",
+  "rule": {
+    "leader": "DX-Y.NYB",
+    "window": 36,
+    "threshold_locked": 1.3116746962844497,
+    "horizon_bars": 18,
+    "cost_mult": 2.0,
+    "mode": "fade",
+    "feature": "volz",
+    "vol_window": 48,
+    "session": "all",
+    "execution": "overlap"
+  },
+  "data": {
+    "xau_csv": "..\\data\\derived\\xauusd_dukascopy_5m_forward_20260522_20260618.csv",
+    "rows_aligned": 4525,
+    "time_start": "2026-05-22 13:55:00+00:00",
+    "time_end": "2026-06-17 23:55:00+00:00",
+    "leader_errors": {}
+  },
+  "summary": {
+    "trades": 794,
+    "days": 25.96527777777778,
+    "trades_per_day": 30.579299277881784,
+    "pnl": 1426.7717896646102,
+    "avg": 1.7969418005851514,
+    "win_rate": 0.5365239294710328,
+    "profit_factor": 1.325110234254501,
+    "sharpe_trade": 2.737298937328397,
+    "max_dd": 1624.6550412637303
+  },
+  "reverse_summary": {
+    "trades": 794,
+    "days": 25.96527777777778,
+    "trades_per_day": 30.579299277881784,
+    "pnl": -3461.3142103353057,
+    "avg": -4.359337796392072,
+    "win_rate": 0.3853904282115869,
+    "profit_factor": 0.5046235600948589,
+    "sharpe_trade": -6.640873935397431,
+    "max_dd": 4649.241848256695
+  },
+  "circular_controls": {
+    "trials": 1000,
+    "mean": -1108.0522214845034,
+    "p95": 1640.9501578552442,
+    "p99": 3434.515249581054,
+    "rank_pct": 0.935
+  }
+}

@@ -6,6 +6,19 @@ horizon          = 256
 direction_threshold = 2.0
 normalize_freeze_after = 100000
 
+[costs]
+# USD per troy ounce unless noted otherwise. Backtest commands must surface all
+# three scenarios rather than claiming profitability from one optimistic cost.
+spread_typical_usd   = 0.30
+spread_elevated_usd  = 0.60
+spread_extreme_usd   = 1.50
+commission_per_lot   = 3.50
+slippage_usd         = 0.05
+lot_size             = 100
+
+[inference]
+confidence_threshold = 0.50
+
 [augmentation]
 enabled          = true
 magnitude_prob   = 0.3

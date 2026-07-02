@@ -1,0 +1,51 @@
+{
+  "created_utc": "2026-06-18T04:26:37.656563+00:00",
+  "rule": {
+    "leader": "EURUSD=X",
+    "window": 36,
+    "threshold_locked": 0.8169827795693141,
+    "horizon_bars": 18,
+    "cost_mult": 2.0,
+    "mode": "follow",
+    "feature": "divergence",
+    "vol_window": 48,
+    "session": "london",
+    "execution": "cooldown"
+  },
+  "data": {
+    "xau_csv": "..\\data\\derived\\xauusd_dukascopy_5m_forward_20260522_20260618.csv",
+    "rows_aligned": 4999,
+    "time_start": "2026-05-22 13:55:00+00:00",
+    "time_end": "2026-06-17 23:55:00+00:00",
+    "leader_errors": {}
+  },
+  "summary": {
+    "trades": 80,
+    "days": 23.25,
+    "trades_per_day": 3.4408602150537635,
+    "pnl": 191.623759616264,
+    "avg": 2.3952969952033003,
+    "win_rate": 0.55,
+    "profit_factor": 1.5661874133522726,
+    "sharpe_trade": 1.4213990149969165,
+    "max_dd": 59.58227692145256
+  },
+  "reverse_summary": {
+    "trades": 80,
+    "days": 23.25,
+    "trades_per_day": 3.4408602150537635,
+    "pnl": -372.88224038374176,
+    "avg": -4.661028004796772,
+    "win_rate": 0.3625,
+    "profit_factor": 0.4145888178433082,
+    "sharpe_trade": -2.7656718597387586,
+    "max_dd": 408.6933468630675
+  },
+  "circular_controls": {
+    "trials": 1000,
+    "mean": -73.01452930131522,
+    "p95": 180.11163389528593,
+    "p99": 323.76310169906867,
+    "rank_pct": 0.96
+  }
+}

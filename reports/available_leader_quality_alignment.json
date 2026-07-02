@@ -1,0 +1,106 @@
+{
+  "quality": [
+    {
+      "bars": 8038,
+      "start_ts": "2023-02-16 18:00:00-05:00",
+      "end_ts": "2026-05-21 14:55:00-04:00",
+      "null_close": 0.0,
+      "expected_bar_pct_approx": 12.1236802413273,
+      "gap_events_gt_10m": 655,
+      "max_consecutive_gap_bars": 1464,
+      "spread_p50": 0.05000000000000048,
+      "spread_p95": 0.05550119374960942,
+      "spread_p99": 0.07854202305697099,
+      "symbol": "USO",
+      "path": "C:\\Users\\marti\\from\\data\\derived\\leader_USO_LIGHTCMDUSD_5m_20230101_20260521.parquet",
+      "pass": false
+    },
+    {
+      "bars": 3792,
+      "start_ts": "2023-01-02 21:00:00-05:00",
+      "end_ts": "2026-05-20 10:55:00-04:00",
+      "null_close": 0.0,
+      "expected_bar_pct_approx": 5.719457013574661,
+      "gap_events_gt_10m": 312,
+      "max_consecutive_gap_bars": 15912,
+      "spread_p50": 0.010199732084417363,
+      "spread_p95": 0.010836568346938875,
+      "spread_p99": 0.010974999209211718,
+      "symbol": "UNG",
+      "path": "C:\\Users\\marti\\from\\data\\derived\\leader_UNG_GASCMDUSD_5m_20230101_20260521.parquet",
+      "pass": false
+    },
+    {
+      "bars": 3301,
+      "start_ts": "2023-01-02 22:00:00-05:00",
+      "end_ts": "2026-05-19 23:55:00-04:00",
+      "null_close": 0.0,
+      "expected_bar_pct_approx": 4.9788838612368025,
+      "gap_events_gt_10m": 281,
+      "max_consecutive_gap_bars": 13788,
+      "spread_p50": 0.5057319224151299,
+      "spread_p95": 0.7018581613811979,
+      "spread_p99": 0.7049881389349908,
+      "symbol": "XLF",
+      "path": "C:\\Users\\marti\\from\\data\\derived\\leader_XLF_USA500IDXUSD_5m_20230101_20260521.parquet",
+      "pass": false
+    },
+    {
+      "bars": 3301,
+      "start_ts": "2023-01-02 22:00:00-05:00",
+      "end_ts": "2026-05-19 23:55:00-04:00",
+      "null_close": 0.0,
+      "expected_bar_pct_approx": 4.9788838612368025,
+      "gap_events_gt_10m": 281,
+      "max_consecutive_gap_bars": 13788,
+      "spread_p50": 0.5057319224151299,
+      "spread_p95": 0.7018581613811979,
+      "spread_p99": 0.7049881389349908,
+      "symbol": "XLY",
+      "path": "C:\\Users\\marti\\from\\data\\derived\\leader_XLY_USA500IDXUSD_5m_20230101_20260521.parquet",
+      "pass": false
+    }
+  ],
+  "alignment": [
+    {
+      "symbol": "USO",
+      "grid_bars": 164744,
+      "leader_original_bars": 8038,
+      "bars_after_ffill_limit1": 5839,
+      "forward_fill_bars": 441,
+      "forward_fill_pct": 0.2676880493371534,
+      "usable_pct_on_xau_grid": 3.544286893604623,
+      "earliest_aligned": "2023-02-16 23:00:00+00:00"
+    },
+    {
+      "symbol": "UNG",
+      "grid_bars": 164744,
+      "leader_original_bars": 3792,
+      "bars_after_ffill_limit1": 2914,
+      "forward_fill_bars": 230,
+      "forward_fill_pct": 0.13961054727334532,
+      "usable_pct_on_xau_grid": 1.7688049337153404,
+      "earliest_aligned": "2023-01-10 10:00:00+00:00"
+    },
+    {
+      "symbol": "XLF",
+      "grid_bars": 164744,
+      "leader_original_bars": 3301,
+      "bars_after_ffill_limit1": 2319,
+      "forward_fill_bars": 184,
+      "forward_fill_pct": 0.11168843781867625,
+      "usable_pct_on_xau_grid": 1.4076385179429904,
+      "earliest_aligned": "2023-01-13 19:00:00+00:00"
+    },
+    {
+      "symbol": "XLY",
+      "grid_bars": 164744,
+      "leader_original_bars": 3301,
+      "bars_after_ffill_limit1": 2319,
+      "forward_fill_bars": 184,
+      "forward_fill_pct": 0.11168843781867625,
+      "usable_pct_on_xau_grid": 1.4076385179429904,
+      "earliest_aligned": "2023-01-13 19:00:00+00:00"
+    }
+  ]
+}

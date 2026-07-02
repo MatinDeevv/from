@@ -1,0 +1,101 @@
+[
+  {
+    "symbol": "XAGUSD",
+    "url": "https://datafeed.dukascopy.com/datafeed/XAGUSD/2023/00/03/10h_ticks.bi5",
+    "http_status": 200,
+    "bytes": 15549,
+    "payload_bytes": 74040,
+    "valid_bi5": true,
+    "pass": true
+  },
+  {
+    "symbol": "EURUSD",
+    "url": "https://datafeed.dukascopy.com/datafeed/EURUSD/2023/00/03/10h_ticks.bi5",
+    "http_status": 200,
+    "bytes": 46185,
+    "payload_bytes": 186040,
+    "valid_bi5": true,
+    "pass": true
+  },
+  {
+    "symbol": "USDJPY",
+    "url": "https://datafeed.dukascopy.com/datafeed/USDJPY/2023/00/03/10h_ticks.bi5",
+    "http_status": 200,
+    "bytes": 59074,
+    "payload_bytes": 300080,
+    "valid_bi5": true,
+    "pass": true
+  },
+  {
+    "symbol": "GBPUSD",
+    "url": "https://datafeed.dukascopy.com/datafeed/GBPUSD/2023/00/03/10h_ticks.bi5",
+    "http_status": 200,
+    "bytes": 38143,
+    "payload_bytes": 184560,
+    "valid_bi5": true,
+    "pass": true
+  },
+  {
+    "symbol": "USDCHF",
+    "url": "https://datafeed.dukascopy.com/datafeed/USDCHF/2023/00/03/10h_ticks.bi5",
+    "http_status": 200,
+    "bytes": 17766,
+    "payload_bytes": 88880,
+    "valid_bi5": true,
+    "pass": true
+  },
+  {
+    "symbol": "AUDUSD",
+    "url": "https://datafeed.dukascopy.com/datafeed/AUDUSD/2023/00/03/10h_ticks.bi5",
+    "http_status": 200,
+    "bytes": 30556,
+    "payload_bytes": 132480,
+    "valid_bi5": true,
+    "pass": true
+  },
+  {
+    "symbol": "NZDUSD",
+    "url": "https://datafeed.dukascopy.com/datafeed/NZDUSD/2023/00/03/10h_ticks.bi5",
+    "http_status": 200,
+    "bytes": 28033,
+    "payload_bytes": 136060,
+    "valid_bi5": true,
+    "pass": true
+  },
+  {
+    "symbol": "USDCAD",
+    "url": "https://datafeed.dukascopy.com/datafeed/USDCAD/2023/00/03/10h_ticks.bi5",
+    "http_status": 200,
+    "bytes": 20213,
+    "payload_bytes": 96600,
+    "valid_bi5": true,
+    "pass": true
+  },
+  {
+    "symbol": "EURGBP",
+    "url": "https://datafeed.dukascopy.com/datafeed/EURGBP/2023/00/03/10h_ticks.bi5",
+    "http_status": 200,
+    "bytes": 33364,
+    "payload_bytes": 169020,
+    "valid_bi5": true,
+    "pass": true
+  },
+  {
+    "symbol": "EURJPY",
+    "url": "https://datafeed.dukascopy.com/datafeed/EURJPY/2023/00/03/10h_ticks.bi5",
+    "http_status": 200,
+    "bytes": 53712,
+    "payload_bytes": 269540,
+    "valid_bi5": true,
+    "pass": true
+  },
+  {
+    "symbol": "GBPJPY",
+    "url": "https://datafeed.dukascopy.com/datafeed/GBPJPY/2023/00/03/10h_ticks.bi5",
+    "http_status": 200,
+    "bytes": 44376,
+    "payload_bytes": 223980,
+    "valid_bi5": true,
+    "pass": true
+  }
+]

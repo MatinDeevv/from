@@ -1,0 +1,5 @@
+label,trades,pnl,return_pct,max_drawdown,max_drawdown_pct,csv,equity_png,drawdown_png
+5m_capped,1139,400866.5851130991,8.017331702261982,175090.56654893607,3.5018113309787213,..\reports\equity_curves\5m_capped_equity_curve.csv,..\reports\equity_curves\5m_capped_equity_curve.png,..\reports\equity_curves\5m_capped_drawdown.png
+5m_uncapped,7064,2113068.367060377,42.26136734120753,1065573.0683054216,21.311461366108432,..\reports\equity_curves\5m_uncapped_equity_curve.csv,..\reports\equity_curves\5m_uncapped_equity_curve.png,..\reports\equity_curves\5m_uncapped_drawdown.png
+60m_capped,183,179233.29781414277,3.584665956282856,62510.499777027406,1.2502099955405481,..\reports\equity_curves\60m_capped_equity_curve.csv,..\reports\equity_curves\60m_capped_equity_curve.png,..\reports\equity_curves\60m_capped_drawdown.png
+60m_uncapped,373,804470.4020061354,16.089408040122706,307338.86250278726,6.146777250055745,..\reports\equity_curves\60m_uncapped_equity_curve.csv,..\reports\equity_curves\60m_uncapped_equity_curve.png,..\reports\equity_curves\60m_uncapped_drawdown.png

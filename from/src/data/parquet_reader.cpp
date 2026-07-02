@@ -533,6 +533,10 @@ void ParquetReader::parse_footer() {
                     rg.columns.push_back(cm);
                 }
                 require(rg.columns.size() == 6, "Parquet row group does not have the expected six columns");
+                require(rg.columns[0].physical_type == 5 && rg.columns[1].physical_type == 5 &&
+                            rg.columns[2].physical_type == 5 && rg.columns[3].physical_type == 4 &&
+                            rg.columns[4].physical_type == 4 && rg.columns[5].physical_type == 2,
+                        "Parquet schema must be DOUBLE ask/bid/mid, FLOAT ask_vol/bid_vol, INT64 UTC milliseconds");
                 row_groups_.push_back(std::move(rg));
             }
         } else {
@@ -540,6 +544,23 @@ void ParquetReader::parse_footer() {
         }
     }
     require(total_rows_ > 0 && !row_groups_.empty(), "Parquet footer has no rows or row groups");
+}
+
+void ParquetReader::validate_tick_chunk(const TickChunk& chunk) {
+    constexpr int64_t kEarliestSupportedUtcMs = 946684800000LL;   // 2000-01-01 UTC
+    constexpr int64_t kLatestSupportedUtcMs = 4102444800000LL;    // 2100-01-01 UTC
+    require(chunk.ask.size() == chunk.size && chunk.bid.size() == chunk.size &&
+                chunk.mid.size() == chunk.size && chunk.ask_vol.size() == chunk.size &&
+                chunk.bid_vol.size() == chunk.size && chunk.time_ms.size() == chunk.size,
+            "Decoded Parquet columns have inconsistent row counts");
+    for (size_t i = 0; i < chunk.size; ++i) {
+        const int64_t timestamp = chunk.time_ms[i];
+        require(timestamp >= kEarliestSupportedUtcMs && timestamp < kLatestSupportedUtcMs,
+                "Tick timestamp is not a plausible UTC Unix-millisecond value");
+        require(last_timestamp_ms_ <= timestamp,
+                "Tick timestamps are out of order; input must be ascending UTC milliseconds");
+        last_timestamp_ms_ = timestamp;
+    }
 }
 
 TickChunk ParquetReader::decode_row_group(size_t row_group_index) {
@@ -614,6 +635,7 @@ TickChunk ParquetReader::read_chunk(size_t chunk_size) {
             out = std::move(decoded_group_);
             decoded_pos_ = out.size;
             rows_read_ += out.size;
+            validate_tick_chunk(out);
             return out;
         }
         auto append = [&](auto& dst, const auto& src) {
@@ -630,6 +652,7 @@ TickChunk ParquetReader::read_chunk(size_t chunk_size) {
         out.size += take;
         rows_read_ += take;
     }
+    validate_tick_chunk(out);
     return out;
 }
 
@@ -641,6 +664,7 @@ void ParquetReader::reset() {
     current_row_group_ = 0;
     decoded_group_ = TickChunk{};
     decoded_pos_ = 0;
+    last_timestamp_ms_ = -1;
     in_.clear();
 }
 

@@ -1,0 +1,19 @@
+{
+  "created_utc": "2026-06-18T11:50:52.224466+00:00",
+  "instrument": "USDJPY",
+  "price_scale": 1000.0,
+  "start": "2025-12-01T00:00:00+00:00",
+  "end": "2026-01-01T00:00:00+00:00",
+  "hours_requested": 744,
+  "bars": 6352,
+  "first_bar": "2025-12-01 00:00:00+00:00",
+  "last_bar": "2025-12-31 21:55:00+00:00",
+  "errors": {
+    "1764572400000": "<HTTPError 503: 'Service Unavailable'>",
+    "1764604800000": "<HTTPError 503: 'Service Unavailable'>",
+    "1764558000000": "<HTTPError 503: 'Service Unavailable'>",
+    "1764795600000": "<HTTPError 503: 'Service Unavailable'>",
+    "1764792000000": "<HTTPError 503: 'Service Unavailable'>",
+    "1764849600000": "TimeoutError('The read operation timed out')"
+  }
+}

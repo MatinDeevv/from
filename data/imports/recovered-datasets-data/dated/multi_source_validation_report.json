@@ -1,0 +1,53 @@
+{
+  "dukascopy": {
+    "source_url_template": "https://datafeed.dukascopy.com/datafeed/XAUUSD/{year}/{zero_based_month}/{day}/{hour}h_ticks.bi5",
+    "source_row_groups": 685,
+    "exact_verified_source_row_groups": 264,
+    "corrected_source_row_groups": 3,
+    "corrections": [
+      {
+        "source_row_group": 37,
+        "timestamp_cycle": 268,
+        "start_utc": "2006-06-23 09:00:02.351000+00:00",
+        "end_utc": "2006-08-12 01:02:43.930000+00:00"
+      },
+      {
+        "source_row_group": 309,
+        "timestamp_cycle": 356,
+        "start_utc": "2018-06-27 06:34:54.039000+00:00",
+        "end_utc": "2018-07-31 03:04:09.336000+00:00"
+      },
+      {
+        "source_row_group": 606,
+        "timestamp_cycle": 406,
+        "start_utc": "2025-04-30 15:07:05.027000+00:00",
+        "end_utc": "2025-05-24 01:54:49.408000+00:00"
+      }
+    ],
+    "verification_method": "Exact binary tick fingerprints matched against Dukascopy XAUUSD hourly .bi5 archive files."
+  },
+  "world_bank": {
+    "reference": "World Bank Commodity Price Data (Pink Sheet), monthly Gold",
+    "source_url": "https://thedocs.worldbank.org/en/doc/18675f1d1639c7a34d463f59263ba0a2-0050012025/related/CMO-Historical-Data-Monthly.xlsx",
+    "reference_file": "C:\\Users\\marti\\Desktop\\data\\external_reference\\world_bank_monthly.xlsx",
+    "reference_start": "1960-01-01T00:00:00+00:00",
+    "reference_end": "2025-12-01T00:00:00+00:00",
+    "all_restored_dates": {
+      "matched_months": 272,
+      "matched_start": "2003-01-01T00:00:00+00:00",
+      "matched_end": "2025-12-01T00:00:00+00:00",
+      "median_absolute_level_error_fraction": 0.0022898900458201625,
+      "monthly_level_correlation": 0.9997990088390666,
+      "monthly_return_correlation": 0.8671933658153085
+    },
+    "high_confidence_restored_dates": {
+      "matched_months": 260,
+      "matched_start": "2003-05-01T00:00:00+00:00",
+      "matched_end": "2025-12-01T00:00:00+00:00",
+      "median_absolute_level_error_fraction": 0.0020440767776249273,
+      "monthly_level_correlation": 0.9998352261101581,
+      "monthly_return_correlation": 0.9014617055827491
+    }
+  },
+  "interpretation": "Dukascopy exact matches confirm or correct individual row-group cycles. World Bank monthly prices validate the broad calendar path but cannot certify individual tick timestamps."
+}

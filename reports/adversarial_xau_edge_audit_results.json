@@ -1,0 +1,2728 @@
+{
+  "created": "2026-06-18T17:19:12.184948+00:00",
+  "attacks": {
+    "multiple_comparisons": {
+      "5m": {
+        "kind": "5m",
+        "status": "INCONCLUSIVE",
+        "why_inconclusive": "Saved reports do not contain every evaluated grid combination or capped portfolio trades for random candidate portfolios. This is a weaker promoted-candidate raw-forward-PnL null, not a full multiple-comparisons correction.",
+        "candidate_rows_after_old_gate": 496,
+        "forward_positive_candidates": 198,
+        "draws": 20000,
+        "actual_capped_return_pct": 8.017331702261982,
+        "actual_capped_pnl": 400866.5851130991,
+        "null_raw_forward_pnl_mean": 16563.34436972938,
+        "null_raw_forward_pnl_p50": 16239.057132025042,
+        "null_raw_forward_p95": 24154.673799238983,
+        "null_raw_forward_p99": 27671.853080156867
+      },
+      "60m": {
+        "kind": "60m",
+        "status": "INCONCLUSIVE",
+        "why_inconclusive": "Saved reports do not contain every evaluated grid combination or capped portfolio trades for random candidate portfolios. This is a weaker promoted-candidate raw-forward-PnL null, not a full multiple-comparisons correction.",
+        "candidate_rows_after_old_gate": 1948,
+        "forward_positive_candidates": 940,
+        "draws": 20000,
+        "actual_capped_return_pct": 3.584665956282856,
+        "actual_capped_pnl": 179233.29781414277,
+        "null_raw_forward_pnl_mean": 3931.923185640952,
+        "null_raw_forward_pnl_p50": 3851.4222693951283,
+        "null_raw_forward_p95": 5850.604556909925,
+        "null_raw_forward_p99": 6800.144116842502
+      }
+    },
+    "leakage_timestamp_audit": {
+      "status": "FAIL",
+      "threshold": "PASS requires no material leakage/alignment/availability caveats",
+      "findings": [
+        {
+          "item": "spread_t",
+          "verdict": "INCONCLUSIVE/WEAK",
+          "detail": "Cost uses observed average spread of the same execution bar at signal entry. This is conservative as a cost subtraction but not a tradable known-at-signal quote. It is not alpha leakage, but it is not a broker-real quote model."
+        },
+        {
+          "item": "threshold",
+          "verdict": "PASS for saved models",
+          "detail": "Thresholds in search scripts are fitted from the first half of old data only; selected JSON stores fixed thresholds used in forward reruns."
+        },
+        {
+          "item": "timestamp alignment",
+          "verdict": "INCONCLUSIVE",
+          "detail": "5m Yahoo leader and restored XAU are inner-joined on timestamps. A prior bug in 60m forward aggregation collapsed timestamps to 1970 and was fixed before final 60m reruns. No independent timezone audit against exchange calendars was done."
+        },
+        {
+          "item": "rolling windows",
+          "verdict": "PASS",
+          "detail": "Leader momentum and vol use rolling values shifted by one bar before signal generation in the search functions."
+        },
+        {
+          "item": "universe availability",
+          "verdict": "FAIL/BIAS RISK",
+          "detail": "The 50-symbol universe was manually selected for liquid available Yahoo symbols with usable data. This can bias toward instruments that happen to have clean data and macro relevance in the tested window."
+        }
+      ]
+    },
+    "reverse_rule": {
+      "5m": {
+        "status": "PASS",
+        "threshold": "PASS requires reverse PnL <= -25% of forward PnL for every model",
+        "weak_models": [],
+        "models": [
+          {
+            "model": "XLC_volz_follow_w36_q0.55_ny_h30_cost2.0",
+            "forward_pnl": 221656.76117811122,
+            "forward_pf": 1.2504981069912147,
+            "reverse_pnl": -406755.5730253211,
+            "reverse_pf": 0.6642753698327039,
+            "reverse_ratio": -1.8350695501612724
+          },
+          {
+            "model": "XLV_volz_follow_w48_q0.65_ny_h24_cost2.0",
+            "forward_pnl": 441094.302824999,
+            "forward_pf": 1.9051461881784975,
+            "reverse_pnl": -646939.7560893076,
+            "reverse_pf": 0.3871833902312355,
+            "reverse_ratio": -1.466669943243353
+          },
+          {
+            "model": "DX-Y.NYB_volz_fade_w36_q0.85_all_h30_cost2.0",
+            "forward_pnl": 191874.98376737698,
+            "forward_pf": 1.2804821128584427,
+            "reverse_pnl": -419628.5467623356,
+            "reverse_pf": 0.577543244676645,
+            "reverse_ratio": -2.186989353813208
+          },
+          {
+            "model": "IEF_divergence_follow_w24_q0.55_ny_h30_cost2.0",
+            "forward_pnl": 21723.062539599487,
+            "forward_pf": 1.0222287928651548,
+            "reverse_pnl": -235045.27499642214,
+            "reverse_pf": 0.7895071728409057,
+            "reverse_ratio": -10.820080021771908
+          },
+          {
+            "model": "XLF_volz_fade_w48_q0.55_london_h30_cost2.0",
+            "forward_pnl": 441363.57887164614,
+            "forward_pf": 1.9878771212298683,
+            "reverse_pnl": -591799.0655492449,
+            "reverse_pf": 0.39197484631800794,
+            "reverse_ratio": -1.3408425476841332
+          },
+          {
+            "model": "UNG_volz_follow_w48_q0.75_all_h18_cost2.0",
+            "forward_pnl": 248177.7118569585,
+            "forward_pf": 1.426647021528921,
+            "reverse_pnl": -472308.38023260375,
+            "reverse_pf": 0.5042952221404877,
+            "reverse_ratio": -1.903105547628011
+          },
+          {
+            "model": "XLK_volz_fade_w48_q0.75_all_h30_cost2.0",
+            "forward_pnl": 5002.14346527154,
+            "forward_pf": 1.009048368955158,
+            "reverse_pnl": -181720.2841218856,
+            "reverse_pf": 0.7205236159156875,
+            "reverse_ratio": -36.32848305601746
+          },
+          {
+            "model": "VXX_volz_follow_w48_q0.75_all_h30_cost2.0",
+            "forward_pnl": 215911.0999460018,
+            "forward_pf": 1.2648388478414392,
+            "reverse_pnl": -419142.7635867802,
+            "reverse_pf": 0.6377328654626655,
+            "reverse_ratio": -1.9412747361835752
+          },
+          {
+            "model": "EURUSD=X_divergence_follow_w36_q0.65_london_h24_cost2.0",
+            "forward_pnl": 123682.25275049232,
+            "forward_pf": 1.2289795210051355,
+            "reverse_pnl": -322846.9682522172,
+            "reverse_pf": 0.5860684638712822,
+            "reverse_ratio": -2.6102934016208894
+          },
+          {
+            "model": "SPY_volz_fade_w36_q0.75_all_h24_cost2.0",
+            "forward_pnl": 202582.4698599198,
+            "forward_pf": 1.379878760944376,
+            "reverse_pnl": -398499.6590873757,
+            "reverse_pf": 0.53080984644062,
+            "reverse_ratio": -1.9670984333586574
+          }
+        ]
+      },
+      "60m": {
+        "status": "PASS",
+        "threshold": "PASS requires reverse PnL <= -25% of forward PnL for every model",
+        "weak_models": [],
+        "models": [
+          {
+            "model": "EEM_60m_divergence_follow_w12_q0.65_all_h6_cost2.0",
+            "forward_pnl": 116808.04978677984,
+            "forward_pf": 2.0447430256967576,
+            "reverse_pnl": -127020.68759132446,
+            "reverse_pf": 0.46076722502523904,
+            "reverse_ratio": -1.0874309418159678
+          },
+          {
+            "model": "GDX_60m_divergence_follow_w12_q0.75_all_h8_cost2.0",
+            "forward_pnl": 80044.40275021982,
+            "forward_pf": 2.1238962476224517,
+            "reverse_pnl": -87123.68572055775,
+            "reverse_pf": 0.4401660529065702,
+            "reverse_ratio": -1.0884419488072012
+          },
+          {
+            "model": "GDXJ_60m_divergence_follow_w12_q0.85_all_h8_cost2.0",
+            "forward_pnl": 66328.62088700735,
+            "forward_pf": 1.9910810617986854,
+            "reverse_pnl": -72374.0775085098,
+            "reverse_pf": 0.47175087084888256,
+            "reverse_ratio": -1.0911440120517666
+          },
+          {
+            "model": "GC=F_60m_volz_follow_w6_q0.65_all_h8_cost2.0",
+            "forward_pnl": 18580.443118866988,
+            "forward_pf": 1.0827695357347746,
+            "reverse_pnl": -55924.2584225862,
+            "reverse_pf": 0.7874417929878155,
+            "reverse_ratio": -3.0098452477594297
+          },
+          {
+            "model": "SPY_60m_divergence_follow_w12_q0.55_all_h6_cost2.0",
+            "forward_pnl": 55422.824260055575,
+            "forward_pf": 1.7532997702586264,
+            "reverse_pnl": -64908.94941237661,
+            "reverse_pf": 0.5199789756973278,
+            "reverse_ratio": -1.1711591799762882
+          },
+          {
+            "model": "FXI_60m_divergence_follow_w6_q0.55_all_h8_cost2.0",
+            "forward_pnl": 32216.059163181104,
+            "forward_pf": 1.2482690934625529,
+            "reverse_pnl": -43534.356352579955,
+            "reverse_pf": 0.7414360861450108,
+            "reverse_ratio": -1.3513246959247653
+          },
+          {
+            "model": "EFA_60m_volz_follow_w6_q0.75_all_h8_cost2.0",
+            "forward_pnl": 41385.54258267192,
+            "forward_pf": 1.6288947275845422,
+            "reverse_pnl": -47989.83940044617,
+            "reverse_pf": 0.5646304426001059,
+            "reverse_ratio": -1.1595798050631203
+          },
+          {
+            "model": "QQQ_60m_divergence_follow_w12_q0.65_all_h8_cost2.0",
+            "forward_pnl": 171107.55605381983,
+            "forward_pf": 2.9549044818293613,
+            "reverse_pnl": -180861.3899283404,
+            "reverse_pf": 0.3196963566909277,
+            "reverse_ratio": -1.0570041095756906
+          },
+          {
+            "model": "ZB=F_60m_divergence_fade_w12_q0.85_all_h8_cost2.0",
+            "forward_pnl": 79024.13236501976,
+            "forward_pf": 5.283910773541922,
+            "reverse_pnl": -84703.37720877677,
+            "reverse_pf": 0.17383930053817231,
+            "reverse_ratio": -1.0718672217434044
+          },
+          {
+            "model": "EWJ_60m_divergence_follow_w12_q0.75_all_h8_cost2.0",
+            "forward_pnl": 143552.77103851322,
+            "forward_pf": 213.7087325133598,
+            "reverse_pnl": -148846.2215425491,
+            "reverse_pf": 0.0005018972964070564,
+            "reverse_ratio": -1.0368745964688881
+          }
+        ]
+      }
+    },
+    "block_bootstrap": {
+      "5m": {
+        "status": "FAIL",
+        "threshold": "PASS requires portfolio 95% block-bootstrap return CI lower bound > 0",
+        "portfolio": {
+          "trials": 5000,
+          "block_length": 30,
+          "return_pct_ci95": [
+            -1.3600369685378408,
+            18.04981656636123
+          ],
+          "pf_ci95": [
+            0.9460235802414315,
+            2.0896952797519694
+          ],
+          "max_dd_pct_ci95": [
+            1.247853165342791,
+            6.59652239449286
+          ]
+        },
+        "models": [
+          {
+            "model": "XLC_volz_follow_w36_q0.55_ny_h30_cost2.0",
+            "trials": 5000,
+            "block_length": 30,
+            "return_pct_ci95": [
+              -13.119641310793643,
+              21.87468205798696
+            ],
+            "pf_ci95": [
+              0.5277900122851903,
+              3.3862989865704334
+            ],
+            "max_dd_pct_ci95": [
+              1.3823645644273492,
+              17.579959239880687
+            ]
+          },
+          {
+            "model": "XLV_volz_follow_w48_q0.65_ny_h24_cost2.0",
+            "trials": 5000,
+            "block_length": 24,
+            "return_pct_ci95": [
+              -0.9123419629852274,
+              19.301369482497883
+            ],
+            "pf_ci95": [
+              0.926188623834489,
+              3.856541217246617
+            ],
+            "max_dd_pct_ci95": [
+              1.113320819510878,
+              5.425791495217904
+            ]
+          },
+          {
+            "model": "DX-Y.NYB_volz_fade_w36_q0.85_all_h30_cost2.0",
+            "trials": 5000,
+            "block_length": 30,
+            "return_pct_ci95": [
+              -5.375941763376911,
+              13.589097191865784
+            ],
+            "pf_ci95": [
+              0.6823164382904684,
+              2.3694510189679017
+            ],
+            "max_dd_pct_ci95": [
+              1.595036613386504,
+              7.959808071537984
+            ]
+          },
+          {
+            "model": "IEF_divergence_follow_w24_q0.55_ny_h30_cost2.0",
+            "trials": 5000,
+            "block_length": 30,
+            "return_pct_ci95": [
+              -11.184810443176424,
+              11.592862323927703
+            ],
+            "pf_ci95": [
+              0.565897157082434,
+              1.8317865636809232
+            ],
+            "max_dd_pct_ci95": [
+              2.299092107533553,
+              13.536797342766047
+            ]
+          },
+          {
+            "model": "XLF_volz_fade_w48_q0.55_london_h30_cost2.0",
+            "trials": 5000,
+            "block_length": 30,
+            "return_pct_ci95": [
+              -0.4207141062014465,
+              18.675188501715922
+            ],
+            "pf_ci95": [
+              0.9642927740646324,
+              3.948435960658069
+            ],
+            "max_dd_pct_ci95": [
+              1.0731760312242797,
+              4.967793182950141
+            ]
+          },
+          {
+            "model": "UNG_volz_follow_w48_q0.75_all_h18_cost2.0",
+            "trials": 5000,
+            "block_length": 18,
+            "return_pct_ci95": [
+              -4.08613140527585,
+              14.557956201864963
+            ],
+            "pf_ci95": [
+              0.7198135043457867,
+              2.681178091975554
+            ],
+            "max_dd_pct_ci95": [
+              1.3019233134118566,
+              6.763790318484436
+            ]
+          },
+          {
+            "model": "XLK_volz_fade_w48_q0.75_all_h30_cost2.0",
+            "trials": 5000,
+            "block_length": 30,
+            "return_pct_ci95": [
+              -7.3195104247740534,
+              7.674535305591567
+            ],
+            "pf_ci95": [
+              0.49926950537905057,
+              2.035345953894692
+            ],
+            "max_dd_pct_ci95": [
+              1.4256516659014633,
+              8.793340843717568
+            ]
+          },
+          {
+            "model": "VXX_volz_follow_w48_q0.75_all_h30_cost2.0",
+            "trials": 5000,
+            "block_length": 30,
+            "return_pct_ci95": [
+              -11.179642736404054,
+              18.975716436437704
+            ],
+            "pf_ci95": [
+              0.5694736118505055,
+              3.0336391025061618
+            ],
+            "max_dd_pct_ci95": [
+              1.736569105783835,
+              15.719408476216836
+            ]
+          },
+          {
+            "model": "EURUSD=X_divergence_follow_w36_q0.65_london_h24_cost2.0",
+            "trials": 5000,
+            "block_length": 24,
+            "return_pct_ci95": [
+              -4.4656885887800275,
+              9.573374391821565
+            ],
+            "pf_ci95": [
+              0.6863145583055759,
+              2.2997419027662214
+            ],
+            "max_dd_pct_ci95": [
+              1.2621523784432205,
+              6.745662871115017
+            ]
+          },
+          {
+            "model": "SPY_volz_fade_w36_q0.75_all_h24_cost2.0",
+            "trials": 5000,
+            "block_length": 24,
+            "return_pct_ci95": [
+              -4.792564194321615,
+              13.000405685088047
+            ],
+            "pf_ci95": [
+              0.6688818657956271,
+              2.8504582221629247
+            ],
+            "max_dd_pct_ci95": [
+              1.316153364663223,
+              7.651311202515161
+            ]
+          }
+        ]
+      },
+      "60m": {
+        "status": "FAIL",
+        "threshold": "PASS requires portfolio 95% block-bootstrap return CI lower bound > 0",
+        "portfolio": {
+          "trials": 5000,
+          "block_length": 8,
+          "return_pct_ci95": [
+            -0.924467401638759,
+            8.602796429297861
+          ],
+          "pf_ci95": [
+            0.9056365908816616,
+            2.249374770224254
+          ],
+          "max_dd_pct_ci95": [
+            0.7970578227460294,
+            3.070726802851587
+          ]
+        },
+        "models": [
+          {
+            "model": "EEM_60m_divergence_follow_w12_q0.65_all_h6_cost2.0",
+            "trials": 5000,
+            "block_length": 6,
+            "return_pct_ci95": [
+              -3.0898112531989694,
+              7.227388598296437
+            ],
+            "pf_ci95": [
+              0.35125445978980707,
+              196.93999813516209
+            ],
+            "max_dd_pct_ci95": [
+              0.016458174665678817,
+              4.174493318337273
+            ]
+          },
+          {
+            "model": "GDX_60m_divergence_follow_w12_q0.75_all_h8_cost2.0",
+            "trials": 5000,
+            "block_length": 8,
+            "return_pct_ci95": [
+              -1.089423736640739,
+              4.308095130995498
+            ],
+            "pf_ci95": [
+              0.6038060111396331,
+              15.659013861743208
+            ],
+            "max_dd_pct_ci95": [
+              0.08825318817824825,
+              2.1681298383749787
+            ]
+          },
+          {
+            "model": "GDXJ_60m_divergence_follow_w12_q0.85_all_h8_cost2.0",
+            "trials": 5000,
+            "block_length": 8,
+            "return_pct_ci95": [
+              -1.8550428372260948,
+              4.075963493146092
+            ],
+            "pf_ci95": [
+              0.32334840273115106,
+              45.51891653582122
+            ],
+            "max_dd_pct_ci95": [
+              0.08773584993207391,
+              2.4141485193589505
+            ]
+          },
+          {
+            "model": "GC=F_60m_volz_follow_w6_q0.65_all_h8_cost2.0",
+            "trials": 5000,
+            "block_length": 8,
+            "return_pct_ci95": [
+              -2.752603808525844,
+              3.7802935038211736
+            ],
+            "pf_ci95": [
+              0.560004896913232,
+              2.307597576276584
+            ],
+            "max_dd_pct_ci95": [
+              0.5702104343273284,
+              3.3466374335314883
+            ]
+          },
+          {
+            "model": "SPY_60m_divergence_follow_w12_q0.55_all_h6_cost2.0",
+            "trials": 5000,
+            "block_length": 6,
+            "return_pct_ci95": [
+              -2.280805703783469,
+              4.147769944851896
+            ],
+            "pf_ci95": [
+              0.30839646788714564,
+              31.897008452221794
+            ],
+            "max_dd_pct_ci95": [
+              0.08315291337896087,
+              2.977467071092137
+            ]
+          },
+          {
+            "model": "FXI_60m_divergence_follow_w6_q0.55_all_h8_cost2.0",
+            "trials": 5000,
+            "block_length": 8,
+            "return_pct_ci95": [
+              -2.558080253258401,
+              3.255841086638539
+            ],
+            "pf_ci95": [
+              0.41015728602553997,
+              3.403035724691534
+            ],
+            "max_dd_pct_ci95": [
+              0.21284344388773976,
+              3.3802844276691655
+            ]
+          },
+          {
+            "model": "EFA_60m_volz_follow_w6_q0.75_all_h8_cost2.0",
+            "trials": 5000,
+            "block_length": 8,
+            "return_pct_ci95": [
+              -2.442895950562494,
+              3.597247895100147
+            ],
+            "pf_ci95": [
+              0.13318567940184545,
+              10.752789355812032
+            ],
+            "max_dd_pct_ci95": [
+              0.12422397217499688,
+              2.5865772476054674
+            ]
+          },
+          {
+            "model": "QQQ_60m_divergence_follow_w12_q0.65_all_h8_cost2.0",
+            "trials": 5000,
+            "block_length": 8,
+            "return_pct_ci95": [
+              -1.1549636690198648,
+              7.3745171131747735
+            ],
+            "pf_ci95": [
+              0.6850048598189328,
+              35.27956541334842
+            ],
+            "max_dd_pct_ci95": [
+              0.17528457717032403,
+              3.023145293411508
+            ]
+          },
+          {
+            "model": "ZB=F_60m_divergence_fade_w12_q0.85_all_h8_cost2.0",
+            "trials": 5000,
+            "block_length": 8,
+            "return_pct_ci95": [
+              0.8937449217266659,
+              2.2460107160652396
+            ],
+            "pf_ci95": [
+              2.0899841970686337,
+              506.0900383952216
+            ],
+            "max_dd_pct_ci95": [
+              0.004186320414256479,
+              0.5815993062200188
+            ]
+          },
+          {
+            "model": "EWJ_60m_divergence_follow_w12_q0.75_all_h8_cost2.0",
+            "trials": 5000,
+            "block_length": 8,
+            "return_pct_ci95": [
+              1.3170406023490848,
+              4.5811686772507265
+            ],
+            "pf_ci95": [
+              73.38952860201925,
+              NaN
+            ],
+            "max_dd_pct_ci95": [
+              -0.022769436020829016,
+              0.012334747560666874
+            ]
+          }
+        ]
+      }
+    },
+    "parameter_sensitivity": {
+      "5m": {
+        "status": "FAIL",
+        "threshold": "PASS requires all +/- perturbation variants to remain positive and above 50% of base PnL",
+        "fragile_models": [
+          "XLC_volz_follow_w36_q0.55_ny_h30_cost2.0",
+          "DX-Y.NYB_volz_fade_w36_q0.85_all_h30_cost2.0",
+          "IEF_divergence_follow_w24_q0.55_ny_h30_cost2.0",
+          "XLK_volz_fade_w48_q0.75_all_h30_cost2.0",
+          "VXX_volz_follow_w48_q0.75_all_h30_cost2.0",
+          "EURUSD=X_divergence_follow_w36_q0.65_london_h24_cost2.0"
+        ],
+        "models": [
+          {
+            "model": "XLC_volz_follow_w36_q0.55_ny_h30_cost2.0",
+            "base_pnl": 221656.76117811122,
+            "base_pf": 1.2504981069912147,
+            "cliff_count": 1,
+            "variants": [
+              {
+                "param": "window",
+                "factor": 0.8,
+                "override": {
+                  "window": 29
+                },
+                "pnl": -35803.57539893272,
+                "pf": 0.9614832880154843,
+                "return_pct": -0.7160715079786545
+              },
+              {
+                "param": "window",
+                "factor": 1.2,
+                "override": {
+                  "window": 43
+                },
+                "pnl": 382791.94202696736,
+                "pf": 1.5591042040456968,
+                "return_pct": 7.655838840539348
+              },
+              {
+                "param": "quantile",
+                "factor": 0.9,
+                "override": {
+                  "threshold": 0.5293546148965692
+                },
+                "pnl": 161044.17969223636,
+                "pf": 1.16283045089917,
+                "return_pct": 3.220883593844727
+              },
+              {
+                "param": "quantile",
+                "factor": 1.1,
+                "override": {
+                  "threshold": 0.6469889737624734
+                },
+                "pnl": 216476.53710415162,
+                "pf": 1.2655700939302301,
+                "return_pct": 4.3295307420830325
+              },
+              {
+                "param": "horizon",
+                "factor": 0.8,
+                "override": {
+                  "horizon": 24
+                },
+                "pnl": 164038.98211587872,
+                "pf": 1.2042698077113296,
+                "return_pct": 3.2807796423175746
+              },
+              {
+                "param": "horizon",
+                "factor": 1.2,
+                "override": {
+                  "horizon": 36
+                },
+                "pnl": 289942.617181282,
+                "pf": 1.3076602898230585,
+                "return_pct": 5.798852343625641
+              }
+            ]
+          },
+          {
+            "model": "XLV_volz_follow_w48_q0.65_ny_h24_cost2.0",
+            "base_pnl": 441094.302824999,
+            "base_pf": 1.9051461881784975,
+            "cliff_count": 0,
+            "variants": [
+              {
+                "param": "window",
+                "factor": 0.8,
+                "override": {
+                  "window": 38
+                },
+                "pnl": 379374.1069297214,
+                "pf": 1.851127487139405,
+                "return_pct": 7.587482138594429
+              },
+              {
+                "param": "window",
+                "factor": 1.2,
+                "override": {
+                  "window": 58
+                },
+                "pnl": 482810.4663668594,
+                "pf": 1.9500763984346878,
+                "return_pct": 9.656209327337189
+              },
+              {
+                "param": "quantile",
+                "factor": 0.9,
+                "override": {
+                  "threshold": 0.582640557164103
+                },
+                "pnl": 420791.3019807167,
+                "pf": 1.7006768459293222,
+                "return_pct": 8.415826039614334
+              },
+              {
+                "param": "quantile",
+                "factor": 1.1,
+                "override": {
+                  "threshold": 0.7121162365339037
+                },
+                "pnl": 462148.32455279416,
+                "pf": 2.1659682381567533,
+                "return_pct": 9.242966491055883
+              },
+              {
+                "param": "horizon",
+                "factor": 0.8,
+                "override": {
+                  "horizon": 19
+                },
+                "pnl": 286302.48629514227,
+                "pf": 1.6127750364928903,
+                "return_pct": 5.726049725902845
+              },
+              {
+                "param": "horizon",
+                "factor": 1.2,
+                "override": {
+                  "horizon": 29
+                },
+                "pnl": 564356.4231748248,
+                "pf": 2.076781730864639,
+                "return_pct": 11.287128463496495
+              }
+            ]
+          },
+          {
+            "model": "DX-Y.NYB_volz_fade_w36_q0.85_all_h30_cost2.0",
+            "base_pnl": 191874.98376737698,
+            "base_pf": 1.2804821128584427,
+            "cliff_count": 1,
+            "variants": [
+              {
+                "param": "window",
+                "factor": 0.8,
+                "override": {
+                  "window": 29
+                },
+                "pnl": 263797.2717284397,
+                "pf": 1.3882383106936123,
+                "return_pct": 5.275945434568794
+              },
+              {
+                "param": "window",
+                "factor": 1.2,
+                "override": {
+                  "window": 43
+                },
+                "pnl": -90858.619855878,
+                "pf": 0.8925110455770999,
+                "return_pct": -1.81717239711756
+              },
+              {
+                "param": "quantile",
+                "factor": 0.9,
+                "override": {
+                  "threshold": 1.1805072266560048
+                },
+                "pnl": 107265.02881648546,
+                "pf": 1.1072240014021366,
+                "return_pct": 2.1453005763297095
+              },
+              {
+                "param": "quantile",
+                "factor": 1.1,
+                "override": {
+                  "threshold": 1.4428421659128947
+                },
+                "pnl": 177231.63826582668,
+                "pf": 1.3385940925059212,
+                "return_pct": 3.5446327653165333
+              },
+              {
+                "param": "horizon",
+                "factor": 0.8,
+                "override": {
+                  "horizon": 24
+                },
+                "pnl": 225480.3008277375,
+                "pf": 1.392374518288899,
+                "return_pct": 4.50960601655475
+              },
+              {
+                "param": "horizon",
+                "factor": 1.2,
+                "override": {
+                  "horizon": 36
+                },
+                "pnl": 167026.31784002634,
+                "pf": 1.2174694576382867,
+                "return_pct": 3.3405263568005266
+              }
+            ]
+          },
+          {
+            "model": "IEF_divergence_follow_w24_q0.55_ny_h30_cost2.0",
+            "base_pnl": 21723.062539599487,
+            "base_pf": 1.0222287928651548,
+            "cliff_count": 3,
+            "variants": [
+              {
+                "param": "window",
+                "factor": 0.8,
+                "override": {
+                  "window": 19
+                },
+                "pnl": -98367.06501225207,
+                "pf": 0.9097263478764824,
+                "return_pct": -1.9673413002450415
+              },
+              {
+                "param": "window",
+                "factor": 1.2,
+                "override": {
+                  "window": 29
+                },
+                "pnl": -103335.61796975553,
+                "pf": 0.9080958684423165,
+                "return_pct": -2.0667123593951104
+              },
+              {
+                "param": "quantile",
+                "factor": 0.9,
+                "override": {
+                  "threshold": 0.4880541208606643
+                },
+                "pnl": 45020.763771219514,
+                "pf": 1.0427723896581242,
+                "return_pct": 0.9004152754243903
+              },
+              {
+                "param": "quantile",
+                "factor": 1.1,
+                "override": {
+                  "threshold": 0.5965105921630341
+                },
+                "pnl": 25759.15257668245,
+                "pf": 1.02851221157987,
+                "return_pct": 0.515183051533649
+              },
+              {
+                "param": "horizon",
+                "factor": 0.8,
+                "override": {
+                  "horizon": 24
+                },
+                "pnl": -17555.20161410865,
+                "pf": 0.9804318379788453,
+                "return_pct": -0.35110403228217296
+              },
+              {
+                "param": "horizon",
+                "factor": 1.2,
+                "override": {
+                  "horizon": 36
+                },
+                "pnl": 148811.1578583186,
+                "pf": 1.137638092190361,
+                "return_pct": 2.976223157166372
+              }
+            ]
+          },
+          {
+            "model": "XLF_volz_fade_w48_q0.55_london_h30_cost2.0",
+            "base_pnl": 441363.57887164614,
+            "base_pf": 1.9878771212298683,
+            "cliff_count": 0,
+            "variants": [
+              {
+                "param": "window",
+                "factor": 0.8,
+                "override": {
+                  "window": 38
+                },
+                "pnl": 504784.7641255914,
+                "pf": 2.265126191702098,
+                "return_pct": 10.095695282511828
+              },
+              {
+                "param": "window",
+                "factor": 1.2,
+                "override": {
+                  "window": 58
+                },
+                "pnl": 304006.13352841965,
+                "pf": 1.5710703517633196,
+                "return_pct": 6.080122670568393
+              },
+              {
+                "param": "quantile",
+                "factor": 0.9,
+                "override": {
+                  "threshold": 0.5779705822578912
+                },
+                "pnl": 491130.20228437,
+                "pf": 1.955329234138059,
+                "return_pct": 9.8226040456874
+              },
+              {
+                "param": "quantile",
+                "factor": 1.1,
+                "override": {
+                  "threshold": 0.7064084894263115
+                },
+                "pnl": 417909.4581836183,
+                "pf": 2.103341477418132,
+                "return_pct": 8.358189163672366
+              },
+              {
+                "param": "horizon",
+                "factor": 0.8,
+                "override": {
+                  "horizon": 24
+                },
+                "pnl": 329990.80703440576,
+                "pf": 1.887055419172542,
+                "return_pct": 6.599816140688115
+              },
+              {
+                "param": "horizon",
+                "factor": 1.2,
+                "override": {
+                  "horizon": 36
+                },
+                "pnl": 554225.2135980107,
+                "pf": 2.176795408143543,
+                "return_pct": 11.084504271960215
+              }
+            ]
+          },
+          {
+            "model": "UNG_volz_follow_w48_q0.75_all_h18_cost2.0",
+            "base_pnl": 248177.7118569585,
+            "base_pf": 1.426647021528921,
+            "cliff_count": 0,
+            "variants": [
+              {
+                "param": "window",
+                "factor": 0.8,
+                "override": {
+                  "window": 38
+                },
+                "pnl": 353225.5216645173,
+                "pf": 1.7454901085668237,
+                "return_pct": 7.064510433290345
+              },
+              {
+                "param": "window",
+                "factor": 1.2,
+                "override": {
+                  "window": 58
+                },
+                "pnl": 205488.97031343912,
+                "pf": 1.3297262684478839,
+                "return_pct": 4.109779406268782
+              },
+              {
+                "param": "quantile",
+                "factor": 0.9,
+                "override": {
+                  "threshold": 0.9692029246890579
+                },
+                "pnl": 213924.6027773837,
+                "pf": 1.281783175455898,
+                "return_pct": 4.278492055547674
+              },
+              {
+                "param": "quantile",
+                "factor": 1.1,
+                "override": {
+                  "threshold": 1.1845813523977375
+                },
+                "pnl": 235179.19919969834,
+                "pf": 1.5503418575247843,
+                "return_pct": 4.703583983993967
+              },
+              {
+                "param": "horizon",
+                "factor": 0.8,
+                "override": {
+                  "horizon": 14
+                },
+                "pnl": 242557.01711417345,
+                "pf": 1.485034129034764,
+                "return_pct": 4.851140342283469
+              },
+              {
+                "param": "horizon",
+                "factor": 1.2,
+                "override": {
+                  "horizon": 22
+                },
+                "pnl": 326630.8204089793,
+                "pf": 1.5109489533215867,
+                "return_pct": 6.532616408179587
+              }
+            ]
+          },
+          {
+            "model": "XLK_volz_fade_w48_q0.75_all_h30_cost2.0",
+            "base_pnl": 5002.14346527154,
+            "base_pf": 1.009048368955158,
+            "cliff_count": 1,
+            "variants": [
+              {
+                "param": "window",
+                "factor": 0.8,
+                "override": {
+                  "window": 38
+                },
+                "pnl": 9507.766430832882,
+                "pf": 1.0152516953633677,
+                "return_pct": 0.19015532861665763
+              },
+              {
+                "param": "window",
+                "factor": 1.2,
+                "override": {
+                  "window": 58
+                },
+                "pnl": 145449.0495975752,
+                "pf": 1.2604427527199606,
+                "return_pct": 2.908980991951504
+              },
+              {
+                "param": "quantile",
+                "factor": 0.9,
+                "override": {
+                  "threshold": 1.1060301248922033
+                },
+                "pnl": 80738.87049177376,
+                "pf": 1.1144550653677958,
+                "return_pct": 1.6147774098354752
+              },
+              {
+                "param": "quantile",
+                "factor": 1.1,
+                "override": {
+                  "threshold": 1.3518145970904707
+                },
+                "pnl": 26937.967913454107,
+                "pf": 1.0612979253792092,
+                "return_pct": 0.5387593582690822
+              },
+              {
+                "param": "horizon",
+                "factor": 0.8,
+                "override": {
+                  "horizon": 24
+                },
+                "pnl": -28771.557586261508,
+                "pf": 0.9447993950941181,
+                "return_pct": -0.5754311517252302
+              },
+              {
+                "param": "horizon",
+                "factor": 1.2,
+                "override": {
+                  "horizon": 36
+                },
+                "pnl": 55523.15015554393,
+                "pf": 1.0939905608653004,
+                "return_pct": 1.1104630031108786
+              }
+            ]
+          },
+          {
+            "model": "VXX_volz_follow_w48_q0.75_all_h30_cost2.0",
+            "base_pnl": 215911.0999460018,
+            "base_pf": 1.2648388478414392,
+            "cliff_count": 1,
+            "variants": [
+              {
+                "param": "window",
+                "factor": 0.8,
+                "override": {
+                  "window": 38
+                },
+                "pnl": 36129.61333770695,
+                "pf": 1.0359178606658623,
+                "return_pct": 0.7225922667541389
+              },
+              {
+                "param": "window",
+                "factor": 1.2,
+                "override": {
+                  "window": 58
+                },
+                "pnl": 123039.27627770926,
+                "pf": 1.139319721252627,
+                "return_pct": 2.4607855255541855
+              },
+              {
+                "param": "quantile",
+                "factor": 0.9,
+                "override": {
+                  "threshold": 0.9551203700919557
+                },
+                "pnl": 308220.6478365461,
+                "pf": 1.3175712701570892,
+                "return_pct": 6.1644129567309225
+              },
+              {
+                "param": "quantile",
+                "factor": 1.1,
+                "override": {
+                  "threshold": 1.1673693412235016
+                },
+                "pnl": 139628.33601487486,
+                "pf": 1.2105959566558973,
+                "return_pct": 2.792566720297497
+              },
+              {
+                "param": "horizon",
+                "factor": 0.8,
+                "override": {
+                  "horizon": 24
+                },
+                "pnl": 185544.16695527427,
+                "pf": 1.273075540450979,
+                "return_pct": 3.7108833391054854
+              },
+              {
+                "param": "horizon",
+                "factor": 1.2,
+                "override": {
+                  "horizon": 36
+                },
+                "pnl": 266229.74369292887,
+                "pf": 1.2993845441916116,
+                "return_pct": 5.324594873858577
+              }
+            ]
+          },
+          {
+            "model": "EURUSD=X_divergence_follow_w36_q0.65_london_h24_cost2.0",
+            "base_pnl": 123682.25275049232,
+            "base_pf": 1.2289795210051355,
+            "cliff_count": 1,
+            "variants": [
+              {
+                "param": "window",
+                "factor": 0.8,
+                "override": {
+                  "window": 29
+                },
+                "pnl": 206943.15642795747,
+                "pf": 1.3747579825935625,
+                "return_pct": 4.138863128559149
+              },
+              {
+                "param": "window",
+                "factor": 1.2,
+                "override": {
+                  "window": 43
+                },
+                "pnl": 52029.94122011229,
+                "pf": 1.083592530124344,
+                "return_pct": 1.0405988244022457
+              },
+              {
+                "param": "quantile",
+                "factor": 0.9,
+                "override": {
+                  "threshold": 0.6573537686474678
+                },
+                "pnl": 90045.35921220639,
+                "pf": 1.13871547806793,
+                "return_pct": 1.8009071842441278
+              },
+              {
+                "param": "quantile",
+                "factor": 1.1,
+                "override": {
+                  "threshold": 0.8034323839024605
+                },
+                "pnl": 139515.0050475718,
+                "pf": 1.3127001288690625,
+                "return_pct": 2.790300100951436
+              },
+              {
+                "param": "horizon",
+                "factor": 0.8,
+                "override": {
+                  "horizon": 19
+                },
+                "pnl": 154516.15923773177,
+                "pf": 1.35300458509496,
+                "return_pct": 3.0903231847546357
+              },
+              {
+                "param": "horizon",
+                "factor": 1.2,
+                "override": {
+                  "horizon": 29
+                },
+                "pnl": 122436.3988704556,
+                "pf": 1.1779709668630283,
+                "return_pct": 2.4487279774091117
+              }
+            ]
+          },
+          {
+            "model": "SPY_volz_fade_w36_q0.75_all_h24_cost2.0",
+            "base_pnl": 202582.4698599198,
+            "base_pf": 1.379878760944376,
+            "cliff_count": 0,
+            "variants": [
+              {
+                "param": "window",
+                "factor": 0.8,
+                "override": {
+                  "window": 29
+                },
+                "pnl": 106575.99262610497,
+                "pf": 1.1743525147360343,
+                "return_pct": 2.131519852522099
+              },
+              {
+                "param": "window",
+                "factor": 1.2,
+                "override": {
+                  "window": 43
+                },
+                "pnl": 286767.69466866704,
+                "pf": 1.6081152111108705,
+                "return_pct": 5.735353893373341
+              },
+              {
+                "param": "quantile",
+                "factor": 0.9,
+                "override": {
+                  "threshold": 1.1003435908385444
+                },
+                "pnl": 205389.01015170114,
+                "pf": 1.3058736990253825,
+                "return_pct": 4.1077802030340225
+              },
+              {
+                "param": "quantile",
+                "factor": 1.1,
+                "override": {
+                  "threshold": 1.3448643888026655
+                },
+                "pnl": 153022.4840479601,
+                "pf": 1.3383090866837393,
+                "return_pct": 3.0604496809592026
+              },
+              {
+                "param": "horizon",
+                "factor": 0.8,
+                "override": {
+                  "horizon": 19
+                },
+                "pnl": 136280.77146202806,
+                "pf": 1.2842964072152774,
+                "return_pct": 2.725615429240561
+              },
+              {
+                "param": "horizon",
+                "factor": 1.2,
+                "override": {
+                  "horizon": 29
+                },
+                "pnl": 268723.63184827333,
+                "pf": 1.4887521529911214,
+                "return_pct": 5.374472636965467
+              }
+            ]
+          }
+        ]
+      },
+      "60m": {
+        "status": "FAIL",
+        "threshold": "PASS requires all +/- perturbation variants to remain positive and above 50% of base PnL",
+        "fragile_models": [
+          "GDX_60m_divergence_follow_w12_q0.75_all_h8_cost2.0",
+          "GDXJ_60m_divergence_follow_w12_q0.85_all_h8_cost2.0",
+          "GC=F_60m_volz_follow_w6_q0.65_all_h8_cost2.0",
+          "SPY_60m_divergence_follow_w12_q0.55_all_h6_cost2.0",
+          "FXI_60m_divergence_follow_w6_q0.55_all_h8_cost2.0",
+          "EFA_60m_volz_follow_w6_q0.75_all_h8_cost2.0"
+        ],
+        "models": [
+          {
+            "model": "EEM_60m_divergence_follow_w12_q0.65_all_h6_cost2.0",
+            "base_pnl": 116808.04978677984,
+            "base_pf": 2.0447430256967576,
+            "cliff_count": 0,
+            "variants": [
+              {
+                "param": "window",
+                "factor": 0.8,
+                "override": {
+                  "window": 10
+                },
+                "pnl": 78062.60345661089,
+                "pf": 1.8732705587898775,
+                "return_pct": 1.5612520691322178
+              },
+              {
+                "param": "window",
+                "factor": 1.2,
+                "override": {
+                  "window": 14
+                },
+                "pnl": 106623.30195474316,
+                "pf": 1.829080896319857,
+                "return_pct": 2.1324660390948633
+              },
+              {
+                "param": "quantile",
+                "factor": 0.9,
+                "override": {
+                  "threshold": 0.886786260924219
+                },
+                "pnl": 125298.57937455,
+                "pf": 2.1202773552156784,
+                "return_pct": 2.505971587491
+              },
+              {
+                "param": "quantile",
+                "factor": 1.1,
+                "override": {
+                  "threshold": 1.0838498744629343
+                },
+                "pnl": 95205.24056531988,
+                "pf": 1.9433450792864102,
+                "return_pct": 1.9041048113063976
+              },
+              {
+                "param": "horizon",
+                "factor": 0.8,
+                "override": {
+                  "horizon": 5
+                },
+                "pnl": 100732.64732739794,
+                "pf": 2.092036570437898,
+                "return_pct": 2.014652946547959
+              },
+              {
+                "param": "horizon",
+                "factor": 1.2,
+                "override": {
+                  "horizon": 7
+                },
+                "pnl": 134167.31679954985,
+                "pf": 2.0796914149379413,
+                "return_pct": 2.683346335990997
+              }
+            ]
+          },
+          {
+            "model": "GDX_60m_divergence_follow_w12_q0.75_all_h8_cost2.0",
+            "base_pnl": 80044.40275021982,
+            "base_pf": 2.1238962476224517,
+            "cliff_count": 1,
+            "variants": [
+              {
+                "param": "window",
+                "factor": 0.8,
+                "override": {
+                  "window": 10
+                },
+                "pnl": 74941.84284853538,
+                "pf": 1.8337256130046762,
+                "return_pct": 1.4988368569707076
+              },
+              {
+                "param": "window",
+                "factor": 1.2,
+                "override": {
+                  "window": 14
+                },
+                "pnl": 120875.26494819253,
+                "pf": 2.556658376825997,
+                "return_pct": 2.4175052989638504
+              },
+              {
+                "param": "quantile",
+                "factor": 0.9,
+                "override": {
+                  "threshold": 0.6528970128933438
+                },
+                "pnl": 117041.51832383081,
+                "pf": 2.2359533230679034,
+                "return_pct": 2.340830366476616
+              },
+              {
+                "param": "quantile",
+                "factor": 1.1,
+                "override": {
+                  "threshold": 0.7979852379807536
+                },
+                "pnl": 62374.90392037746,
+                "pf": 1.905411614624689,
+                "return_pct": 1.2474980784075491
+              },
+              {
+                "param": "horizon",
+                "factor": 0.8,
+                "override": {
+                  "horizon": 6
+                },
+                "pnl": 22261.22404256107,
+                "pf": 1.2937065674854589,
+                "return_pct": 0.4452244808512214
+              },
+              {
+                "param": "horizon",
+                "factor": 1.2,
+                "override": {
+                  "horizon": 10
+                },
+                "pnl": 149196.68170418465,
+                "pf": 3.590488978258056,
+                "return_pct": 2.983933634083693
+              }
+            ]
+          },
+          {
+            "model": "GDXJ_60m_divergence_follow_w12_q0.85_all_h8_cost2.0",
+            "base_pnl": 66328.62088700735,
+            "base_pf": 1.9910810617986854,
+            "cliff_count": 1,
+            "variants": [
+              {
+                "param": "window",
+                "factor": 0.8,
+                "override": {
+                  "window": 10
+                },
+                "pnl": 68127.35091826537,
+                "pf": 1.7748593913423372,
+                "return_pct": 1.3625470183653072
+              },
+              {
+                "param": "window",
+                "factor": 1.2,
+                "override": {
+                  "window": 14
+                },
+                "pnl": 140517.7551491114,
+                "pf": 3.2468916201409845,
+                "return_pct": 2.8103551029822285
+              },
+              {
+                "param": "quantile",
+                "factor": 0.9,
+                "override": {
+                  "threshold": 0.8209885575651367
+                },
+                "pnl": 95164.84752615173,
+                "pf": 2.0823755046599097,
+                "return_pct": 1.9032969505230348
+              },
+              {
+                "param": "quantile",
+                "factor": 1.1,
+                "override": {
+                  "threshold": 1.0034304592462782
+                },
+                "pnl": 61538.20029699941,
+                "pf": 2.5254447785950154,
+                "return_pct": 1.230764005939988
+              },
+              {
+                "param": "horizon",
+                "factor": 0.8,
+                "override": {
+                  "horizon": 6
+                },
+                "pnl": 6029.235299712685,
+                "pf": 1.0840879635019598,
+                "return_pct": 0.12058470599425372
+              },
+              {
+                "param": "horizon",
+                "factor": 1.2,
+                "override": {
+                  "horizon": 10
+                },
+                "pnl": 132359.05114771068,
+                "pf": 3.525992644727186,
+                "return_pct": 2.647181022954214
+              }
+            ]
+          },
+          {
+            "model": "GC=F_60m_volz_follow_w6_q0.65_all_h8_cost2.0",
+            "base_pnl": 18580.443118866988,
+            "base_pf": 1.0827695357347746,
+            "cliff_count": 3,
+            "variants": [
+              {
+                "param": "window",
+                "factor": 0.8,
+                "override": {
+                  "window": 5
+                },
+                "pnl": -7567.26384886321,
+                "pf": 0.9659012772022508,
+                "return_pct": -0.15134527697726421
+              },
+              {
+                "param": "window",
+                "factor": 1.2,
+                "override": {
+                  "window": 7
+                },
+                "pnl": 24292.75232722661,
+                "pf": 1.1025172723567993,
+                "return_pct": 0.48585504654453227
+              },
+              {
+                "param": "quantile",
+                "factor": 0.9,
+                "override": {
+                  "threshold": 0.7415189984849678
+                },
+                "pnl": 8559.716856251347,
+                "pf": 1.0346766933114804,
+                "return_pct": 0.17119433712502696
+              },
+              {
+                "param": "quantile",
+                "factor": 1.1,
+                "override": {
+                  "threshold": 0.906300998148294
+                },
+                "pnl": 67232.94533308328,
+                "pf": 1.4256813151275924,
+                "return_pct": 1.3446589066616654
+              },
+              {
+                "param": "horizon",
+                "factor": 0.8,
+                "override": {
+                  "horizon": 6
+                },
+                "pnl": -36734.08877442081,
+                "pf": 0.8313832267751535,
+                "return_pct": -0.7346817754884162
+              },
+              {
+                "param": "horizon",
+                "factor": 1.2,
+                "override": {
+                  "horizon": 10
+                },
+                "pnl": 42539.12951436087,
+                "pf": 1.1661909225706968,
+                "return_pct": 0.8507825902872175
+              }
+            ]
+          },
+          {
+            "model": "SPY_60m_divergence_follow_w12_q0.55_all_h6_cost2.0",
+            "base_pnl": 55422.824260055575,
+            "base_pf": 1.7532997702586264,
+            "cliff_count": 1,
+            "variants": [
+              {
+                "param": "window",
+                "factor": 0.8,
+                "override": {
+                  "window": 10
+                },
+                "pnl": 10990.453744633047,
+                "pf": 1.0887020161133418,
+                "return_pct": 0.21980907489266094
+              },
+              {
+                "param": "window",
+                "factor": 1.2,
+                "override": {
+                  "window": 14
+                },
+                "pnl": 86199.28922794288,
+                "pf": 1.8830247117346997,
+                "return_pct": 1.7239857845588575
+              },
+              {
+                "param": "quantile",
+                "factor": 0.9,
+                "override": {
+                  "threshold": 0.6823337852425448
+                },
+                "pnl": 69246.99075152831,
+                "pf": 1.6894674110777828,
+                "return_pct": 1.3849398150305663
+              },
+              {
+                "param": "quantile",
+                "factor": 1.1,
+                "override": {
+                  "threshold": 0.8339635152964437
+                },
+                "pnl": 56245.732993339516,
+                "pf": 1.7731320173777718,
+                "return_pct": 1.1249146598667903
+              },
+              {
+                "param": "horizon",
+                "factor": 0.8,
+                "override": {
+                  "horizon": 5
+                },
+                "pnl": 38058.77977049549,
+                "pf": 1.5612698411273904,
+                "return_pct": 0.7611755954099098
+              },
+              {
+                "param": "horizon",
+                "factor": 1.2,
+                "override": {
+                  "horizon": 7
+                },
+                "pnl": 89965.43610229992,
+                "pf": 2.2165040905681774,
+                "return_pct": 1.7993087220459985
+              }
+            ]
+          },
+          {
+            "model": "FXI_60m_divergence_follow_w6_q0.55_all_h8_cost2.0",
+            "base_pnl": 32216.059163181104,
+            "base_pf": 1.2482690934625529,
+            "cliff_count": 3,
+            "variants": [
+              {
+                "param": "window",
+                "factor": 0.8,
+                "override": {
+                  "window": 5
+                },
+                "pnl": 708.0205544800572,
+                "pf": 1.005157495419585,
+                "return_pct": 0.014160411089601144
+              },
+              {
+                "param": "window",
+                "factor": 1.2,
+                "override": {
+                  "window": 7
+                },
+                "pnl": 25599.749720628497,
+                "pf": 1.2135200388493381,
+                "return_pct": 0.5119949944125699
+              },
+              {
+                "param": "quantile",
+                "factor": 0.9,
+                "override": {
+                  "threshold": 0.8107473893085503
+                },
+                "pnl": 32216.059163181104,
+                "pf": 1.2482690934625529,
+                "return_pct": 0.6443211832636221
+              },
+              {
+                "param": "quantile",
+                "factor": 1.1,
+                "override": {
+                  "threshold": 0.9909134758215614
+                },
+                "pnl": 6484.169904860987,
+                "pf": 1.0519078381224602,
+                "return_pct": 0.12968339809721974
+              },
+              {
+                "param": "horizon",
+                "factor": 0.8,
+                "override": {
+                  "horizon": 6
+                },
+                "pnl": -14169.797460331729,
+                "pf": 0.8852273700397232,
+                "return_pct": -0.2833959492066346
+              },
+              {
+                "param": "horizon",
+                "factor": 1.2,
+                "override": {
+                  "horizon": 10
+                },
+                "pnl": 110452.80764597165,
+                "pf": 1.880977934650545,
+                "return_pct": 2.209056152919433
+              }
+            ]
+          },
+          {
+            "model": "EFA_60m_volz_follow_w6_q0.75_all_h8_cost2.0",
+            "base_pnl": 41385.54258267192,
+            "base_pf": 1.6288947275845422,
+            "cliff_count": 1,
+            "variants": [
+              {
+                "param": "window",
+                "factor": 0.8,
+                "override": {
+                  "window": 5
+                },
+                "pnl": 91620.42764117326,
+                "pf": 3.4243140729355006,
+                "return_pct": 1.832408552823465
+              },
+              {
+                "param": "window",
+                "factor": 1.2,
+                "override": {
+                  "window": 7
+                },
+                "pnl": 43137.48649633645,
+                "pf": 1.4549328206007188,
+                "return_pct": 0.8627497299267292
+              },
+              {
+                "param": "quantile",
+                "factor": 0.9,
+                "override": {
+                  "threshold": 0.8758922651214254
+                },
+                "pnl": 8657.828294466546,
+                "pf": 1.070346926142193,
+                "return_pct": 0.17315656588933093
+              },
+              {
+                "param": "quantile",
+                "factor": 1.1,
+                "override": {
+                  "threshold": 1.0705349907039643
+                },
+                "pnl": 41385.54258267192,
+                "pf": 1.6288947275845422,
+                "return_pct": 0.8277108516534385
+              },
+              {
+                "param": "horizon",
+                "factor": 0.8,
+                "override": {
+                  "horizon": 6
+                },
+                "pnl": 38143.30524180506,
+                "pf": 1.772222295230564,
+                "return_pct": 0.7628661048361012
+              },
+              {
+                "param": "horizon",
+                "factor": 1.2,
+                "override": {
+                  "horizon": 10
+                },
+                "pnl": 40395.35050425424,
+                "pf": 1.4769540334873712,
+                "return_pct": 0.8079070100850847
+              }
+            ]
+          },
+          {
+            "model": "QQQ_60m_divergence_follow_w12_q0.65_all_h8_cost2.0",
+            "base_pnl": 171107.55605381983,
+            "base_pf": 2.9549044818293613,
+            "cliff_count": 0,
+            "variants": [
+              {
+                "param": "window",
+                "factor": 0.8,
+                "override": {
+                  "window": 10
+                },
+                "pnl": 107950.52363948029,
+                "pf": 2.1773772247669414,
+                "return_pct": 2.159010472789606
+              },
+              {
+                "param": "window",
+                "factor": 1.2,
+                "override": {
+                  "window": 14
+                },
+                "pnl": 205213.41479417594,
+                "pf": 3.0340107352230112,
+                "return_pct": 4.104268295883519
+              },
+              {
+                "param": "quantile",
+                "factor": 0.9,
+                "override": {
+                  "threshold": 0.9585366024644343
+                },
+                "pnl": 186417.81168742408,
+                "pf": 3.0521881668522646,
+                "return_pct": 3.7283562337484817
+              },
+              {
+                "param": "quantile",
+                "factor": 1.1,
+                "override": {
+                  "threshold": 1.1715447363454197
+                },
+                "pnl": 206967.30169368163,
+                "pf": 5.214758064656075,
+                "return_pct": 4.1393460338736325
+              },
+              {
+                "param": "horizon",
+                "factor": 0.8,
+                "override": {
+                  "horizon": 6
+                },
+                "pnl": 88818.09860566413,
+                "pf": 1.9780855260530252,
+                "return_pct": 1.7763619721132824
+              },
+              {
+                "param": "horizon",
+                "factor": 1.2,
+                "override": {
+                  "horizon": 10
+                },
+                "pnl": 227956.3322996005,
+                "pf": 3.7722838950773827,
+                "return_pct": 4.55912664599201
+              }
+            ]
+          },
+          {
+            "model": "ZB=F_60m_divergence_fade_w12_q0.85_all_h8_cost2.0",
+            "base_pnl": 79024.13236501976,
+            "base_pf": 5.283910773541922,
+            "cliff_count": 0,
+            "variants": [
+              {
+                "param": "window",
+                "factor": 0.8,
+                "override": {
+                  "window": 10
+                },
+                "pnl": 66862.20410965622,
+                "pf": 5.0979731111680175,
+                "return_pct": 1.3372440821931242
+              },
+              {
+                "param": "window",
+                "factor": 1.2,
+                "override": {
+                  "window": 14
+                },
+                "pnl": 123005.7262151046,
+                "pf": 20.410390564354305,
+                "return_pct": 2.460114524302092
+              },
+              {
+                "param": "quantile",
+                "factor": 0.9,
+                "override": {
+                  "threshold": 1.5265424568127755
+                },
+                "pnl": 85773.98082898936,
+                "pf": 4.796320363300493,
+                "return_pct": 1.7154796165797872
+              },
+              {
+                "param": "quantile",
+                "factor": 1.1,
+                "override": {
+                  "threshold": 1.8657741138822812
+                },
+                "pnl": 69230.63206039953,
+                "pf": 331.7469338688698,
+                "return_pct": 1.3846126412079904
+              },
+              {
+                "param": "horizon",
+                "factor": 0.8,
+                "override": {
+                  "horizon": 6
+                },
+                "pnl": 61508.117138837406,
+                "pf": 4.5484028426822425,
+                "return_pct": 1.230162342776748
+              },
+              {
+                "param": "horizon",
+                "factor": 1.2,
+                "override": {
+                  "horizon": 10
+                },
+                "pnl": 97028.57102611549,
+                "pf": 7.2136286735020105,
+                "return_pct": 1.9405714205223097
+              }
+            ]
+          },
+          {
+            "model": "EWJ_60m_divergence_follow_w12_q0.75_all_h8_cost2.0",
+            "base_pnl": 143552.77103851322,
+            "base_pf": 213.7087325133598,
+            "cliff_count": 0,
+            "variants": [
+              {
+                "param": "window",
+                "factor": 0.8,
+                "override": {
+                  "window": 10
+                },
+                "pnl": 101792.50739311431,
+                "pf": 4.7942251301880265,
+                "return_pct": 2.035850147862286
+              },
+              {
+                "param": "window",
+                "factor": 1.2,
+                "override": {
+                  "window": 14
+                },
+                "pnl": 102836.38847930245,
+                "pf": 5.520310788667084,
+                "return_pct": 2.056727769586049
+              },
+              {
+                "param": "quantile",
+                "factor": 0.9,
+                "override": {
+                  "threshold": 1.1102498846513946
+                },
+                "pnl": 163713.3195262278,
+                "pf": 11.377744653799367,
+                "return_pct": 3.2742663905245557
+              },
+              {
+                "param": "quantile",
+                "factor": 1.1,
+                "override": {
+                  "threshold": 1.3569720812405934
+                },
+                "pnl": 95500.82071794881,
+                "pf": 310.6968794804755,
+                "return_pct": 1.9100164143589762
+              },
+              {
+                "param": "horizon",
+                "factor": 0.8,
+                "override": {
+                  "horizon": 6
+                },
+                "pnl": 90661.5934504661,
+                "pf": 112.90144619993956,
+                "return_pct": 1.813231869009322
+              },
+              {
+                "param": "horizon",
+                "factor": 1.2,
+                "override": {
+                  "horizon": 10
+                },
+                "pnl": 164216.37484457222,
+                "pf": 315.5825520134499,
+                "return_pct": 3.284327496891444
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "independence": {
+      "5m": {
+        "status": "PASS",
+        "threshold": "PASS requires participation-ratio effective bets >= 5 of 10",
+        "participation_ratio_effective_bets": 5.424030512559935,
+        "kaiser_components_gt_1": 5,
+        "eigenvalues": [
+          0.0497691645524273,
+          0.09160801968619127,
+          0.2293542796126259,
+          0.43169581905959653,
+          0.5442463990626505,
+          1.0371946532134095,
+          1.208151133263433,
+          1.320974372391192,
+          1.964173460141933,
+          3.1228326990165396
+        ],
+        "correlation_csv": ",XLC_volz_follow_w36_q0.55_ny_h30_cost2.0,XLV_volz_follow_w48_q0.65_ny_h24_cost2.0,DX-Y.NYB_volz_fade_w36_q0.85_all_h30_cost2.0,IEF_divergence_follow_w24_q0.55_ny_h30_cost2.0,XLF_volz_fade_w48_q0.55_london_h30_cost2.0,UNG_volz_follow_w48_q0.75_all_h18_cost2.0,XLK_volz_fade_w48_q0.75_all_h30_cost2.0,VXX_volz_follow_w48_q0.75_all_h30_cost2.0,EURUSD=X_divergence_follow_w36_q0.65_london_h24_cost2.0,SPY_volz_fade_w36_q0.75_all_h24_cost2.0\r\nXLC_volz_follow_w36_q0.55_ny_h30_cost2.0,1.0,-0.05485570413857465,-0.030034512484490662,0.15583771557344,-0.006437844897666322,0.03182797114386515,-0.10816785178959316,0.150831247635886,-0.23772810849732603,0.14792020019673238\r\nXLV_volz_follow_w48_q0.65_ny_h24_cost2.0,-0.05485570413857465,1.0,-0.19171985662118388,0.1446229333916917,0.19994314505482963,-0.2954727649907739,0.16953400295602558,0.30503304025366507,-0.3848852049808928,0.07293891583435086\r\nDX-Y.NYB_volz_fade_w36_q0.85_all_h30_cost2.0,-0.030034512484490662,-0.19171985662118388,1.0,-0.21380226939335023,-0.2744831349620928,0.7821858527876917,-0.40074637189117185,0.06552493463356499,0.07248720384571447,-0.5747162402351838\r\nIEF_divergence_follow_w24_q0.55_ny_h30_cost2.0,0.15583771557344,0.1446229333916917,-0.21380226939335023,1.0,-0.2979308999319761,-0.41647004239235075,0.28233499472470064,-0.12815908518329364,0.4481667655278315,0.46358633476251454\r\nXLF_volz_fade_w48_q0.55_london_h30_cost2.0,-0.006437844897666322,0.19994314505482963,-0.2744831349620928,-0.2979308999319761,1.0,-0.05812681010744736,0.3839735699562978,0.14880382893870875,-0.2292205953995989,0.3312004462400234\r\nUNG_volz_follow_w48_q0.75_all_h18_cost2.0,0.03182797114386515,-0.2954727649907739,0.7821858527876917,-0.41647004239235075,-0.05812681010744736,1.0,-0.40969151026220296,0.3499909462138019,-0.006702837596855656,-0.48096508673095467\r\nXLK_volz_fade_w48_q0.75_all_h30_cost2.0,-0.10816785178959316,0.16953400295602558,-0.40074637189117185,0.28233499472470064,0.3839735699562978,-0.40969151026220296,1.0,0.32232752190553254,0.0729755474521593,0.7622379202503181\r\nVXX_volz_follow_w48_q0.75_all_h30_cost2.0,0.150831247635886,0.30503304025366507,0.06552493463356499,-0.12815908518329364,0.14880382893870875,0.3499909462138019,0.32232752190553254,1.0,-0.1798836477564266,0.16618974841213288\r\nEURUSD=X_divergence_follow_w36_q0.65_london_h24_cost2.0,-0.23772810849732603,-0.3848852049808928,0.07248720384571447,0.4481667655278315,-0.2292205953995989,-0.006702837596855656,0.0729755474521593,-0.1798836477564266,1.0,0.03752446782227382\r\nSPY_volz_fade_w36_q0.75_all_h24_cost2.0,0.14792020019673238,0.07293891583435086,-0.5747162402351838,0.46358633476251454,0.3312004462400234,-0.48096508673095467,0.7622379202503181,0.16618974841213288,0.03752446782227382,1.0\r\n"
+      },
+      "60m": {
+        "status": "FAIL",
+        "threshold": "PASS requires participation-ratio effective bets >= 5 of 10",
+        "participation_ratio_effective_bets": 2.8144059074048635,
+        "kaiser_components_gt_1": 3,
+        "eigenvalues": [
+          0.0006757611227712866,
+          0.003749284690029207,
+          0.030117989598996295,
+          0.07504594574242628,
+          0.13782118111506383,
+          0.41349538656100565,
+          0.5557811325167484,
+          1.2846623986642638,
+          2.1274719110532128,
+          5.371179008935482
+        ],
+        "correlation_csv": ",EEM_60m_divergence_follow_w12_q0.65_all_h6_cost2.0,GDX_60m_divergence_follow_w12_q0.75_all_h8_cost2.0,GDXJ_60m_divergence_follow_w12_q0.85_all_h8_cost2.0,GC=F_60m_volz_follow_w6_q0.65_all_h8_cost2.0,SPY_60m_divergence_follow_w12_q0.55_all_h6_cost2.0,FXI_60m_divergence_follow_w6_q0.55_all_h8_cost2.0,EFA_60m_volz_follow_w6_q0.75_all_h8_cost2.0,QQQ_60m_divergence_follow_w12_q0.65_all_h8_cost2.0,ZB=F_60m_divergence_fade_w12_q0.85_all_h8_cost2.0,EWJ_60m_divergence_follow_w12_q0.75_all_h8_cost2.0\r\nEEM_60m_divergence_follow_w12_q0.65_all_h6_cost2.0,1.0,0.4224130881450117,0.8611539364855746,-0.7473880263292088,0.8546339441078196,0.25184748162757964,-0.17069560128603706,0.8630543908499829,-0.7205722346571887,0.5303194691647851\r\nGDX_60m_divergence_follow_w12_q0.75_all_h8_cost2.0,0.4224130881450117,1.0,0.7310530163626138,-0.2420325366558942,0.5154449003126348,-0.12683789233423776,-0.12032562200950458,0.48337752602748674,-0.024127252210330418,0.7978508154847033\r\nGDXJ_60m_divergence_follow_w12_q0.85_all_h8_cost2.0,0.8611539364855746,0.7310530163626138,1.0,-0.6390271784108911,0.8315263285175402,0.24797545277708555,-0.21768681704480994,0.7987436859167572,-0.4924341514669672,0.6250913009231984\r\nGC=F_60m_volz_follow_w6_q0.65_all_h8_cost2.0,-0.7473880263292088,-0.2420325366558942,-0.6390271784108911,1.0,-0.7999795313420883,-0.40160888818821167,0.1888454608353719,-0.4294747306600895,0.8838910203425941,-0.27315605130871423\r\nSPY_60m_divergence_follow_w12_q0.55_all_h6_cost2.0,0.8546339441078196,0.5154449003126348,0.8315263285175402,-0.7999795313420883,1.0,0.41719128319530535,0.02537981189285539,0.5945157234370485,-0.7964310294995827,0.6873169211720804\r\nFXI_60m_divergence_follow_w6_q0.55_all_h8_cost2.0,0.25184748162757964,-0.12683789233423776,0.24797545277708555,-0.40160888818821167,0.41719128319530535,1.0,0.5457939596657613,-0.025217524462175078,-0.5606597761157708,-0.09561760192325996\r\nEFA_60m_volz_follow_w6_q0.75_all_h8_cost2.0,-0.17069560128603706,-0.12032562200950458,-0.21768681704480994,0.1888454608353719,0.02537981189285539,0.5457939596657613,1.0,-0.34207316804915766,-0.09288028038100683,0.0471362671653233\r\nQQQ_60m_divergence_follow_w12_q0.65_all_h8_cost2.0,0.8630543908499829,0.48337752602748674,0.7987436859167572,-0.4294747306600895,0.5945157234370485,-0.025217524462175078,-0.34207316804915766,1.0,-0.29537652267383074,0.5365850558871357\r\nZB=F_60m_divergence_fade_w12_q0.85_all_h8_cost2.0,-0.7205722346571887,-0.024127252210330418,-0.4924341514669672,0.8838910203425941,-0.7964310294995827,-0.5606597761157708,-0.09288028038100683,-0.29537652267383074,1.0,-0.20430868944034528\r\nEWJ_60m_divergence_follow_w12_q0.75_all_h8_cost2.0,0.5303194691647851,0.7978508154847033,0.6250913009231984,-0.27315605130871423,0.6873169211720804,-0.09561760192325996,0.0471362671653233,0.5365850558871357,-0.20430868944034528,1.0\r\n"
+      }
+    },
+    "allocator_order": {
+      "5m": {
+        "status": "FAIL",
+        "threshold": "PASS requires allocator policy PnL swing <= 30% of existing PnL",
+        "pnl_swing_ratio": 0.603331393297694,
+        "policies": {
+          "existing": {
+            "trades": 982,
+            "pnl": 348581.01492206997,
+            "return_pct": 6.9716202984414,
+            "win_rate": 0.5580448065173116,
+            "pf": 1.3408072526935833,
+            "max_dd": 291860.20112431014,
+            "max_dd_pct": 5.837204022486203
+          },
+          "reverse_model": {
+            "trades": 1003,
+            "pnl": 558890.8843321267,
+            "return_pct": 11.177817686642534,
+            "win_rate": 0.5772681954137587,
+            "pf": 1.6051777203043534,
+            "max_dd": 171005.46013814688,
+            "max_dd_pct": 3.420109202762937
+          },
+          "edge_rank": {
+            "trades": 986,
+            "pnl": 477508.28661230445,
+            "return_pct": 9.55016573224609,
+            "win_rate": 0.5567951318458418,
+            "pf": 1.489769924541355,
+            "max_dd": 173237.98618339555,
+            "max_dd_pct": 3.464759723667911
+          }
+        }
+      },
+      "60m": {
+        "status": "PASS",
+        "threshold": "PASS requires allocator policy PnL swing <= 30% of existing PnL",
+        "pnl_swing_ratio": 0.1879684870777679,
+        "policies": {
+          "existing": {
+            "trades": 163,
+            "pnl": 282810.2511609383,
+            "return_pct": 5.656205023218766,
+            "win_rate": 0.5705521472392638,
+            "pf": 1.7797088370238319,
+            "max_dd": 75004.70632899109,
+            "max_dd_pct": 1.5000941265798218
+          },
+          "reverse_model": {
+            "trades": 173,
+            "pnl": 281088.30569142575,
+            "return_pct": 5.621766113828515,
+            "win_rate": 0.5780346820809249,
+            "pf": 1.7763261570917304,
+            "max_dd": 64917.98623703191,
+            "max_dd_pct": 1.2983597247406382
+          },
+          "edge_rank": {
+            "trades": 160,
+            "pnl": 334247.72073223087,
+            "return_pct": 6.684954414644617,
+            "win_rate": 0.58125,
+            "pf": 2.0244383301530253,
+            "max_dd": 66231.24581091547,
+            "max_dd_pct": 1.3246249162183092
+          }
+        }
+      }
+    },
+    "cost_latency": {
+      "5m": {
+        "status": "PASS",
+        "threshold": "PASS requires positive uncapped PnL at 5x cost and 1-bar latency",
+        "results": {
+          "cost_2.0x_uncapped": {
+            "trades": 7064,
+            "pnl": 2113068.367060377,
+            "return_pct": 42.26136734120753,
+            "win_rate": 0.5360985277463194,
+            "pf": 1.324912542293645,
+            "max_dd": 576456.0275877868,
+            "max_dd_pct": 11.529120551755735
+          },
+          "cost_3.0x_uncapped": {
+            "trades": 7064,
+            "pnl": 1617663.8908995977,
+            "return_pct": 32.35327781799195,
+            "win_rate": 0.5202434881087202,
+            "pf": 1.2401974027328078,
+            "max_dd": 638599.490870042,
+            "max_dd_pct": 12.771989817400838
+          },
+          "cost_5.0x_uncapped": {
+            "trades": 7064,
+            "pnl": 626854.9385780391,
+            "return_pct": 12.537098771560782,
+            "win_rate": 0.4923556058890147,
+            "pf": 1.0868509853211248,
+            "max_dd": 762886.4174345529,
+            "max_dd_pct": 15.257728348691057
+          },
+          "latency_1_bar_uncapped": {
+            "trades": 7062,
+            "pnl": 2091715.733031802,
+            "return_pct": 41.83431466063604,
+            "win_rate": 0.5305862361937128,
+            "pf": 1.3214043141662912,
+            "max_dd": 560746.9887877189,
+            "max_dd_pct": 11.21493977575438
+          },
+          "latency_2_bar_uncapped": {
+            "trades": 7060,
+            "pnl": 2121185.162862148,
+            "return_pct": 42.42370325724296,
+            "win_rate": 0.5286118980169972,
+            "pf": 1.326505534109291,
+            "max_dd": 555732.032752135,
+            "max_dd_pct": 11.114640655042699
+          }
+        }
+      },
+      "60m": {
+        "status": "PASS",
+        "threshold": "PASS requires positive uncapped PnL at 5x cost and 1-bar latency",
+        "results": {
+          "cost_2.0x_uncapped": {
+            "trades": 373,
+            "pnl": 804470.4020061356,
+            "return_pct": 16.08940804012271,
+            "win_rate": 0.6112600536193029,
+            "pf": 1.946182662793999,
+            "max_dd": 110982.62326237455,
+            "max_dd_pct": 2.219652465247491
+          },
+          "cost_3.0x_uncapped": {
+            "trades": 373,
+            "pnl": 777266.2917356575,
+            "return_pct": 15.54532583471315,
+            "win_rate": 0.6112600536193029,
+            "pf": 1.9028865282412757,
+            "max_dd": 111711.62561277978,
+            "max_dd_pct": 2.2342325122555957
+          },
+          "cost_5.0x_uncapped": {
+            "trades": 373,
+            "pnl": 722858.0711947016,
+            "return_pct": 14.457161423894032,
+            "win_rate": 0.6085790884718498,
+            "pf": 1.8193344607856632,
+            "max_dd": 113169.63031359027,
+            "max_dd_pct": 2.2633926062718057
+          },
+          "latency_1_bar_uncapped": {
+            "trades": 373,
+            "pnl": 1077358.4994108714,
+            "return_pct": 21.54716998821743,
+            "win_rate": 0.6380697050938338,
+            "pf": 2.407527269916145,
+            "max_dd": 103742.33150034878,
+            "max_dd_pct": 2.074846630006976
+          },
+          "latency_2_bar_uncapped": {
+            "trades": 373,
+            "pnl": 1236714.6488063128,
+            "return_pct": 24.734292976126255,
+            "win_rate": 0.6702412868632708,
+            "pf": 2.7298906707662844,
+            "max_dd": 99045.18777105182,
+            "max_dd_pct": 1.9809037554210362
+          }
+        }
+      }
+    },
+    "subperiod": {
+      "5m": {
+        "status": "FAIL",
+        "threshold": "PASS requires all four portfolio quarters positive and no individual model with negative quarter or >75% PnL from one quarter",
+        "portfolio_quarters": [
+          1076546.0304371337,
+          987916.222238216,
+          -533331.2146726386,
+          581937.3290576657
+        ],
+        "bad_models": [
+          "XLC_volz_follow_w36_q0.55_ny_h30_cost2.0",
+          "XLV_volz_follow_w48_q0.65_ny_h24_cost2.0",
+          "DX-Y.NYB_volz_fade_w36_q0.85_all_h30_cost2.0",
+          "IEF_divergence_follow_w24_q0.55_ny_h30_cost2.0",
+          "XLF_volz_fade_w48_q0.55_london_h30_cost2.0",
+          "UNG_volz_follow_w48_q0.75_all_h18_cost2.0",
+          "XLK_volz_fade_w48_q0.75_all_h30_cost2.0",
+          "VXX_volz_follow_w48_q0.75_all_h30_cost2.0",
+          "EURUSD=X_divergence_follow_w36_q0.65_london_h24_cost2.0",
+          "SPY_volz_fade_w36_q0.75_all_h24_cost2.0"
+        ],
+        "models": [
+          {
+            "model": "XLC_volz_follow_w36_q0.55_ny_h30_cost2.0",
+            "quarters": [
+              24772.932294263002,
+              129619.99261824026,
+              -77118.64900471113,
+              144382.48527031916
+            ],
+            "total": 221656.76117811128,
+            "max_quarter_share": 0.6513786653875235
+          },
+          {
+            "model": "XLV_volz_follow_w48_q0.65_ny_h24_cost2.0",
+            "quarters": [
+              144038.07895962504,
+              -47983.30920603077,
+              -52118.166896903465,
+              397157.69996830815
+            ],
+            "total": 441094.302824999,
+            "max_quarter_share": 0.9003918151395341
+          },
+          {
+            "model": "DX-Y.NYB_volz_fade_w36_q0.85_all_h30_cost2.0",
+            "quarters": [
+              138088.17418508593,
+              65169.87930977855,
+              237610.30186279706,
+              -248993.37159028457
+            ],
+            "total": 191874.98376737698,
+            "max_quarter_share": 1.2383599841804709
+          },
+          {
+            "model": "IEF_divergence_follow_w24_q0.55_ny_h30_cost2.0",
+            "quarters": [
+              111990.05260185426,
+              -13926.611479073435,
+              -322550.3463964359,
+              246209.96781325457
+            ],
+            "total": 21723.062539599465,
+            "max_quarter_share": 11.334035767950896
+          },
+          {
+            "model": "XLF_volz_fade_w48_q0.55_london_h30_cost2.0",
+            "quarters": [
+              201992.10747486114,
+              -55838.48556964074,
+              350066.87396149937,
+              -54856.91699507361
+            ],
+            "total": 441363.57887164614,
+            "max_quarter_share": 0.7931485304166954
+          },
+          {
+            "model": "UNG_volz_follow_w48_q0.75_all_h18_cost2.0",
+            "quarters": [
+              166007.11834435252,
+              150502.97202156656,
+              106635.2459250841,
+              -174967.6244340446
+            ],
+            "total": 248177.71185695857,
+            "max_quarter_share": 0.6689042182806227
+          },
+          {
+            "model": "XLK_volz_fade_w48_q0.75_all_h30_cost2.0",
+            "quarters": [
+              127848.27142905406,
+              19881.269731173074,
+              -250166.63144423865,
+              107439.23374928304
+            ],
+            "total": 5002.143465271525,
+            "max_quarter_share": 25.558697449737025
+          },
+          {
+            "model": "VXX_volz_follow_w48_q0.75_all_h30_cost2.0",
+            "quarters": [
+              271296.02498793125,
+              -6533.989009747369,
+              162675.50335186103,
+              -211526.43938404307
+            ],
+            "total": 215911.09994600184,
+            "max_quarter_share": 1.2565172659292685
+          },
+          {
+            "model": "EURUSD=X_divergence_follow_w36_q0.65_london_h24_cost2.0",
+            "quarters": [
+              -3178.835902566745,
+              185352.2194542156,
+              -86201.26397228507,
+              27710.133171128473
+            ],
+            "total": 123682.25275049226,
+            "max_quarter_share": 1.4986161339422879
+          },
+          {
+            "model": "SPY_volz_fade_w36_q0.75_all_h24_cost2.0",
+            "quarters": [
+              152636.1546290754,
+              119803.16299737622,
+              -215643.64731292002,
+              145786.79954638815
+            ],
+            "total": 202582.46985991974,
+            "max_quarter_share": 0.753451938534559
+          }
+        ]
+      },
+      "60m": {
+        "status": "FAIL",
+        "threshold": "PASS requires all four portfolio quarters positive and no individual model with negative quarter or >75% PnL from one quarter",
+        "portfolio_quarters": [
+          54406.47813249621,
+          271300.28844239225,
+          -183918.5306071728,
+          662682.1660384198
+        ],
+        "bad_models": [
+          "EEM_60m_divergence_follow_w12_q0.65_all_h6_cost2.0",
+          "GDX_60m_divergence_follow_w12_q0.75_all_h8_cost2.0",
+          "GDXJ_60m_divergence_follow_w12_q0.85_all_h8_cost2.0",
+          "GC=F_60m_volz_follow_w6_q0.65_all_h8_cost2.0",
+          "SPY_60m_divergence_follow_w12_q0.55_all_h6_cost2.0",
+          "FXI_60m_divergence_follow_w6_q0.55_all_h8_cost2.0",
+          "EFA_60m_volz_follow_w6_q0.75_all_h8_cost2.0",
+          "QQQ_60m_divergence_follow_w12_q0.65_all_h8_cost2.0"
+        ],
+        "models": [
+          {
+            "model": "EEM_60m_divergence_follow_w12_q0.65_all_h6_cost2.0",
+            "quarters": [
+              41223.771485119854,
+              51474.28840574794,
+              -82651.46554453517,
+              106761.45544044721
+            ],
+            "total": 116808.04978677984,
+            "max_quarter_share": 0.9139905651650586
+          },
+          {
+            "model": "GDX_60m_divergence_follow_w12_q0.75_all_h8_cost2.0",
+            "quarters": [
+              26865.829360177922,
+              -12235.893460130359,
+              18410.18635982581,
+              47004.28049034642
+            ],
+            "total": 80044.4027502198,
+            "max_quarter_share": 0.5872275746378449
+          },
+          {
+            "model": "GDXJ_60m_divergence_follow_w12_q0.85_all_h8_cost2.0",
+            "quarters": [
+              31252.62185678162,
+              2888.9213066168577,
+              -47425.91290206749,
+              79612.99062567636
+            ],
+            "total": 66328.62088700736,
+            "max_quarter_share": 1.2002811088338365
+          },
+          {
+            "model": "GC=F_60m_volz_follow_w6_q0.65_all_h8_cost2.0",
+            "quarters": [
+              -36501.803726632155,
+              -27450.243182846883,
+              103640.38889122738,
+              -21107.89886288136
+            ],
+            "total": 18580.443118866984,
+            "max_quarter_share": 5.57792880547551
+          },
+          {
+            "model": "SPY_60m_divergence_follow_w12_q0.55_all_h6_cost2.0",
+            "quarters": [
+              13701.894190606965,
+              31782.020420851168,
+              -54287.743968767274,
+              64226.65361736471
+            ],
+            "total": 55422.82426005557,
+            "max_quarter_share": 1.1588484433055906
+          },
+          {
+            "model": "FXI_60m_divergence_follow_w6_q0.55_all_h8_cost2.0",
+            "quarters": [
+              16303.498320390152,
+              -65239.86272119907,
+              78230.94048874223,
+              2921.4830752477965
+            ],
+            "total": 32216.059163181108,
+            "max_quarter_share": 2.428321232354525
+          },
+          {
+            "model": "EFA_60m_volz_follow_w6_q0.75_all_h8_cost2.0",
+            "quarters": [
+              -13907.12044212906,
+              -43995.35918720759,
+              30131.869360850807,
+              69156.15285115776
+            ],
+            "total": 41385.542582671915,
+            "max_quarter_share": 1.6710220172421606
+          },
+          {
+            "model": "QQQ_60m_divergence_follow_w12_q0.65_all_h8_cost2.0",
+            "quarters": [
+              8885.73560921518,
+              91461.61605380145,
+              -18556.992963083438,
+              89317.19735388667
+            ],
+            "total": 171107.55605381986,
+            "max_quarter_share": 0.534527043475703
+          },
+          {
+            "model": "ZB=F_60m_divergence_fade_w12_q0.85_all_h8_cost2.0",
+            "quarters": [
+              37041.78757642378,
+              22081.170345086644,
+              10107.674138889091,
+              9793.500304620247
+            ],
+            "total": 79024.13236501976,
+            "max_quarter_share": 0.4687401995801023
+          },
+          {
+            "model": "EWJ_60m_divergence_follow_w12_q0.75_all_h8_cost2.0",
+            "quarters": [
+              10002.755310641529,
+              16625.06897591893,
+              25199.83552631739,
+              91725.11122563538
+            ],
+            "total": 143552.77103851322,
+            "max_quarter_share": 0.6389644070404381
+          }
+        ]
+      }
+    },
+    "leave_one_out": {
+      "5m": {
+        "status": "FAIL",
+        "threshold": "PASS requires no leave-one-out portfolio to flip negative and no max-DD change >30%",
+        "base": {
+          "trades": 982,
+          "pnl": 348581.01492206997,
+          "return_pct": 6.9716202984414,
+          "win_rate": 0.5580448065173116,
+          "pf": 1.3408072526935833,
+          "max_dd": 291860.20112431014,
+          "max_dd_pct": 5.837204022486203
+        },
+        "bad": [
+          {
+            "removed": "XLF_volz_fade_w48_q0.55_london_h30_cost2.0",
+            "pnl": 298576.13058793446,
+            "return_pct": 5.971522611758689,
+            "max_dd": 381510.3446116945,
+            "pnl_change_pct_of_base": -14.345269017394646,
+            "dd_change_pct_of_base": 30.71681001453167
+          },
+          {
+            "removed": "XLV_volz_follow_w48_q0.65_ny_h24_cost2.0",
+            "pnl": 438265.03649204294,
+            "return_pct": 8.76530072984086,
+            "max_dd": 203672.8359487462,
+            "pnl_change_pct_of_base": 25.72831500591708,
+            "dd_change_pct_of_base": -30.215618585832082
+          }
+        ],
+        "leave_one_out": [
+          {
+            "removed": "DX-Y.NYB_volz_fade_w36_q0.85_all_h30_cost2.0",
+            "pnl": 325632.98014843435,
+            "return_pct": 6.512659602968688,
+            "max_dd": 234085.34325165494,
+            "pnl_change_pct_of_base": -6.583271547007792,
+            "dd_change_pct_of_base": -19.795387534886107
+          },
+          {
+            "removed": "EURUSD=X_divergence_follow_w36_q0.65_london_h24_cost2.0",
+            "pnl": 392233.6825692419,
+            "return_pct": 7.844673651384839,
+            "max_dd": 223725.1643235421,
+            "pnl_change_pct_of_base": 12.522961887907488,
+            "dd_change_pct_of_base": -23.345093485955534
+          },
+          {
+            "removed": "IEF_divergence_follow_w24_q0.55_ny_h30_cost2.0",
+            "pnl": 301389.8831251444,
+            "return_pct": 6.027797662502888,
+            "max_dd": 330194.36771263205,
+            "pnl_change_pct_of_base": -13.538067128376394,
+            "dd_change_pct_of_base": 13.134427524085233
+          },
+          {
+            "removed": "SPY_volz_fade_w36_q0.75_all_h24_cost2.0",
+            "pnl": 272309.876232184,
+            "return_pct": 5.44619752464368,
+            "max_dd": 297832.69141359266,
+            "pnl_change_pct_of_base": -21.880462625578566,
+            "dd_change_pct_of_base": 2.046353105450885
+          },
+          {
+            "removed": "UNG_volz_follow_w48_q0.75_all_h18_cost2.0",
+            "pnl": 276658.98089609185,
+            "return_pct": 5.533179617921837,
+            "max_dd": 204813.6195432457,
+            "pnl_change_pct_of_base": -20.63280297753946,
+            "dd_change_pct_of_base": -29.824752140148515
+          },
+          {
+            "removed": "VXX_volz_follow_w48_q0.75_all_h30_cost2.0",
+            "pnl": 366254.609619564,
+            "return_pct": 7.32509219239128,
+            "max_dd": 289738.61141199974,
+            "pnl_change_pct_of_base": 5.070154122262004,
+            "dd_change_pct_of_base": -0.7269198418069933
+          },
+          {
+            "removed": "XLC_volz_follow_w36_q0.55_ny_h30_cost2.0",
+            "pnl": 441339.33481020166,
+            "return_pct": 8.826786696204033,
+            "max_dd": 212506.24608509598,
+            "pnl_change_pct_of_base": 26.610261579756166,
+            "dd_change_pct_of_base": -27.189029108294022
+          },
+          {
+            "removed": "XLF_volz_fade_w48_q0.55_london_h30_cost2.0",
+            "pnl": 298576.13058793446,
+            "return_pct": 5.971522611758689,
+            "max_dd": 381510.3446116945,
+            "pnl_change_pct_of_base": -14.345269017394646,
+            "dd_change_pct_of_base": 30.71681001453167
+          },
+          {
+            "removed": "XLK_volz_fade_w48_q0.75_all_h30_cost2.0",
+            "pnl": 384434.81849716534,
+            "return_pct": 7.688696369943307,
+            "max_dd": 299646.98180801887,
+            "pnl_change_pct_of_base": 10.285644381152249,
+            "dd_change_pct_of_base": 2.667983045894001
+          },
+          {
+            "removed": "XLV_volz_follow_w48_q0.65_ny_h24_cost2.0",
+            "pnl": 438265.03649204294,
+            "return_pct": 8.76530072984086,
+            "max_dd": 203672.8359487462,
+            "pnl_change_pct_of_base": 25.72831500591708,
+            "dd_change_pct_of_base": -30.215618585832082
+          }
+        ]
+      },
+      "60m": {
+        "status": "FAIL",
+        "threshold": "PASS requires no leave-one-out portfolio to flip negative and no max-DD change >30%",
+        "base": {
+          "trades": 163,
+          "pnl": 282810.2511609383,
+          "return_pct": 5.656205023218766,
+          "win_rate": 0.5705521472392638,
+          "pf": 1.7797088370238319,
+          "max_dd": 75004.70632899109,
+          "max_dd_pct": 1.5000941265798218
+        },
+        "bad": [
+          {
+            "removed": "EFA_60m_volz_follow_w6_q0.75_all_h8_cost2.0",
+            "pnl": 204320.4002720446,
+            "return_pct": 4.086408005440892,
+            "max_dd": 115078.56574910073,
+            "pnl_change_pct_of_base": -27.75353812907851,
+            "dd_change_pct_of_base": 53.42845986801784
+          },
+          {
+            "removed": "ZB=F_60m_divergence_fade_w12_q0.85_all_h8_cost2.0",
+            "pnl": 251058.71055947163,
+            "return_pct": 5.021174211189432,
+            "max_dd": 101658.55176733462,
+            "pnl_change_pct_of_base": -11.227153354988491,
+            "dd_change_pct_of_base": 35.53623064855757
+          }
+        ],
+        "leave_one_out": [
+          {
+            "removed": "EEM_60m_divergence_follow_w12_q0.65_all_h6_cost2.0",
+            "pnl": 193177.42223493414,
+            "return_pct": 3.8635484446986825,
+            "max_dd": 94990.12903783166,
+            "pnl_change_pct_of_base": -31.693627991934765,
+            "dd_change_pct_of_base": 26.64555824161095
+          },
+          {
+            "removed": "EFA_60m_volz_follow_w6_q0.75_all_h8_cost2.0",
+            "pnl": 204320.4002720446,
+            "return_pct": 4.086408005440892,
+            "max_dd": 115078.56574910073,
+            "pnl_change_pct_of_base": -27.75353812907851,
+            "dd_change_pct_of_base": 53.42845986801784
+          },
+          {
+            "removed": "EWJ_60m_divergence_follow_w12_q0.75_all_h8_cost2.0",
+            "pnl": 269068.7823105551,
+            "return_pct": 5.381375646211102,
+            "max_dd": 75004.70632899109,
+            "pnl_change_pct_of_base": -4.8589005504483485,
+            "dd_change_pct_of_base": 0.0
+          },
+          {
+            "removed": "FXI_60m_divergence_follow_w6_q0.55_all_h8_cost2.0",
+            "pnl": 282107.1294771475,
+            "return_pct": 5.64214258954295,
+            "max_dd": 62883.02903469189,
+            "pnl_change_pct_of_base": -0.248619588895556,
+            "dd_change_pct_of_base": -16.16122225868096
+          },
+          {
+            "removed": "GC=F_60m_volz_follow_w6_q0.65_all_h8_cost2.0",
+            "pnl": 310384.5778228289,
+            "return_pct": 6.207691556456578,
+            "max_dd": 97435.1538230926,
+            "pnl_change_pct_of_base": 9.75011568664777,
+            "dd_change_pct_of_base": 29.90538673095452
+          },
+          {
+            "removed": "GDXJ_60m_divergence_follow_w12_q0.85_all_h8_cost2.0",
+            "pnl": 282810.2511609383,
+            "return_pct": 5.656205023218766,
+            "max_dd": 75004.70632899109,
+            "pnl_change_pct_of_base": 0.0,
+            "dd_change_pct_of_base": 0.0
+          },
+          {
+            "removed": "GDX_60m_divergence_follow_w12_q0.75_all_h8_cost2.0",
+            "pnl": 280093.0169035722,
+            "return_pct": 5.601860338071444,
+            "max_dd": 90356.47739263655,
+            "pnl_change_pct_of_base": -0.9607976536252958,
+            "dd_change_pct_of_base": 20.467743712385733
+          },
+          {
+            "removed": "QQQ_60m_divergence_follow_w12_q0.65_all_h8_cost2.0",
+            "pnl": 264920.70153716573,
+            "return_pct": 5.298414030743315,
+            "max_dd": 73995.21021371582,
+            "pnl_change_pct_of_base": -6.325636906843306,
+            "dd_change_pct_of_base": -1.3459103630742058
+          },
+          {
+            "removed": "SPY_60m_divergence_follow_w12_q0.55_all_h6_cost2.0",
+            "pnl": 315154.8019654985,
+            "return_pct": 6.30309603930997,
+            "max_dd": 75004.70632899109,
+            "pnl_change_pct_of_base": 11.436838188073295,
+            "dd_change_pct_of_base": 0.0
+          },
+          {
+            "removed": "ZB=F_60m_divergence_fade_w12_q0.85_all_h8_cost2.0",
+            "pnl": 251058.71055947163,
+            "return_pct": 5.021174211189432,
+            "max_dd": 101658.55176733462,
+            "pnl_change_pct_of_base": -11.227153354988491,
+            "dd_change_pct_of_base": 35.53623064855757
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,5 @@
+Canonical FROM project root: C:\Users\marti\from
+Code repo: C:\Users\marti\from\from
+Imported data roots under data\imports
+Curated outputs under outputs\checkpoints, outputs\binaries, outputs\logs
+Source code hydrated from: C:\Users\marti\Documents\Reference Vault\Project Cold Storage\Code\from

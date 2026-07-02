@@ -1,0 +1,18 @@
+{
+  "created_utc": "2026-06-18T04:19:53.765856+00:00",
+  "old_rows": 2805,
+  "forward_rows": 4722,
+  "old_start": "2026-04-10 13:30:00+00:00",
+  "old_end": "2026-05-22 13:50:00+00:00",
+  "forward_start": "2026-05-22 13:55:00+00:00",
+  "forward_end": "2026-06-17 23:55:00+00:00",
+  "leader_errors": {},
+  "old_exact_only": true,
+  "old_no_gap_fill": true,
+  "candidate_count": 0,
+  "forward_positive_15_35_count": 0,
+  "forward_positive_15_35_2x_count": 0,
+  "top": [],
+  "top_forward_15_35": [],
+  "top_forward_15_35_2x": []
+}

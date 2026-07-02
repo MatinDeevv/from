@@ -1,0 +1,45 @@
+{
+  "created_utc": "2026-06-18T21:17:41.067822+00:00",
+  "study_design": "C:\\Users\\marti\\from\\reports\\walkforward_study_design.md",
+  "xau_export": "C:\\Users\\marti\\from\\data\\derived\\duka_XAUUSD_5m_20230101_20260522.parquet",
+  "xau_quality": {
+    "row_count": 164744,
+    "start_ts": "2023-01-03 19:00:00-05:00",
+    "end_ts": "2026-05-22 09:50:00-04:00",
+    "null_close": 0.0,
+    "gap_fill_bars": 2752.0,
+    "gap_events_gt_10m": 3334,
+    "max_consecutive_missing_5m_bars": 1224,
+    "spread_p50": 0.41516437098844716,
+    "spread_p95": 0.828467768549675,
+    "spread_p99": 1.238484950032554
+  },
+  "required_leader_status": [
+    {
+      "target": "USO proxy",
+      "requested": "USOIL / LIGHT.CMD/USD",
+      "status": "not_acquired",
+      "reason": "Dukascopy archive probes for USOIL, LIGHTCMDUSD, LIGHT.CMDUSD returned timeouts or HTTP 503; no 2023-present 5m file exists locally."
+    },
+    {
+      "target": "UNG proxy",
+      "requested": "NATGAS / GAS.CMD/USD",
+      "status": "not_acquired",
+      "reason": "Dukascopy archive probes for NATGAS, GASCMDUSD, GAS.CMDUSD returned timeouts or HTTP 503; no 2023-present 5m file exists locally."
+    },
+    {
+      "target": "XLF proxy",
+      "requested": "SPX500 + US30 or USA500.IDX/USD + USA30.IDX/USD",
+      "status": "not_acquired",
+      "reason": "Dukascopy archive probes for SPX500, US30, USA500IDXUSD, USA30IDXUSD returned timeouts or HTTP 503; Yahoo XLF 5m cache is only 60d and fails the 2023 minimum."
+    },
+    {
+      "target": "XLY proxy",
+      "requested": "SPX500 + US30 or USA500.IDX/USD + USA30.IDX/USD",
+      "status": "not_acquired",
+      "reason": "Same sector proxy gap as XLF; Yahoo XLY 5m cache is only 60d and fails the 2023 minimum."
+    }
+  ],
+  "minimum_to_proceed_met": false,
+  "final_holdout_opened": false
+}

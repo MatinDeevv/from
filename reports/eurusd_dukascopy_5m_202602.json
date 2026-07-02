@@ -1,0 +1,17 @@
+{
+  "created_utc": "2026-06-18T04:51:19.222896+00:00",
+  "instrument": "EURUSD",
+  "price_scale": 100000.0,
+  "start": "2026-02-01T00:00:00+00:00",
+  "end": "2026-03-01T00:00:00+00:00",
+  "hours_requested": 672,
+  "bars": 5736,
+  "first_bar": "2026-02-01 22:00:00+00:00",
+  "last_bar": "2026-02-27 21:55:00+00:00",
+  "errors": {
+    "1770390000000": "<HTTPError 503: 'Service Unavailable'>",
+    "1770336000000": "<HTTPError 503: 'Service Unavailable'>",
+    "1770458400000": "TimeoutError('The read operation timed out')",
+    "1770483600000": "TimeoutError('The read operation timed out')"
+  }
+}

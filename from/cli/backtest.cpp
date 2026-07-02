@@ -7,6 +7,7 @@
 #include "io/artifact.hpp"
 #include "model/sequence_model.hpp"
 #include "model/meta_labeler.hpp"
+#include "utils/config_parser.hpp"
 #include "utils/timer.hpp"
 #include "wf_metrics.hpp"
 
@@ -57,6 +58,8 @@ struct Pred {
     uint8_t y_label;    // naive delta-threshold label (for the accuracy gap)
     float ret;          // tb_ret  (signed return entry->first-touch)
     float cost;         // tb_cost (one round-trip spread, return units)
+    double entry_mid;   // price denominator for configured USD execution costs
+    int64_t entry_time_ms;
     int env_id;
 };
 
@@ -137,9 +140,18 @@ int run_backtest(const CliArgs& args) {
     float  barrier_k   = std::stof(args.get("--barrier-k", "1.0"));
     float  cost_mult   = std::stof(args.get("--cost-mult", "1.5"));
 
+    Config config;
+    const std::string config_path = args.get("--config", "config.toml");
+    if (std::filesystem::exists(config_path)) config.load(config_path);
+    const float lot_size = config.get_float("costs.lot_size", 100.0f);
+    const float commission_per_lot = config.get_float("costs.commission_per_lot", 3.50f);
+    const float slippage_usd = config.get_float("costs.slippage_usd", 0.05f);
+
     float  conf_gate     = std::stof(args.get("--conf-gate", "0.50"));
-    float  commission    = std::stof(args.get("--commission", "0.00003"));   // return units/trade
-    float  slippage_mult = std::stof(args.get("--slippage-mult", "0.5"));    // fraction of spread
+    const float commission_per_lot_arg = std::stof(args.get("--commission-per-lot", std::to_string(commission_per_lot)));
+    const float slippage_usd_arg = std::stof(args.get("--slippage-usd", std::to_string(slippage_usd)));
+    const bool use_fixed_spread = args.has("--spread-usd");
+    const float spread_usd_arg = std::stof(args.get("--spread-usd", "0"));
     float  calib_frac    = std::stof(args.get("--calib-frac", "0.20"));      // eval prefix used to fit T + Kelly
     float  kelly_frac    = std::stof(args.get("--kelly-frac", "0.25"));      // fractional-Kelly cap
     float  size_cap      = std::stof(args.get("--size-cap", "1.0"));         // max position units
@@ -148,6 +160,16 @@ int run_backtest(const CliArgs& args) {
     bool   use_meta      = args.has("--meta");
     float  meta_gate     = std::stof(args.get("--meta-gate", "0.50"));
     float  warmup_frac   = std::stof(args.get("--warmup-frac", "0.05"));     // only if norm1 must be fit
+
+    require(lot_size > 0.0f && commission_per_lot_arg >= 0.0f && slippage_usd_arg >= 0.0f &&
+                (!use_fixed_spread || spread_usd_arg >= 0.0f),
+            "Execution costs must be non-negative and lot_size must be positive");
+    auto execution_cost = [&](const Pred& p) {
+        const float price = static_cast<float>(p.entry_mid);
+        require(price > 0.0f, "Cannot apply USD execution costs to a non-positive entry price");
+        const float spread_cost = use_fixed_spread ? spread_usd_arg / price : p.cost;
+        return spread_cost + (commission_per_lot_arg / lot_size + slippage_usd_arg) / price;
+    };
 
     require(std::filesystem::exists(model_path), "Model not found: " + model_path);
     require(std::filesystem::exists(data_path), "Data not found: " + data_path);
@@ -191,6 +213,9 @@ int run_backtest(const CliArgs& args) {
               << "norm1:       " << (norm1_loaded ? norm1_path : std::string("(warmup-fit)")) << "\n"
               << "conf-gate:   " << conf_gate << "   calib-frac: " << calib_frac
               << "   kelly-frac: " << kelly_frac << "\n"
+              << "costs:       " << (use_fixed_spread ? std::string("$") + std::to_string(spread_usd_arg) : std::string("observed spread"))
+              << " + $" << commission_per_lot_arg << "/lot commission + $"
+              << slippage_usd_arg << " slippage (lot=" << lot_size << ")\n"
               << "=======================================================================\n\n";
 
     // ---- Skip to eval region; if norm1 unknown, fit Welford on this prefix ----
@@ -240,6 +265,8 @@ int run_backtest(const CliArgs& args) {
             p.y_label = yl;
             p.ret = s.tb_ret;
             p.cost = s.tb_cost;
+            p.entry_mid = s.entry_mid;
+            p.entry_time_ms = s.entry_time_ms;
             p.env_id = s.env_id;
             preds.push_back(p);
         }
@@ -269,7 +296,7 @@ int run_backtest(const CliArgs& args) {
         int pred = argmax3(p);
         if (pred == 1 || p[pred] < conf_gate) continue;
         float dir = (pred == 0) ? 1.0f : -1.0f;
-        float tc = preds[i].cost * (1.0f + slippage_mult) + commission;
+        float tc = execution_cost(preds[i]);
         float net = dir * preds[i].ret - tc;
         calib_nets.push_back(net);
         if (use_meta) {
@@ -297,6 +324,7 @@ int run_backtest(const CliArgs& args) {
 
     // ---- Test region: unit-sized AND confidence-sized nets, overall + per regime ----
     std::vector<float> unit_nets, sized_nets;
+    std::vector<std::pair<int64_t, float>> timed_unit_nets;
     std::map<int, std::vector<float>> regime_nets;
     size_t tb_correct = 0, y_correct = 0, scored = 0;
     size_t n_long = 0, n_short = 0, n_flat = 0;
@@ -311,7 +339,7 @@ int run_backtest(const CliArgs& args) {
         if (pred == 0) ++n_long; else ++n_short;
 
         float dir = (pred == 0) ? 1.0f : -1.0f;
-        float tc = preds[i].cost * (1.0f + slippage_mult) + commission;
+        float tc = execution_cost(preds[i]);
         float unit = dir * preds[i].ret - tc;
 
         // Confidence-proportional size in [0,1], scaled by the Kelly-capped base.
@@ -321,6 +349,7 @@ int run_backtest(const CliArgs& args) {
         float sized = size * (dir * preds[i].ret - tc);  // cost scales with size
 
         unit_nets.push_back(unit);
+        timed_unit_nets.emplace_back(preds[i].entry_time_ms, unit);
         sized_nets.push_back(sized);
         regime_nets[preds[i].env_id].push_back(unit);
     }
@@ -329,6 +358,7 @@ int run_backtest(const CliArgs& args) {
     wfm::TradeStats unit_st  = wfm::compute_stats(unit_nets, overlap_block);
     wfm::TradeStats sized_st = wfm::compute_stats(sized_nets, overlap_block);
     wfm::SharpeRobustness rob = wfm::sharpe_robustness(unit_nets, unit_st.n_eff, n_trials);
+    const double daily_sharpe = wfm::daily_sharpe(timed_unit_nets);
 
     double tb_acc = scored ? static_cast<double>(tb_correct) / scored : 0.0;
     double y_acc  = scored ? static_cast<double>(y_correct) / scored : 0.0;
@@ -360,10 +390,15 @@ int run_backtest(const CliArgs& args) {
     std::cout << "\nRobustness (unit-sized):\n"
               << "  Sharpe (per-trade): " << std::setprecision(4) << rob.sharpe
               << "   skew=" << rob.skew << "   kurt=" << rob.kurt << "\n"
+              << "  Sharpe (daily UTC): " << std::setprecision(4) << daily_sharpe << "\n"
               << "  PSR  P(SR>0):       " << std::setprecision(4) << rob.psr << "\n"
               << "  DSR  P(SR>SR*)      " << std::setprecision(4) << rob.dsr
               << "   (SR*=" << rob.sr_star << ", trials=" << n_trials << ")\n"
               << "=======================================================================\n";
+
+    if (args.has("--realistic-scenario") && unit_st.edge < 0.0) {
+        std::cout << "WARNING: REALISTIC COST SCENARIO HAS NEGATIVE NET P&L; NOT PROFITABLE.\n";
+    }
 
     return 0;
 }

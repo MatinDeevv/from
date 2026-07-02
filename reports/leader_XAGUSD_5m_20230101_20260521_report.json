@@ -1,0 +1,17 @@
+{
+  "created_utc": "2026-06-18T22:32:30.034557+00:00",
+  "instrument": "XAGUSD",
+  "start": "2023-01-01T00:00:00+00:00",
+  "end": "2026-05-22T00:00:00+00:00",
+  "price_scale": 1000.0,
+  "hours_requested": 29688,
+  "status_counts": {
+    "HTTP_503": 29433,
+    "ok": 179,
+    "LZMAError": 76
+  },
+  "bars": 2147,
+  "first_bar": "2023-01-09 16:00:00+00:00",
+  "last_bar": "2026-05-21 22:55:00+00:00",
+  "elapsed_seconds": 195.58662509918213
+}

@@ -1,0 +1,10 @@
+{
+  "verdict":"NO_EDGE_FOUND",
+  "data":{"path":"C:\\Users\\marti\\Documents\\Quant Lab\\Data\\from\\XAUUSD_ticks_all.parquet","total_rows":539637174,"evaluated_ticks":20000000,"samples":312461,"cost_mult":1.00000000,"window":512,"stride":64,"horizon":2048},
+  "split":{"train":187476,"val_begin":187496,"val_end":249968,"test_begin":249988},
+  "candidate_count":0,
+  "best":{},
+  "top":[
+  ],
+  "elapsed_seconds":116.94481340
+}

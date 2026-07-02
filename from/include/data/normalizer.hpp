@@ -39,7 +39,10 @@ public:
         }
         for (size_t d = 0; d < mean_.size(); ++d) {
             double var = count_[d] > 1 ? m2_[d] / static_cast<double>(count_[d] - 1) : 1.0;
-            x[d] = static_cast<float>((static_cast<double>(x[d]) - mean_[d]) / std::sqrt(var + eps_));
+            // A constant feature contains no scale information. Use unit scale
+            // instead of sqrt(eps), which would amplify numerical drift.
+            double scale = var > eps_ ? std::sqrt(var) : 1.0;
+            x[d] = static_cast<float>((static_cast<double>(x[d]) - mean_[d]) / scale);
         }
     }
 
@@ -60,6 +63,8 @@ public:
     const std::vector<uint64_t>& count() const { return count_; }
 
     void set_state(std::vector<double> mean, std::vector<double> m2, std::vector<uint64_t> count, bool frozen) {
+        require(mean.size() == m2.size() && mean.size() == count.size() && !mean.empty(),
+                "Normalizer state has inconsistent dimensions");
         mean_ = std::move(mean);
         m2_ = std::move(m2);
         count_ = std::move(count);

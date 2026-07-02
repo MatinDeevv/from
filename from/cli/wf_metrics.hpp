@@ -13,9 +13,11 @@
 #include "commands.hpp"
 
 #include <cmath>
+#include <cstdint>
 #include <cstddef>
 #include <iomanip>
 #include <ostream>
+#include <map>
 #include <string>
 #include <vector>
 
@@ -116,6 +118,36 @@ inline TradeStats compute_stats(const std::vector<float>& nets, double block) {
     }
     st.max_drawdown = max_dd;
     return st;
+}
+
+// Annualized UTC-calendar-day Sharpe. `timestamp_ms` must be Unix UTC
+// milliseconds. Every calendar day between the first and last trade is included
+// with zero P&L when it has no trades; zero variance returns 0 rather than NaN.
+inline double daily_sharpe(const std::vector<std::pair<int64_t, float>>& timed_nets) {
+    if (timed_nets.empty()) return 0.0;
+    constexpr int64_t kMsPerDay = 86400000LL;
+    std::map<int64_t, double> daily;
+    for (const auto& [timestamp_ms, net] : timed_nets) {
+        const int64_t day = timestamp_ms >= 0 ? timestamp_ms / kMsPerDay
+                                               : (timestamp_ms - (kMsPerDay - 1)) / kMsPerDay;
+        daily[day] += net;
+    }
+    const int64_t first_day = daily.begin()->first;
+    const int64_t last_day = daily.rbegin()->first;
+    const double n = static_cast<double>(last_day - first_day + 1);
+    if (n < 2.0) return 0.0;
+    double sum = 0.0;
+    for (const auto& [_, pnl] : daily) sum += pnl;
+    const double mean = sum / n;
+    double sum_sq = 0.0;
+    for (int64_t day = first_day; day <= last_day; ++day) {
+        const auto it = daily.find(day);
+        const double pnl = it == daily.end() ? 0.0 : it->second;
+        const double d = pnl - mean;
+        sum_sq += d * d;
+    }
+    const double sd = std::sqrt(sum_sq / n);
+    return sd > 1e-12 ? mean / sd * std::sqrt(252.0) : 0.0;
 }
 
 inline void print_stats_row(std::ostream& os, const std::string& name, const TradeStats& s) {

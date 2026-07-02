@@ -1,0 +1,9 @@
+{
+  "verdict":"NO_EDGE_FOUND",
+  "data":{"path":"C:\\Users\\marti\\Documents\\Quant Lab\\Data\\from\\XAUUSD_ticks_all.parquet","skip_ticks":380000000,"evaluated_ticks":60000000,"bars":10040,"rows":9975,"tf_min":60,"horizon_bars":1,"cost_mult":1.00000000,"target_min_trades_day":15.00000000,"target_max_trades_day":30.00000000},
+  "candidate_count":0,
+  "best":{},
+  "top":[
+  ],
+  "elapsed_seconds":85.44170440
+}

@@ -14,11 +14,14 @@
 #include "physics/hawkes.hpp"
 #include "physics/kalman.hpp"
 #include "training/irm.hpp"
+#include "training/loss.hpp"
 #include "cuda/kernels.hpp"
 #include "cuda/device_memory.hpp"
 #include "utils/timer.hpp"
+#include "wf_metrics.hpp"
 
 #include <algorithm>
+#include <cstdio>
 #include <cmath>
 #include <iostream>
 
@@ -132,7 +135,9 @@ static bool serialization_check() {
     Normalizer loaded_norm(FROM_MAX_FEATURES);
     Serializer::load("test_roundtrip.from", &loaded, &loaded_norm);
     auto after = loaded.parameters()[0].value->contiguous();
-    return before.numel() == after.numel() && near(before[0], after[0], 0.0f) && loaded_norm.count()[0] == 1;
+    const bool passed = before.numel() == after.numel() && near(before[0], after[0], 0.0f) && loaded_norm.count()[0] == 1;
+    std::remove("test_roundtrip.from");
+    return passed;
 }
 
 static bool memory_check() {
@@ -174,14 +179,15 @@ static bool feat_norm_roundtrip() {
     SequenceModelIO::save(model, "test_feat_norm.from");
 
     SequenceModel loaded(0.0001f, 99);
-    if (!SequenceModelIO::load("test_feat_norm.from", loaded)) return false;
-    if (!loaded.feat_norm_ready) return false;
-    if (loaded.feat_mean.size() != SEQ_SUMMARY_DIM) return false;
-    if (loaded.feat_std.size() != SEQ_SUMMARY_DIM) return false;
-    if (!near(loaded.feat_mean[0], 0.0f)) return false;
-    if (!near(loaded.feat_mean[10], 1.0f)) return false;
-    if (!near(loaded.feat_std[0], 1.0f)) return false;
-    return true;
+    const bool passed = SequenceModelIO::load("test_feat_norm.from", loaded) &&
+                        loaded.feat_norm_ready &&
+                        loaded.feat_mean.size() == SEQ_SUMMARY_DIM &&
+                        loaded.feat_std.size() == SEQ_SUMMARY_DIM &&
+                        near(loaded.feat_mean[0], 0.0f) &&
+                        near(loaded.feat_mean[10], 1.0f) &&
+                        near(loaded.feat_std[0], 1.0f);
+    std::remove("test_feat_norm.from");
+    return passed;
 }
 
 static bool kyle_hasbrouck_nonzero() {
@@ -254,7 +260,91 @@ static bool label_smoothing_sanity() {
     return found_up;
 }
 
+static bool cross_entropy_stability() {
+    const std::array<std::array<float, 3>, 4> cases{{
+        {{0.0f, 0.0f, 0.0f}},
+        {{100.0f, -100.0f, 0.0f}},
+        {{1.0e-10f, 1.0e-10f, 1.0e-10f}},
+        {{10.0f, -10.0f, -10.0f}},
+    }};
+    for (const auto& row : cases) {
+        Tensor<float> logits({1, 3}, {row[0], row[1], row[2]});
+        Tensor<float> target({1, 3}, {1.0f, 0.0f, 0.0f});
+        const float loss = directional_cross_entropy(logits, target);
+        if (!std::isfinite(loss) || loss < 0.0f) return false;
+    }
+    Tensor<float> perfect_logits({1, 3}, {10.0f, -10.0f, -10.0f});
+    Tensor<float> target({1, 3}, {1.0f, 0.0f, 0.0f});
+    return directional_cross_entropy(perfect_logits, target) < 1.0e-3f;
+}
+
+static bool preprocessing_parity() {
+    constexpr size_t kTicks = 768;
+    TickChunk ticks;
+    ticks.size = kTicks;
+    ticks.ask.resize(kTicks); ticks.bid.resize(kTicks); ticks.mid.resize(kTicks);
+    ticks.ask_vol.resize(kTicks); ticks.bid_vol.resize(kTicks); ticks.time_ms.resize(kTicks);
+    for (size_t i = 0; i < kTicks; ++i) {
+        const double mid = 2000.0 + static_cast<double>(i) * 0.002 + std::sin(static_cast<double>(i) * 0.1) * 0.01;
+        ticks.ask[i] = mid + 0.15;
+        ticks.bid[i] = mid - 0.15;
+        ticks.mid[i] = mid;
+        ticks.ask_vol[i] = 100.0f + static_cast<float>(i % 11);
+        ticks.bid_vol[i] = 90.0f + static_cast<float>(i % 7);
+        ticks.time_ms[i] = 1700000000000LL + static_cast<int64_t>(i) * 100;
+    }
+    TickProcessor train_processor;
+    TickProcessor infer_processor;
+    FeatureChunk train_features = train_processor.process(ticks);
+    FeatureChunk infer_features = infer_processor.process(ticks);
+    if (train_features.features.numel() != infer_features.features.numel()) return false;
+    for (size_t i = 0; i < train_features.features.numel(); ++i) {
+        if (!near(train_features.features[i], infer_features.features[i], 1.0e-6f)) return false;
+    }
+    Windower train_window(512, 64, 256, 2.0f);
+    Windower infer_window(512, 64, 256, 2.0f);
+    const auto train_samples = train_window.add(train_features);
+    const auto infer_samples = infer_window.add(infer_features);
+    if (train_samples.size() != infer_samples.size() || train_samples.empty()) return false;
+    float train_summary[SEQ_SUMMARY_DIM];
+    float infer_summary[SEQ_SUMMARY_DIM];
+    MultiScaleSummarizer::summarize(train_samples.front(), train_summary);
+    MultiScaleSummarizer::summarize(infer_samples.front(), infer_summary);
+    for (size_t i = 0; i < SEQ_SUMMARY_DIM; ++i) {
+        if (!near(train_summary[i], infer_summary[i], 1.0e-6f)) return false;
+    }
+    return true;
+}
+
+static bool daily_sharpe_correctness() {
+    constexpr int64_t kMsPerDay = 86400000LL;
+    std::vector<std::pair<int64_t, float>> pnls;
+    for (int64_t day = 0; day < 252; ++day) {
+        pnls.emplace_back(day * kMsPerDay, (day % 2 == 0) ? 1.1f : -0.9f);
+    }
+    const double expected = 0.1 * std::sqrt(252.0);
+    if (std::abs(wfm::daily_sharpe(pnls) - expected) > 1.0e-5) return false;
+    std::vector<std::pair<int64_t, float>> constant{{0, 1.0f}, {kMsPerDay, 1.0f}};
+    return wfm::daily_sharpe(constant) == 0.0;
+}
+
+static bool normalizer_constant_feature() {
+    Normalizer normalizer(2);
+    float row[] = {42.0f, 1.0f};
+    for (size_t i = 0; i < 32; ++i) normalizer.update_one(row);
+    normalizer.freeze();
+    float input[] = {42.0f, 1.001f};
+    normalizer.normalize_one(input, false);
+    return std::isfinite(input[0]) && std::isfinite(input[1]) && near(input[0], 0.0f) && near(input[1], 0.001f, 1.0e-6f);
+}
+
 int run_test(const CliArgs& args) {
+    if (args.has("--help")) {
+        std::cout << "Usage: from test [--cuda]\n"
+                  << "Runs deterministic tensor, gradient, causality, checkpoint, feature-parity, loss, and metric tests.\n"
+                  << "  --cuda  Report whether this executable was compiled with CUDA support.\n";
+        return 0;
+    }
     if (args.has("--cuda")) {
 #ifdef FROM_CUDA
         std::cout << "[PASS] CUDA backend compiled for sm_86-capable runtime checks\n";
@@ -278,6 +368,10 @@ int run_test(const CliArgs& args) {
     check(feat_norm_roundtrip(), "Feat norm save/load roundtrip", failures);
     check(kyle_hasbrouck_nonzero(), "Kyle-Hasbrouck nonzero on synthetic data", failures);
     check(label_smoothing_sanity(), "Label smoothing produces soft labels", failures);
+    check(cross_entropy_stability(), "Cross-entropy stable on extreme logits", failures);
+    check(preprocessing_parity(), "Training/inference feature preprocessing parity", failures);
+    check(daily_sharpe_correctness(), "UTC daily Sharpe calculation", failures);
+    check(normalizer_constant_feature(), "Normalizer constant-feature scale", failures);
     if (failures == 0) {
         std::cout << "All built-in tests passed.\n";
         return 0;

@@ -1,0 +1,4181 @@
+{
+  "created_utc": "2026-06-18T18:40:10.018863+00:00",
+  "timeframe": "5m",
+  "grid_path": "C:\\Users\\marti\\from\\reports\\strict_screen_5m_rebuild_full_grid.jsonl",
+  "grid_rows": 112896,
+  "expected_grid_rows_if_all_symbols_have_enough_data": 112896,
+  "summary_path": "C:\\Users\\marti\\from\\reports\\strict_screen_5m_rebuild_summary.json",
+  "universe_snapshot_path": "C:\\Users\\marti\\from\\reports\\strict_screen_5m_rebuild_universe_snapshot.json",
+  "meta": {
+    "old_rows": 8231,
+    "forward_rows": 5047,
+    "old_start": "2026-03-24 08:00:00+00:00",
+    "old_end": "2026-05-22 13:50:00+00:00",
+    "forward_start": "2026-05-22 13:55:00+00:00",
+    "forward_end": "2026-06-17 23:55:00+00:00",
+    "underpowered_forward_warning": "Forward window is the same short 2026-05-22 to 2026-06-18 window; any survivor is in-sample under the new gate and requires rerun on longer history."
+  },
+  "universe_snapshot": {
+    "snapshot_created_utc": "2026-06-18T18:05:17.866501+00:00",
+    "availability_asof_policy": "Uses local Yahoo cache files already present before this rebuild run; not a true pre-forward vendor snapshot.",
+    "cache_dir": "C:\\Users\\marti\\from\\data\\cache\\yahoo",
+    "requested_symbols": [
+      "ACWI",
+      "BTC-USD",
+      "CL=F",
+      "DBC",
+      "DIA",
+      "DX-Y.NYB",
+      "EEM",
+      "EFA",
+      "ETH-USD",
+      "EURUSD=X",
+      "EWG",
+      "EWJ",
+      "EWU",
+      "EWZ",
+      "FXE",
+      "FXI",
+      "FXY",
+      "GC=F",
+      "GDX",
+      "GDXJ",
+      "GLD",
+      "HYG",
+      "IAU",
+      "IEF",
+      "IWM",
+      "LQD",
+      "QQQ",
+      "SHY",
+      "SI=F",
+      "SLV",
+      "SPY",
+      "TLT",
+      "UNG",
+      "USDJPY=X",
+      "USO",
+      "UUP",
+      "VXX",
+      "XLB",
+      "XLC",
+      "XLE",
+      "XLF",
+      "XLI",
+      "XLK",
+      "XLP",
+      "XLU",
+      "XLV",
+      "XLY",
+      "ZB=F",
+      "ZN=F"
+    ],
+    "included_symbols": [
+      "ACWI",
+      "BTC-USD",
+      "CL=F",
+      "DBC",
+      "DIA",
+      "DX-Y.NYB",
+      "EEM",
+      "EFA",
+      "ETH-USD",
+      "EURUSD=X",
+      "EWG",
+      "EWJ",
+      "EWU",
+      "EWZ",
+      "FXE",
+      "FXI",
+      "FXY",
+      "GC=F",
+      "GDX",
+      "GDXJ",
+      "GLD",
+      "HYG",
+      "IAU",
+      "IEF",
+      "IWM",
+      "LQD",
+      "QQQ",
+      "SHY",
+      "SI=F",
+      "SLV",
+      "SPY",
+      "TLT",
+      "UNG",
+      "USDJPY=X",
+      "USO",
+      "UUP",
+      "VXX",
+      "XLB",
+      "XLC",
+      "XLE",
+      "XLF",
+      "XLI",
+      "XLK",
+      "XLP",
+      "XLU",
+      "XLV",
+      "XLY",
+      "ZB=F",
+      "ZN=F"
+    ],
+    "excluded_symbols": {},
+    "leader_errors": {}
+  },
+  "breakdown": {
+    "evaluated": 112896,
+    "failed_old_gate": 112643,
+    "failed_bootstrap": 112873,
+    "failed_subperiod": 105337,
+    "failed_parameter": 112874,
+    "failed_reverse": 112643,
+    "survived_all": 22
+  },
+  "survivor_count": 22,
+  "survivors": [
+    {
+      "name": "UNG_5m_volz_follow_w18_q0.55_london_h30_cost2.0",
+      "timeframe": "5m",
+      "leader": "UNG",
+      "feature": "volz",
+      "mode": "follow",
+      "window": 18,
+      "quantile": 0.55,
+      "threshold": 0.6771454669112625,
+      "session": "london",
+      "horizon": 30,
+      "cost": 2.0,
+      "train": {
+        "trades": 696,
+        "tpd": 23.32689398347492,
+        "pnl": 2271.436406720454,
+        "wr": 0.4540229885057471,
+        "pf": 1.2539614301779418,
+        "sh": 1.5836631403335677,
+        "dd": 3021.1123386546624
+      },
+      "val": {
+        "trades": 348,
+        "tpd": 26.277923439958048,
+        "pnl": 394.3489864486424,
+        "wr": 0.49712643678160917,
+        "pf": 1.1250758121865039,
+        "sh": 0.9022790943633211,
+        "dd": 1256.2776112696379
+      },
+      "old_test": {
+        "trades": 349,
+        "tpd": 23.577762139338493,
+        "pnl": 886.9218417569699,
+        "wr": 0.5386819484240688,
+        "pf": 1.3309862595439421,
+        "sh": 1.9802842068106625,
+        "dd": 1171.4953202667225
+      },
+      "forward": {
+        "trades": 798,
+        "tpd": 35.78141055581504,
+        "pnl": 6527.097745594414,
+        "wr": 0.6428571428571429,
+        "pf": 2.337584367933805,
+        "sh": 8.171882534174857,
+        "dd": 863.888330045651
+      },
+      "reverse": {
+        "trades": 798,
+        "tpd": 35.78141055581504,
+        "pnl": -8351.56625440555,
+        "wr": 0.31453634085213034,
+        "pf": 0.3395634466128769,
+        "sh": -10.427915249839383,
+        "dd": 8917.052049448992
+      },
+      "old_gate_pass": true,
+      "bootstrap": {
+        "trials": 2000,
+        "block": 90,
+        "ci_low": 1801.9791744756237,
+        "ci_high": 12145.555542173539
+      },
+      "bootstrap_pass": true,
+      "subperiod": {
+        "periods": [
+          3540.23973240198,
+          908.8808869579731,
+          2227.88878743564,
+          -149.91166120118018
+        ],
+        "negative_periods": 1,
+        "max_share": 0.5423911009746301,
+        "pass": true
+      },
+      "subperiod_pass": true,
+      "parameter": {
+        "pass": true,
+        "failures": 0,
+        "variants": [
+          {
+            "field": "window",
+            "factor": 0.8,
+            "pnl": 6444.93996936439,
+            "pf": 2.2848545117302352,
+            "trades": 791
+          },
+          {
+            "field": "window",
+            "factor": 1.2,
+            "pnl": 6912.77031974067,
+            "pf": 2.316816034551773,
+            "trades": 830
+          },
+          {
+            "field": "quantile",
+            "factor": 0.9,
+            "pnl": 7467.351022412415,
+            "pf": 2.380810346093291,
+            "trades": 900
+          },
+          {
+            "field": "quantile",
+            "factor": 1.1,
+            "pnl": 5873.740728222545,
+            "pf": 2.299416801124992,
+            "trades": 713
+          },
+          {
+            "field": "horizon",
+            "factor": 0.8,
+            "pnl": 5954.981745594414,
+            "pf": 2.3883516003370855,
+            "trades": 798
+          },
+          {
+            "field": "horizon",
+            "factor": 1.2,
+            "pnl": 6178.165245594406,
+            "pf": 1.962352353643341,
+            "trades": 798
+          }
+        ]
+      },
+      "parameter_pass": true,
+      "reverse_pass": true,
+      "survived_all": true,
+      "failures": []
+    },
+    {
+      "name": "USO_5m_volz_follow_w24_q0.55_london_h24_cost2.0",
+      "timeframe": "5m",
+      "leader": "USO",
+      "feature": "volz",
+      "mode": "follow",
+      "window": 24,
+      "quantile": 0.55,
+      "threshold": 0.7068577306895848,
+      "session": "london",
+      "horizon": 24,
+      "cost": 2.0,
+      "train": {
+        "trades": 673,
+        "tpd": 20.441257118751317,
+        "pnl": 1472.993229197407,
+        "wr": 0.4650817236255572,
+        "pf": 1.2222555803865307,
+        "sh": 1.3742581299866834,
+        "dd": 4491.610638565232
+      },
+      "val": {
+        "trades": 336,
+        "tpd": 33.42590673575129,
+        "pnl": 5.35652578774409,
+        "wr": 0.4880952380952381,
+        "pf": 1.0017544851043076,
+        "sh": 0.012716503376788847,
+        "dd": 1240.3053430652415
+      },
+      "old_test": {
+        "trades": 337,
+        "tpd": 22.65017502917153,
+        "pnl": 75.46448109757011,
+        "wr": 0.42433234421364985,
+        "pf": 1.0266014232042926,
+        "sh": 0.17641804390395616,
+        "dd": 1637.6169251474203
+      },
+      "forward": {
+        "trades": 779,
+        "tpd": 34.93491124260355,
+        "pnl": 6285.389513738146,
+        "wr": 0.631578947368421,
+        "pf": 3.0949653127485193,
+        "sh": 10.880185547777558,
+        "dd": 527.3288827715417
+      },
+      "reverse": {
+        "trades": 779,
+        "tpd": 34.93491124260355,
+        "pnl": -8054.258486261857,
+        "wr": 0.3119383825417201,
+        "pf": 0.22948013036416523,
+        "sh": -13.952993917542596,
+        "dd": 8373.372190785942
+      },
+      "old_gate_pass": true,
+      "bootstrap": {
+        "trials": 2000,
+        "block": 72,
+        "ci_low": 3565.2246124635644,
+        "ci_high": 8820.520102936138
+      },
+      "bootstrap_pass": true,
+      "subperiod": {
+        "periods": [
+          1101.6881014712071,
+          1568.3594964111153,
+          2268.658193221201,
+          1346.683722634622
+        ],
+        "negative_periods": 0,
+        "max_share": 0.36094154360084346,
+        "pass": true
+      },
+      "subperiod_pass": true,
+      "parameter": {
+        "pass": true,
+        "failures": 0,
+        "variants": [
+          {
+            "field": "window",
+            "factor": 0.8,
+            "pnl": 5437.683118417702,
+            "pf": 2.517515705286594,
+            "trades": 761
+          },
+          {
+            "field": "window",
+            "factor": 1.2,
+            "pnl": 6355.667570060421,
+            "pf": 2.962839622105883,
+            "trades": 819
+          },
+          {
+            "field": "quantile",
+            "factor": 0.9,
+            "pnl": 5961.182963535681,
+            "pf": 2.6075892961178906,
+            "trades": 839
+          },
+          {
+            "field": "quantile",
+            "factor": 1.1,
+            "pnl": 6308.361998155183,
+            "pf": 3.5661156968816368,
+            "trades": 718
+          },
+          {
+            "field": "horizon",
+            "factor": 0.8,
+            "pnl": 5130.983013738154,
+            "pf": 2.9589124601536145,
+            "trades": 779
+          },
+          {
+            "field": "horizon",
+            "factor": 1.2,
+            "pnl": 6913.238013738144,
+            "pf": 3.0920462082700912,
+            "trades": 779
+          }
+        ]
+      },
+      "parameter_pass": true,
+      "reverse_pass": true,
+      "survived_all": true,
+      "failures": []
+    },
+    {
+      "name": "UNG_5m_volz_follow_w18_q0.55_london_h36_cost2.0",
+      "timeframe": "5m",
+      "leader": "UNG",
+      "feature": "volz",
+      "mode": "follow",
+      "window": 18,
+      "quantile": 0.55,
+      "threshold": 0.6771454669112625,
+      "session": "london",
+      "horizon": 36,
+      "cost": 2.0,
+      "train": {
+        "trades": 696,
+        "tpd": 23.32689398347492,
+        "pnl": 4842.677406720452,
+        "wr": 0.4640804597701149,
+        "pf": 1.5211277871090596,
+        "sh": 2.968108723212211,
+        "dd": 2464.1333386546635
+      },
+      "val": {
+        "trades": 348,
+        "tpd": 26.277923439958048,
+        "pnl": 830.8094864486363,
+        "wr": 0.5229885057471264,
+        "pf": 1.258269404805588,
+        "sh": 1.7789856444593044,
+        "dd": 1481.8841112696396
+      },
+      "old_test": {
+        "trades": 349,
+        "tpd": 23.577762139338493,
+        "pnl": 661.0498417569704,
+        "wr": 0.5243553008595988,
+        "pf": 1.232772453611299,
+        "sh": 1.4505077278948422,
+        "dd": 1226.8970565970803
+      },
+      "forward": {
+        "trades": 798,
+        "tpd": 35.78141055581504,
+        "pnl": 6178.165245594406,
+        "wr": 0.6240601503759399,
+        "pf": 1.962352353643341,
+        "sh": 6.7344920188623005,
+        "dd": 1373.175319535112
+      },
+      "reverse": {
+        "trades": 798,
+        "tpd": 35.78141055581504,
+        "pnl": -8002.633754405543,
+        "wr": 0.3308270676691729,
+        "pf": 0.42008880494186307,
+        "sh": -8.704345872074349,
+        "dd": 8978.150103100183
+      },
+      "old_gate_pass": true,
+      "bootstrap": {
+        "trials": 2000,
+        "block": 108,
+        "ci_low": 300.9044304453606,
+        "ci_high": 12831.568615801894
+      },
+      "bootstrap_pass": true,
+      "subperiod": {
+        "periods": [
+          3427.7757324019753,
+          928.0473869579743,
+          2336.699287435633,
+          -514.3571612011764
+        ],
+        "negative_periods": 1,
+        "max_share": 0.5548209858657134,
+        "pass": true
+      },
+      "subperiod_pass": true,
+      "parameter": {
+        "pass": true,
+        "failures": 0,
+        "variants": [
+          {
+            "field": "window",
+            "factor": 0.8,
+            "pnl": 5997.2844693644,
+            "pf": 1.9092587932566365,
+            "trades": 791
+          },
+          {
+            "field": "window",
+            "factor": 1.2,
+            "pnl": 6655.012819740665,
+            "pf": 2.0011366712372736,
+            "trades": 830
+          },
+          {
+            "field": "quantile",
+            "factor": 0.9,
+            "pnl": 7088.228022412408,
+            "pf": 1.9943181552190101,
+            "trades": 900
+          },
+          {
+            "field": "quantile",
+            "factor": 1.1,
+            "pnl": 5614.040228222543,
+            "pf": 1.948368588518509,
+            "trades": 713
+          },
+          {
+            "field": "horizon",
+            "factor": 0.8,
+            "pnl": 6537.221745594414,
+            "pf": 2.4037534684395725,
+            "trades": 798
+          },
+          {
+            "field": "horizon",
+            "factor": 1.2,
+            "pnl": 5693.8257455944195,
+            "pf": 1.6890258248599486,
+            "trades": 798
+          }
+        ]
+      },
+      "parameter_pass": true,
+      "reverse_pass": true,
+      "survived_all": true,
+      "failures": []
+    },
+    {
+      "name": "USO_5m_volz_follow_w18_q0.55_london_h30_cost2.0",
+      "timeframe": "5m",
+      "leader": "USO",
+      "feature": "volz",
+      "mode": "follow",
+      "window": 18,
+      "quantile": 0.55,
+      "threshold": 0.6703691736115972,
+      "session": "london",
+      "horizon": 30,
+      "cost": 2.0,
+      "train": {
+        "trades": 666,
+        "tpd": 20.29499523859909,
+        "pnl": 841.8291100126089,
+        "wr": 0.4444444444444444,
+        "pf": 1.0995565207226985,
+        "sh": 0.7332120526351686,
+        "dd": 4688.289174055878
+      },
+      "val": {
+        "trades": 333,
+        "tpd": 30.33976589686808,
+        "pnl": 207.5139562977555,
+        "wr": 0.4894894894894895,
+        "pf": 1.0685785666654064,
+        "sh": 0.48574940286717944,
+        "dd": 1072.5015260575303
+      },
+      "old_test": {
+        "trades": 333,
+        "tpd": 23.65080147965475,
+        "pnl": 263.3629838693919,
+        "wr": 0.5045045045045045,
+        "pf": 1.103413921945898,
+        "sh": 0.6533156022218103,
+        "dd": 1490.4645379980375
+      },
+      "forward": {
+        "trades": 735,
+        "tpd": 32.92068429237947,
+        "pnl": 6158.90595283052,
+        "wr": 0.6285714285714286,
+        "pf": 2.586918719762727,
+        "sh": 9.006076614579612,
+        "dd": 1119.9348604461552
+      },
+      "reverse": {
+        "trades": 735,
+        "tpd": 32.92068429237947,
+        "pnl": -7844.293047169471,
+        "wr": 0.3292517006802721,
+        "pf": 0.29511350972339334,
+        "sh": -11.482490644855407,
+        "dd": 8045.059559152037
+      },
+      "old_gate_pass": true,
+      "bootstrap": {
+        "trials": 2000,
+        "block": 90,
+        "ci_low": 3392.917127658808,
+        "ci_high": 9105.747784680208
+      },
+      "bootstrap_pass": true,
+      "subperiod": {
+        "periods": [
+          643.1397788834392,
+          1388.5419759595538,
+          2364.74725708205,
+          1762.476940905477
+        ],
+        "negative_periods": 0,
+        "max_share": 0.38395573421530416,
+        "pass": true
+      },
+      "subperiod_pass": true,
+      "parameter": {
+        "pass": true,
+        "failures": 0,
+        "variants": [
+          {
+            "field": "window",
+            "factor": 0.8,
+            "pnl": 5648.786136441725,
+            "pf": 2.3636870696038885,
+            "trades": 741
+          },
+          {
+            "field": "window",
+            "factor": 1.2,
+            "pnl": 6369.18377311256,
+            "pf": 2.635497835953864,
+            "trades": 773
+          },
+          {
+            "field": "quantile",
+            "factor": 0.9,
+            "pnl": 6014.903395956033,
+            "pf": 2.278635973836705,
+            "trades": 809
+          },
+          {
+            "field": "quantile",
+            "factor": 1.1,
+            "pnl": 5983.901035544945,
+            "pf": 2.8863444626117016,
+            "trades": 672
+          },
+          {
+            "field": "horizon",
+            "factor": 0.8,
+            "pnl": 5139.03845283052,
+            "pf": 2.45809180653962,
+            "trades": 735
+          },
+          {
+            "field": "horizon",
+            "factor": 1.2,
+            "pnl": 5616.57795283051,
+            "pf": 2.1019107063152185,
+            "trades": 735
+          }
+        ]
+      },
+      "parameter_pass": true,
+      "reverse_pass": true,
+      "survived_all": true,
+      "failures": []
+    },
+    {
+      "name": "UNG_5m_volz_follow_w18_q0.55_london_h24_cost2.0",
+      "timeframe": "5m",
+      "leader": "UNG",
+      "feature": "volz",
+      "mode": "follow",
+      "window": 18,
+      "quantile": 0.55,
+      "threshold": 0.6771454669112625,
+      "session": "london",
+      "horizon": 24,
+      "cost": 2.0,
+      "train": {
+        "trades": 696,
+        "tpd": 23.32689398347492,
+        "pnl": 142.37240672045368,
+        "wr": 0.4224137931034483,
+        "pf": 1.0168481819761586,
+        "sh": 0.11694510792886598,
+        "dd": 3087.603838654657
+      },
+      "val": {
+        "trades": 348,
+        "tpd": 26.277923439958048,
+        "pnl": 0.9434864486469507,
+        "wr": 0.47126436781609193,
+        "pf": 1.000295649247206,
+        "sh": 0.0022438887668744883,
+        "dd": 1131.9853721856457
+      },
+      "old_test": {
+        "trades": 349,
+        "tpd": 23.577762139338493,
+        "pnl": 671.2978417569691,
+        "wr": 0.5472779369627507,
+        "pf": 1.2502074411436204,
+        "sh": 1.542527457111677,
+        "dd": 1171.0122479538468
+      },
+      "forward": {
+        "trades": 798,
+        "tpd": 35.78141055581504,
+        "pnl": 5954.981745594414,
+        "wr": 0.6165413533834586,
+        "pf": 2.3883516003370855,
+        "sh": 8.42054637161653,
+        "dd": 600.1497142372564
+      },
+      "reverse": {
+        "trades": 798,
+        "tpd": 35.78141055581504,
+        "pnl": -7779.450254405553,
+        "wr": 0.3358395989974937,
+        "pf": 0.31963068123605876,
+        "sh": -10.968504127698974,
+        "dd": 8298.231437613551
+      },
+      "old_gate_pass": true,
+      "bootstrap": {
+        "trials": 2000,
+        "block": 72,
+        "ci_low": 1847.4849631891088,
+        "ci_high": 10595.31865233813
+      },
+      "bootstrap_pass": true,
+      "subperiod": {
+        "periods": [
+          3384.7382324019786,
+          953.5008869579757,
+          1528.5217874356367,
+          88.22083879882359
+        ],
+        "negative_periods": 0,
+        "max_share": 0.5683876755635832,
+        "pass": true
+      },
+      "subperiod_pass": true,
+      "parameter": {
+        "pass": true,
+        "failures": 0,
+        "variants": [
+          {
+            "field": "window",
+            "factor": 0.8,
+            "pnl": 5404.002969364397,
+            "pf": 2.173339635457299,
+            "trades": 791
+          },
+          {
+            "field": "window",
+            "factor": 1.2,
+            "pnl": 6421.269819740668,
+            "pf": 2.514325213902741,
+            "trades": 830
+          },
+          {
+            "field": "quantile",
+            "factor": 0.9,
+            "pnl": 6729.215522412422,
+            "pf": 2.418108076689776,
+            "trades": 900
+          },
+          {
+            "field": "quantile",
+            "factor": 1.1,
+            "pnl": 5392.599228222547,
+            "pf": 2.3954203480609815,
+            "trades": 713
+          },
+          {
+            "field": "horizon",
+            "factor": 0.8,
+            "pnl": 4719.066745594415,
+            "pf": 2.229892073609085,
+            "trades": 798
+          },
+          {
+            "field": "horizon",
+            "factor": 1.2,
+            "pnl": 6537.221745594414,
+            "pf": 2.4037534684395725,
+            "trades": 798
+          }
+        ]
+      },
+      "parameter_pass": true,
+      "reverse_pass": true,
+      "survived_all": true,
+      "failures": []
+    },
+    {
+      "name": "UNG_5m_volz_follow_w12_q0.55_london_h36_cost2.0",
+      "timeframe": "5m",
+      "leader": "UNG",
+      "feature": "volz",
+      "mode": "follow",
+      "window": 12,
+      "quantile": 0.55,
+      "threshold": 0.6550021881359368,
+      "session": "london",
+      "horizon": 36,
+      "cost": 2.0,
+      "train": {
+        "trades": 704,
+        "tpd": 23.595019201675782,
+        "pnl": 1864.5044316998228,
+        "wr": 0.4375,
+        "pf": 1.18101807213409,
+        "sh": 1.2807212648024349,
+        "dd": 2905.0092204864795
+      },
+      "val": {
+        "trades": 352,
+        "tpd": 26.55907780979827,
+        "pnl": 789.7727458257233,
+        "wr": 0.5255681818181818,
+        "pf": 1.246358210024752,
+        "sh": 1.7015268739249498,
+        "dd": 1254.1961504625588
+      },
+      "old_test": {
+        "trades": 353,
+        "tpd": 23.983014861995752,
+        "pnl": 400.3462573755122,
+        "wr": 0.5155807365439093,
+        "pf": 1.1484907063210354,
+        "sh": 0.963302863051031,
+        "dd": 989.3620019864081
+      },
+      "forward": {
+        "trades": 768,
+        "tpd": 34.44160697601993,
+        "pnl": 5481.853246885636,
+        "wr": 0.6041666666666666,
+        "pf": 1.8268516941066055,
+        "sh": 5.988465648009548,
+        "dd": 1187.7780946873654
+      },
+      "reverse": {
+        "trades": 768,
+        "tpd": 34.44160697601993,
+        "pnl": -7236.766753114322,
+        "wr": 0.3671875,
+        "pf": 0.4526939057768903,
+        "sh": -7.889736474278692,
+        "dd": 8129.5589922940835
+      },
+      "old_gate_pass": true,
+      "bootstrap": {
+        "trials": 2000,
+        "block": 108,
+        "ci_low": 125.05209288921245,
+        "ci_high": 11234.583715826786
+      },
+      "bootstrap_pass": true,
+      "subperiod": {
+        "periods": [
+          2977.979443272576,
+          1078.5739735662107,
+          1925.7623285794934,
+          -500.4624985326446
+        ],
+        "negative_periods": 1,
+        "max_share": 0.5432431896940024,
+        "pass": true
+      },
+      "subperiod_pass": true,
+      "parameter": {
+        "pass": true,
+        "failures": 0,
+        "variants": [
+          {
+            "field": "window",
+            "factor": 0.8,
+            "pnl": 5511.074314765385,
+            "pf": 1.7952885165760997,
+            "trades": 780
+          },
+          {
+            "field": "window",
+            "factor": 1.2,
+            "pnl": 5997.2844693644,
+            "pf": 1.9092587932566365,
+            "trades": 791
+          },
+          {
+            "field": "quantile",
+            "factor": 0.9,
+            "pnl": 5735.003995891233,
+            "pf": 1.757206979070739,
+            "trades": 859
+          },
+          {
+            "field": "quantile",
+            "factor": 1.1,
+            "pnl": 4974.249912119187,
+            "pf": 1.8150949558683838,
+            "trades": 685
+          },
+          {
+            "field": "horizon",
+            "factor": 0.8,
+            "pnl": 6109.029746885639,
+            "pf": 2.2567803594960454,
+            "trades": 768
+          },
+          {
+            "field": "horizon",
+            "factor": 1.2,
+            "pnl": 4849.625246885638,
+            "pf": 1.569437807977721,
+            "trades": 768
+          }
+        ]
+      },
+      "parameter_pass": true,
+      "reverse_pass": true,
+      "survived_all": true,
+      "failures": []
+    },
+    {
+      "name": "UNG_5m_volz_follow_w9_q0.55_london_h36_cost2.0",
+      "timeframe": "5m",
+      "leader": "UNG",
+      "feature": "volz",
+      "mode": "follow",
+      "window": 9,
+      "quantile": 0.55,
+      "threshold": 0.6216453994598188,
+      "session": "london",
+      "horizon": 36,
+      "cost": 2.0,
+      "train": {
+        "trades": 699,
+        "tpd": 23.471143756558238,
+        "pnl": 2749.015258918212,
+        "wr": 0.45493562231759654,
+        "pf": 1.2752391348129264,
+        "sh": 1.832826674880889,
+        "dd": 3000.281820248634
+      },
+      "val": {
+        "trades": 350,
+        "tpd": 26.311667971808927,
+        "pnl": 487.2786488824843,
+        "wr": 0.49142857142857144,
+        "pf": 1.1506125402193188,
+        "sh": 1.0758193292081975,
+        "dd": 1167.9098979142434
+      },
+      "old_test": {
+        "trades": 350,
+        "tpd": 23.695345557122707,
+        "pnl": 8.275916285996573,
+        "wr": 0.49142857142857144,
+        "pf": 1.002887741580664,
+        "sh": 0.02012470646391954,
+        "dd": 1023.9980444246348
+      },
+      "forward": {
+        "trades": 775,
+        "tpd": 34.728489186245525,
+        "pnl": 5254.499775872864,
+        "wr": 0.5935483870967742,
+        "pf": 1.7473885912175808,
+        "sh": 5.581978904725441,
+        "dd": 921.3144059962679
+      },
+      "reverse": {
+        "trades": 775,
+        "tpd": 34.728489186245525,
+        "pnl": -7030.2582241271075,
+        "wr": 0.3741935483870968,
+        "pf": 0.474629013809037,
+        "sh": -7.456755978838696,
+        "dd": 7605.915470639856
+      },
+      "old_gate_pass": true,
+      "bootstrap": {
+        "trials": 2000,
+        "block": 108,
+        "ci_low": 903.9633030861709,
+        "ci_high": 9933.59071948621
+      },
+      "bootstrap_pass": true,
+      "subperiod": {
+        "periods": [
+          2634.3243755676535,
+          782.7590517240129,
+          1793.3173149470088,
+          44.09903363418891
+        ],
+        "negative_periods": 0,
+        "max_share": 0.5013463674817735,
+        "pass": true
+      },
+      "subperiod_pass": true,
+      "parameter": {
+        "pass": true,
+        "failures": 0,
+        "variants": [
+          {
+            "field": "window",
+            "factor": 0.8,
+            "pnl": 4045.802523222519,
+            "pf": 1.572303492853892,
+            "trades": 762
+          },
+          {
+            "field": "window",
+            "factor": 1.2,
+            "pnl": 5542.274307482268,
+            "pf": 1.8327052477612507,
+            "trades": 783
+          },
+          {
+            "field": "quantile",
+            "factor": 0.9,
+            "pnl": 5318.4089630249255,
+            "pf": 1.6969341737965367,
+            "trades": 842
+          },
+          {
+            "field": "quantile",
+            "factor": 1.1,
+            "pnl": 4566.873996350079,
+            "pf": 1.7185250798524014,
+            "trades": 692
+          },
+          {
+            "field": "horizon",
+            "factor": 0.8,
+            "pnl": 5011.401775872857,
+            "pf": 1.8800652416986863,
+            "trades": 775
+          },
+          {
+            "field": "horizon",
+            "factor": 1.2,
+            "pnl": 4582.348775872868,
+            "pf": 1.5125785764867576,
+            "trades": 775
+          }
+        ]
+      },
+      "parameter_pass": true,
+      "reverse_pass": true,
+      "survived_all": true,
+      "failures": []
+    },
+    {
+      "name": "USO_5m_volz_follow_w18_q0.55_london_h24_cost2.0",
+      "timeframe": "5m",
+      "leader": "USO",
+      "feature": "volz",
+      "mode": "follow",
+      "window": 18,
+      "quantile": 0.55,
+      "threshold": 0.6703691736115972,
+      "session": "london",
+      "horizon": 24,
+      "cost": 2.0,
+      "train": {
+        "trades": 666,
+        "tpd": 20.29499523859909,
+        "pnl": 652.2916100126095,
+        "wr": 0.4444444444444444,
+        "pf": 1.0922529867277466,
+        "sh": 0.6790438194832448,
+        "dd": 4225.65567405588
+      },
+      "val": {
+        "trades": 333,
+        "tpd": 30.33976589686808,
+        "pnl": 306.10095629775515,
+        "wr": 0.5045045045045045,
+        "pf": 1.108515073519999,
+        "sh": 0.7401297618036021,
+        "dd": 898.3100260575322
+      },
+      "old_test": {
+        "trades": 333,
+        "tpd": 23.65080147965475,
+        "pnl": 31.455483869396062,
+        "wr": 0.4744744744744745,
+        "pf": 1.012276954431589,
+        "sh": 0.08228095149255377,
+        "dd": 1538.0481330172597
+      },
+      "forward": {
+        "trades": 735,
+        "tpd": 32.92068429237947,
+        "pnl": 5139.03845283052,
+        "wr": 0.6095238095238096,
+        "pf": 2.45809180653962,
+        "sh": 8.572645946287114,
+        "dd": 995.8383604461536
+      },
+      "reverse": {
+        "trades": 735,
+        "tpd": 32.92068429237947,
+        "pnl": -6824.425547169471,
+        "wr": 0.32789115646258504,
+        "pf": 0.29996956936974456,
+        "sh": -11.393842416254058,
+        "dd": 7092.222926842702
+      },
+      "old_gate_pass": true,
+      "bootstrap": {
+        "trials": 2000,
+        "block": 72,
+        "ci_low": 2514.7283941626574,
+        "ci_high": 8022.376572505959
+      },
+      "bootstrap_pass": true,
+      "subperiod": {
+        "periods": [
+          242.46477888344265,
+          1438.9289759595563,
+          2235.3367570820437,
+          1222.307940905478
+        ],
+        "negative_periods": 0,
+        "max_share": 0.43497179046225026,
+        "pass": true
+      },
+      "subperiod_pass": true,
+      "parameter": {
+        "pass": true,
+        "failures": 0,
+        "variants": [
+          {
+            "field": "window",
+            "factor": 0.8,
+            "pnl": 3817.388636441742,
+            "pf": 1.9260059701067376,
+            "trades": 741
+          },
+          {
+            "field": "window",
+            "factor": 1.2,
+            "pnl": 5884.9597731125705,
+            "pf": 2.842224178098218,
+            "trades": 773
+          },
+          {
+            "field": "quantile",
+            "factor": 0.9,
+            "pnl": 5114.680395956034,
+            "pf": 2.222564562623478,
+            "trades": 809
+          },
+          {
+            "field": "quantile",
+            "factor": 1.1,
+            "pnl": 5051.233035544945,
+            "pf": 2.7116056338386563,
+            "trades": 672
+          },
+          {
+            "field": "horizon",
+            "factor": 0.8,
+            "pnl": 3493.7019528305254,
+            "pf": 2.0690718982470497,
+            "trades": 735
+          },
+          {
+            "field": "horizon",
+            "factor": 1.2,
+            "pnl": 6242.764952830518,
+            "pf": 2.711932328867155,
+            "trades": 735
+          }
+        ]
+      },
+      "parameter_pass": true,
+      "reverse_pass": true,
+      "survived_all": true,
+      "failures": []
+    },
+    {
+      "name": "UNG_5m_volz_follow_w24_q0.65_london_h30_cost2.0",
+      "timeframe": "5m",
+      "leader": "UNG",
+      "feature": "volz",
+      "mode": "follow",
+      "window": 24,
+      "quantile": 0.65,
+      "threshold": 0.9209939679102649,
+      "session": "london",
+      "horizon": 30,
+      "cost": 2.0,
+      "train": {
+        "trades": 515,
+        "tpd": 17.769258416197435,
+        "pnl": 3509.280998025158,
+        "wr": 0.46601941747572817,
+        "pf": 1.6263198294912435,
+        "sh": 2.6232080835608707,
+        "dd": 1599.6214506414622
+      },
+      "val": {
+        "trades": 258,
+        "tpd": 20.017241379310345,
+        "pnl": 112.77778883009168,
+        "wr": 0.4689922480620155,
+        "pf": 1.0410144854078738,
+        "sh": 0.2741075876467156,
+        "dd": 1456.8032320647412
+      },
+      "old_test": {
+        "trades": 258,
+        "tpd": 16.14602346805737,
+        "pnl": 541.1231526022715,
+        "wr": 0.5038759689922481,
+        "pf": 1.252674157317114,
+        "sh": 1.3345751374228727,
+        "dd": 799.1554033004277
+      },
+      "forward": {
+        "trades": 635,
+        "tpd": 28.481544930696153,
+        "pnl": 4629.055111643761,
+        "wr": 0.6393700787401575,
+        "pf": 2.0487036380700783,
+        "sh": 6.377088722118414,
+        "dd": 1029.5175810919018
+      },
+      "reverse": {
+        "trades": 635,
+        "tpd": 28.481544930696153,
+        "pnl": -6069.237888356216,
+        "wr": 0.3291338582677165,
+        "pf": 0.3932395554650279,
+        "sh": -8.33962796450649,
+        "dd": 6793.930470064446
+      },
+      "old_gate_pass": true,
+      "bootstrap": {
+        "trials": 2000,
+        "block": 90,
+        "ci_low": 84.27087620108422,
+        "ci_high": 9487.512444746812
+      },
+      "bootstrap_pass": true,
+      "subperiod": {
+        "periods": [
+          3018.641224802899,
+          886.4689171326496,
+          650.5671240119786,
+          73.37784569623363
+        ],
+        "negative_periods": 0,
+        "max_share": 0.6521074284058351,
+        "pass": true
+      },
+      "subperiod_pass": true,
+      "parameter": {
+        "pass": true,
+        "failures": 0,
+        "variants": [
+          {
+            "field": "window",
+            "factor": 0.8,
+            "pnl": 4743.785211601581,
+            "pf": 2.1631328246602863,
+            "trades": 628
+          },
+          {
+            "field": "window",
+            "factor": 1.2,
+            "pnl": 4840.638896937242,
+            "pf": 1.9675766001142,
+            "trades": 661
+          },
+          {
+            "field": "quantile",
+            "factor": 0.9,
+            "pnl": 5983.5247946079035,
+            "pf": 2.1690986688280582,
+            "trades": 772
+          },
+          {
+            "field": "quantile",
+            "factor": 1.1,
+            "pnl": 3466.8500436805107,
+            "pf": 1.8997710492423874,
+            "trades": 510
+          },
+          {
+            "field": "horizon",
+            "factor": 0.8,
+            "pnl": 4445.076611643773,
+            "pf": 2.258181468232932,
+            "trades": 635
+          },
+          {
+            "field": "horizon",
+            "factor": 1.2,
+            "pnl": 4179.261611643762,
+            "pf": 1.7241639911267495,
+            "trades": 635
+          }
+        ]
+      },
+      "parameter_pass": true,
+      "reverse_pass": true,
+      "survived_all": true,
+      "failures": []
+    },
+    {
+      "name": "UNG_5m_volz_follow_w24_q0.65_london_h24_cost2.0",
+      "timeframe": "5m",
+      "leader": "UNG",
+      "feature": "volz",
+      "mode": "follow",
+      "window": 24,
+      "quantile": 0.65,
+      "threshold": 0.9209939679102649,
+      "session": "london",
+      "horizon": 24,
+      "cost": 2.0,
+      "train": {
+        "trades": 515,
+        "tpd": 17.769258416197435,
+        "pnl": 1273.562498025158,
+        "wr": 0.42718446601941745,
+        "pf": 1.2291941611008184,
+        "sh": 1.126704045665382,
+        "dd": 1603.4539400637962
+      },
+      "val": {
+        "trades": 258,
+        "tpd": 20.017241379310345,
+        "pnl": 272.345788830091,
+        "wr": 0.4844961240310077,
+        "pf": 1.1080120305923848,
+        "sh": 0.6841387226503745,
+        "dd": 1253.8582320647388
+      },
+      "old_test": {
+        "trades": 258,
+        "tpd": 16.14602346805737,
+        "pnl": 475.87265260226707,
+        "wr": 0.5,
+        "pf": 1.229370323791193,
+        "sh": 1.2258796088301862,
+        "dd": 736.3338789651905
+      },
+      "forward": {
+        "trades": 635,
+        "tpd": 28.481544930696153,
+        "pnl": 4445.076611643773,
+        "wr": 0.6188976377952756,
+        "pf": 2.258181468232932,
+        "sh": 7.133850634455538,
+        "dd": 692.8499964547836
+      },
+      "reverse": {
+        "trades": 635,
+        "tpd": 28.481544930696153,
+        "pnl": -5885.259388356229,
+        "wr": 0.33385826771653543,
+        "pf": 0.3400603564654358,
+        "sh": -9.416823865794031,
+        "dd": 6406.623215203273
+      },
+      "old_gate_pass": true,
+      "bootstrap": {
+        "trials": 2000,
+        "block": 72,
+        "ci_low": 813.2273933125016,
+        "ci_high": 8676.106161716636
+      },
+      "bootstrap_pass": true,
+      "subperiod": {
+        "periods": [
+          2892.106724802902,
+          675.641917132653,
+          849.8821240119801,
+          27.445845696237598
+        ],
+        "negative_periods": 0,
+        "max_share": 0.6506314688091308,
+        "pass": true
+      },
+      "subperiod_pass": true,
+      "parameter": {
+        "pass": true,
+        "failures": 0,
+        "variants": [
+          {
+            "field": "window",
+            "factor": 0.8,
+            "pnl": 4461.718711601577,
+            "pf": 2.3147949631603204,
+            "trades": 628
+          },
+          {
+            "field": "window",
+            "factor": 1.2,
+            "pnl": 4443.544896937248,
+            "pf": 2.057473822070659,
+            "trades": 661
+          },
+          {
+            "field": "quantile",
+            "factor": 0.9,
+            "pnl": 5634.504294607918,
+            "pf": 2.3542255719024627,
+            "trades": 772
+          },
+          {
+            "field": "quantile",
+            "factor": 1.1,
+            "pnl": 3546.5460436805192,
+            "pf": 2.178903505140642,
+            "trades": 510
+          },
+          {
+            "field": "horizon",
+            "factor": 0.8,
+            "pnl": 3487.9651116437635,
+            "pf": 2.1511473746353666,
+            "trades": 635
+          },
+          {
+            "field": "horizon",
+            "factor": 1.2,
+            "pnl": 4646.011611643767,
+            "pf": 2.084863083434024,
+            "trades": 635
+          }
+        ]
+      },
+      "parameter_pass": true,
+      "reverse_pass": true,
+      "survived_all": true,
+      "failures": []
+    },
+    {
+      "name": "XLF_5m_volz_fade_w24_q0.65_london_h36_cost2.0",
+      "timeframe": "5m",
+      "leader": "XLF",
+      "feature": "volz",
+      "mode": "fade",
+      "window": 24,
+      "quantile": 0.65,
+      "threshold": 0.7027139932747447,
+      "session": "london",
+      "horizon": 36,
+      "cost": 2.0,
+      "train": {
+        "trades": 496,
+        "tpd": 17.087081339712917,
+        "pnl": 3839.793642217385,
+        "wr": 0.6088709677419355,
+        "pf": 1.7000923999841464,
+        "sh": 3.4678190818832575,
+        "dd": 1675.6949016233498
+      },
+      "val": {
+        "trades": 248,
+        "tpd": 16.56400742115028,
+        "pnl": 1121.7584247544135,
+        "wr": 0.5564516129032258,
+        "pf": 1.6160243895752655,
+        "sh": 2.9710230157846187,
+        "dd": 800.0893856677765
+      },
+      "old_test": {
+        "trades": 249,
+        "tpd": 18.0,
+        "pnl": 136.7005347709932,
+        "wr": 0.5060240963855421,
+        "pf": 1.083117774464029,
+        "sh": 0.4673705029808672,
+        "dd": 586.5272280844306
+      },
+      "forward": {
+        "trades": 490,
+        "tpd": 21.96078431372549,
+        "pnl": 4420.275937676476,
+        "wr": 0.5428571428571428,
+        "pf": 2.5527550169960023,
+        "sh": 7.541258006960172,
+        "dd": 643.8082358543452
+      },
+      "reverse": {
+        "trades": 490,
+        "tpd": 21.96078431372549,
+        "pnl": -5544.627062323531,
+        "wr": 0.4142857142857143,
+        "pf": 0.29877559656764496,
+        "sh": -9.444663537455325,
+        "dd": 5673.469946450341
+      },
+      "old_gate_pass": true,
+      "bootstrap": {
+        "trials": 2000,
+        "block": 108,
+        "ci_low": 1000.0316844705058,
+        "ci_high": 8159.302483377799
+      },
+      "bootstrap_pass": true,
+      "subperiod": {
+        "periods": [
+          1413.2314875001834,
+          19.063444926491048,
+          2949.251610451035,
+          38.72939479876641
+        ],
+        "negative_periods": 0,
+        "max_share": 0.6672098421080276,
+        "pass": true
+      },
+      "subperiod_pass": true,
+      "parameter": {
+        "pass": true,
+        "failures": 0,
+        "variants": [
+          {
+            "field": "window",
+            "factor": 0.8,
+            "pnl": 3521.1155264755453,
+            "pf": 2.0391113896598068,
+            "trades": 494
+          },
+          {
+            "field": "window",
+            "factor": 1.2,
+            "pnl": 5412.70297951868,
+            "pf": 2.955223766166129,
+            "trades": 501
+          },
+          {
+            "field": "quantile",
+            "factor": 0.9,
+            "pnl": 4186.153030681703,
+            "pf": 2.0178038836764713,
+            "trades": 587
+          },
+          {
+            "field": "quantile",
+            "factor": 1.1,
+            "pnl": 4172.340813219863,
+            "pf": 2.830612201224979,
+            "trades": 407
+          },
+          {
+            "field": "horizon",
+            "factor": 0.8,
+            "pnl": 3054.4854376764733,
+            "pf": 2.08085573630667,
+            "trades": 490
+          },
+          {
+            "field": "horizon",
+            "factor": 1.2,
+            "pnl": 5843.236437676471,
+            "pf": 2.961956480177034,
+            "trades": 490
+          }
+        ]
+      },
+      "parameter_pass": true,
+      "reverse_pass": true,
+      "survived_all": true,
+      "failures": []
+    },
+    {
+      "name": "UNG_5m_volz_follow_w9_q0.65_london_h36_cost2.0",
+      "timeframe": "5m",
+      "leader": "UNG",
+      "feature": "volz",
+      "mode": "follow",
+      "window": 9,
+      "quantile": 0.65,
+      "threshold": 0.8150705083233661,
+      "session": "london",
+      "horizon": 36,
+      "cost": 2.0,
+      "train": {
+        "trades": 575,
+        "tpd": 19.78258272607813,
+        "pnl": 1651.198332082655,
+        "wr": 0.4434782608695652,
+        "pf": 1.2012062752664756,
+        "sh": 1.2873732654330046,
+        "dd": 2361.277860121766
+      },
+      "val": {
+        "trades": 287,
+        "tpd": 20.7313769751693,
+        "pnl": 543.7716621798409,
+        "wr": 0.49825783972125437,
+        "pf": 1.2116567212326395,
+        "sh": 1.3293603126211408,
+        "dd": 1066.9184538556326
+      },
+      "old_test": {
+        "trades": 288,
+        "tpd": 19.271375464684013,
+        "pnl": 67.84574137162565,
+        "wr": 0.5,
+        "pf": 1.0268292886780273,
+        "sh": 0.17029969990519742,
+        "dd": 1025.3790404414517
+      },
+      "forward": {
+        "trades": 624,
+        "tpd": 27.96638655462185,
+        "pnl": 4309.388054767513,
+        "wr": 0.5897435897435898,
+        "pf": 1.7554604334970783,
+        "sh": 5.053499462978128,
+        "dd": 868.0454687691172
+      },
+      "reverse": {
+        "trades": 624,
+        "tpd": 27.96638655462185,
+        "pnl": -5730.001945232474,
+        "wr": 0.3798076923076923,
+        "pf": 0.47355599899152845,
+        "sh": -6.708344140457236,
+        "dd": 6320.132181206167
+      },
+      "old_gate_pass": true,
+      "bootstrap": {
+        "trials": 2000,
+        "block": 108,
+        "ci_low": 422.6249771093684,
+        "ci_high": 8872.226725853094
+      },
+      "bootstrap_pass": true,
+      "subperiod": {
+        "periods": [
+          2559.6896388133373,
+          413.87879827518736,
+          1256.3116033872182,
+          79.50801429176926
+        ],
+        "negative_periods": 0,
+        "max_share": 0.5939798426789463,
+        "pass": true
+      },
+      "subperiod_pass": true,
+      "parameter": {
+        "pass": true,
+        "failures": 0,
+        "variants": [
+          {
+            "field": "window",
+            "factor": 0.8,
+            "pnl": 3765.3180471298556,
+            "pf": 1.6735572493877697,
+            "trades": 609
+          },
+          {
+            "field": "window",
+            "factor": 1.2,
+            "pnl": 4674.372349010062,
+            "pf": 1.8529358616850877,
+            "trades": 618
+          },
+          {
+            "field": "quantile",
+            "factor": 0.9,
+            "pnl": 5061.728391913774,
+            "pf": 1.7674764117314659,
+            "trades": 735
+          },
+          {
+            "field": "quantile",
+            "factor": 1.1,
+            "pnl": 3681.5253071740776,
+            "pf": 1.810802501573441,
+            "trades": 502
+          },
+          {
+            "field": "horizon",
+            "factor": 0.8,
+            "pnl": 4117.899554767504,
+            "pf": 1.9014055021804845,
+            "trades": 624
+          },
+          {
+            "field": "horizon",
+            "factor": 1.2,
+            "pnl": 3625.635554767516,
+            "pf": 1.4923928293923072,
+            "trades": 624
+          }
+        ]
+      },
+      "parameter_pass": true,
+      "reverse_pass": true,
+      "survived_all": true,
+      "failures": []
+    },
+    {
+      "name": "UNG_5m_volz_follow_w6_q0.75_all_h36_cost2.0",
+      "timeframe": "5m",
+      "leader": "UNG",
+      "feature": "volz",
+      "mode": "follow",
+      "window": 6,
+      "quantile": 0.75,
+      "threshold": 1.0217589874579023,
+      "session": "all",
+      "horizon": 36,
+      "cost": 2.0,
+      "train": {
+        "trades": 542,
+        "tpd": 18.640554096011464,
+        "pnl": 772.4054047295779,
+        "wr": 0.43911439114391143,
+        "pf": 1.0942710942546157,
+        "sh": 0.627441110509391,
+        "dd": 2458.7205404060137
+      },
+      "val": {
+        "trades": 271,
+        "tpd": 20.713375796178344,
+        "pnl": 177.88586689399972,
+        "wr": 0.4944649446494465,
+        "pf": 1.0607175376978661,
+        "sh": 0.3589613627372605,
+        "dd": 1082.9941460387115
+      },
+      "old_test": {
+        "trades": 272,
+        "tpd": 18.008275862068967,
+        "pnl": 453.5090210086702,
+        "wr": 0.5257352941176471,
+        "pf": 1.2070736385249754,
+        "sh": 1.1507314209032966,
+        "dd": 833.6376978406811
+      },
+      "forward": {
+        "trades": 602,
+        "tpd": 23.12913553895411,
+        "pnl": 4243.802176899611,
+        "wr": 0.5714285714285714,
+        "pf": 1.7598659591978938,
+        "sh": 4.7373603181491575,
+        "dd": 643.660718914397
+      },
+      "reverse": {
+        "trades": 602,
+        "tpd": 23.12913553895411,
+        "pnl": -5650.147823100341,
+        "wr": 0.3920265780730897,
+        "pf": 0.4703051547750017,
+        "sh": -6.300009946239628,
+        "dd": 6169.179773242184
+      },
+      "old_gate_pass": true,
+      "bootstrap": {
+        "trials": 2000,
+        "block": 108,
+        "ci_low": 874.7570870221169,
+        "ci_high": 7582.301997472508
+      },
+      "bootstrap_pass": true,
+      "subperiod": {
+        "periods": [
+          1733.7849104131703,
+          843.954013235005,
+          821.4990904504441,
+          844.5641628009922
+        ],
+        "negative_periods": 0,
+        "max_share": 0.4085451767405,
+        "pass": true
+      },
+      "subperiod_pass": true,
+      "parameter": {
+        "pass": true,
+        "failures": 0,
+        "variants": [
+          {
+            "field": "window",
+            "factor": 0.8,
+            "pnl": 3668.5018991976817,
+            "pf": 1.637388067401956,
+            "trades": 607
+          },
+          {
+            "field": "window",
+            "factor": 1.2,
+            "pnl": 3897.7547211187693,
+            "pf": 1.7439848659700714,
+            "trades": 580
+          },
+          {
+            "field": "quantile",
+            "factor": 0.9,
+            "pnl": 4297.449893179655,
+            "pf": 1.504036762360825,
+            "trades": 840
+          },
+          {
+            "field": "quantile",
+            "factor": 1.1,
+            "pnl": 3426.9308979424495,
+            "pf": 2.11707802192389,
+            "trades": 380
+          },
+          {
+            "field": "horizon",
+            "factor": 0.8,
+            "pnl": 3759.2565280996205,
+            "pf": 1.7890501069739437,
+            "trades": 603
+          },
+          {
+            "field": "horizon",
+            "factor": 1.2,
+            "pnl": 3935.72178444655,
+            "pf": 1.57387760357663,
+            "trades": 599
+          }
+        ]
+      },
+      "parameter_pass": true,
+      "reverse_pass": true,
+      "survived_all": true,
+      "failures": []
+    },
+    {
+      "name": "XLV_5m_volz_follow_w24_q0.75_all_h36_cost2.0",
+      "timeframe": "5m",
+      "leader": "XLV",
+      "feature": "volz",
+      "mode": "follow",
+      "window": 24,
+      "quantile": 0.75,
+      "threshold": 0.766573783566999,
+      "session": "all",
+      "horizon": 36,
+      "cost": 2.0,
+      "train": {
+        "trades": 522,
+        "tpd": 17.40805928670681,
+        "pnl": 2490.959760709152,
+        "wr": 0.5191570881226054,
+        "pf": 1.3517616916951523,
+        "sh": 2.3847051403917248,
+        "dd": 1874.5861566689323
+      },
+      "val": {
+        "trades": 261,
+        "tpd": 15.601494396014942,
+        "pnl": 1289.4715067933323,
+        "wr": 0.5440613026819924,
+        "pf": 1.5966786919638103,
+        "sh": 2.631752688936689,
+        "dd": 1123.1108227720122
+      },
+      "old_test": {
+        "trades": 262,
+        "tpd": 24.780295566502463,
+        "pnl": 638.474713176832,
+        "wr": 0.5305343511450382,
+        "pf": 1.323056917789427,
+        "sh": 1.7537376453109996,
+        "dd": 777.1959528531897
+      },
+      "forward": {
+        "trades": 645,
+        "tpd": 24.764698040261298,
+        "pnl": 4168.996343744594,
+        "wr": 0.5550387596899224,
+        "pf": 1.7270812183706927,
+        "sh": 5.0709330733791464,
+        "dd": 1457.000822336418
+      },
+      "reverse": {
+        "trades": 645,
+        "tpd": 24.764698040261298,
+        "pnl": -5754.116656255459,
+        "wr": 0.4248062015503876,
+        "pf": 0.4677707410715145,
+        "sh": -6.982828300538718,
+        "dd": 5953.252155123801
+      },
+      "old_gate_pass": true,
+      "bootstrap": {
+        "trials": 2000,
+        "block": 108,
+        "ci_low": 106.75332515137555,
+        "ci_high": 8378.095994200992
+      },
+      "bootstrap_pass": true,
+      "subperiod": {
+        "periods": [
+          1289.8271490637235,
+          -312.2061471118588,
+          727.4063400472013,
+          2463.969001745528
+        ],
+        "negative_periods": 1,
+        "max_share": 0.5910221066618615,
+        "pass": true
+      },
+      "subperiod_pass": true,
+      "parameter": {
+        "pass": true,
+        "failures": 0,
+        "variants": [
+          {
+            "field": "window",
+            "factor": 0.8,
+            "pnl": 4206.196652056265,
+            "pf": 1.714432353090885,
+            "trades": 638
+          },
+          {
+            "field": "window",
+            "factor": 1.2,
+            "pnl": 4304.748770264917,
+            "pf": 1.846380202827597,
+            "trades": 637
+          },
+          {
+            "field": "quantile",
+            "factor": 0.9,
+            "pnl": 3275.7546259954756,
+            "pf": 1.3662630661709372,
+            "trades": 863
+          },
+          {
+            "field": "quantile",
+            "factor": 1.1,
+            "pnl": 4350.240384885723,
+            "pf": 2.531983956501499,
+            "trades": 433
+          },
+          {
+            "field": "horizon",
+            "factor": 0.8,
+            "pnl": 3834.507156442014,
+            "pf": 1.751306032748711,
+            "trades": 652
+          },
+          {
+            "field": "horizon",
+            "factor": 1.2,
+            "pnl": 4138.858284518779,
+            "pf": 1.6448216369984228,
+            "trades": 638
+          }
+        ]
+      },
+      "parameter_pass": true,
+      "reverse_pass": true,
+      "survived_all": true,
+      "failures": []
+    },
+    {
+      "name": "UNG_5m_volz_follow_w9_q0.55_london_h24_cost2.0",
+      "timeframe": "5m",
+      "leader": "UNG",
+      "feature": "volz",
+      "mode": "follow",
+      "window": 9,
+      "quantile": 0.55,
+      "threshold": 0.6216453994598188,
+      "session": "london",
+      "horizon": 24,
+      "cost": 2.0,
+      "train": {
+        "trades": 702,
+        "tpd": 23.55814495455605,
+        "pnl": 222.7809293027793,
+        "wr": 0.42165242165242167,
+        "pf": 1.028437499658952,
+        "sh": 0.20281575552554654,
+        "dd": 2394.77532024863
+      },
+      "val": {
+        "trades": 351,
+        "tpd": 25.11503105590062,
+        "pnl": 91.43286693648736,
+        "wr": 0.48148148148148145,
+        "pf": 1.0267915129162828,
+        "sh": 0.2030289773673953,
+        "dd": 953.7324092330118
+      },
+      "old_test": {
+        "trades": 352,
+        "tpd": 24.90198968312454,
+        "pnl": 7.565766405377161,
+        "wr": 0.48011363636363635,
+        "pf": 1.002917378485062,
+        "sh": 0.020852952480187353,
+        "dd": 941.740742397595
+      },
+      "forward": {
+        "trades": 775,
+        "tpd": 34.728489186245525,
+        "pnl": 3986.8242758728575,
+        "wr": 0.5664516129032258,
+        "pf": 1.7452539658019002,
+        "sh": 5.529858406766471,
+        "dd": 580.9026970425275
+      },
+      "reverse": {
+        "trades": 775,
+        "tpd": 34.728489186245525,
+        "pnl": -5762.582724127102,
+        "wr": 0.3896774193548387,
+        "pf": 0.4452838885626583,
+        "sh": -7.978648386418734,
+        "dd": 6235.901930866944
+      },
+      "old_gate_pass": true,
+      "bootstrap": {
+        "trials": 2000,
+        "block": 72,
+        "ci_low": 768.5665476847263,
+        "ci_high": 7554.683734045634
+      },
+      "bootstrap_pass": true,
+      "subperiod": {
+        "periods": [
+          2335.4353755676566,
+          510.40105172400905,
+          1020.374314947006,
+          120.61353363418544
+        ],
+        "negative_periods": 0,
+        "max_share": 0.5857883904492749,
+        "pass": true
+      },
+      "subperiod_pass": true,
+      "parameter": {
+        "pass": true,
+        "failures": 0,
+        "variants": [
+          {
+            "field": "window",
+            "factor": 0.8,
+            "pnl": 2840.1510232225155,
+            "pf": 1.5098672977646181,
+            "trades": 762
+          },
+          {
+            "field": "window",
+            "factor": 1.2,
+            "pnl": 4950.815807482271,
+            "pf": 2.064659368759688,
+            "trades": 783
+          },
+          {
+            "field": "quantile",
+            "factor": 0.9,
+            "pnl": 4062.568963024922,
+            "pf": 1.6961673587686206,
+            "trades": 842
+          },
+          {
+            "field": "quantile",
+            "factor": 1.1,
+            "pnl": 3461.639496350075,
+            "pf": 1.7255426685749358,
+            "trades": 692
+          },
+          {
+            "field": "horizon",
+            "factor": 0.8,
+            "pnl": 2055.307275872866,
+            "pf": 1.3931850610207017,
+            "trades": 775
+          },
+          {
+            "field": "horizon",
+            "factor": 1.2,
+            "pnl": 5011.401775872857,
+            "pf": 1.8800652416986863,
+            "trades": 775
+          }
+        ]
+      },
+      "parameter_pass": true,
+      "reverse_pass": true,
+      "survived_all": true,
+      "failures": []
+    },
+    {
+      "name": "XLV_5m_volz_follow_w24_q0.75_all_h30_cost2.0",
+      "timeframe": "5m",
+      "leader": "XLV",
+      "feature": "volz",
+      "mode": "follow",
+      "window": 24,
+      "quantile": 0.75,
+      "threshold": 0.766573783566999,
+      "session": "all",
+      "horizon": 30,
+      "cost": 2.0,
+      "train": {
+        "trades": 522,
+        "tpd": 17.40805928670681,
+        "pnl": 1747.9317607091562,
+        "wr": 0.5095785440613027,
+        "pf": 1.2562545302871049,
+        "sh": 1.8243019865197734,
+        "dd": 1754.749156668933
+      },
+      "val": {
+        "trades": 261,
+        "tpd": 15.601494396014942,
+        "pnl": 312.76700679333396,
+        "wr": 0.46360153256704983,
+        "pf": 1.1460833384835833,
+        "sh": 0.7795303140336256,
+        "dd": 1059.2382980945756
+      },
+      "old_test": {
+        "trades": 262,
+        "tpd": 24.780295566502463,
+        "pnl": 476.1332131768344,
+        "wr": 0.5305343511450382,
+        "pf": 1.2480974322164684,
+        "sh": 1.352359735444011,
+        "dd": 803.5874528531882
+      },
+      "forward": {
+        "trades": 651,
+        "tpd": 24.97508991607833,
+        "pnl": 3922.2790734715245,
+        "wr": 0.5514592933947773,
+        "pf": 1.7529510376895927,
+        "sh": 5.096477753924883,
+        "dd": 1028.9783223364193
+      },
+      "reverse": {
+        "trades": 651,
+        "tpd": 24.97508991607833,
+        "pnl": -5525.413926528542,
+        "wr": 0.4039938556067588,
+        "pf": 0.4511361989190138,
+        "sh": -7.160657380339453,
+        "dd": 5895.0200056769845
+      },
+      "old_gate_pass": true,
+      "bootstrap": {
+        "trials": 2000,
+        "block": 90,
+        "ci_low": 534.6952254967675,
+        "ci_high": 7622.358707675482
+      },
+      "bootstrap_pass": true,
+      "subperiod": {
+        "periods": [
+          835.2254037807044,
+          -1.400299709565708,
+          1055.2259978771187,
+          2033.2279715232671
+        ],
+        "negative_periods": 1,
+        "max_share": 0.5183792212224463,
+        "pass": true
+      },
+      "subperiod_pass": true,
+      "parameter": {
+        "pass": true,
+        "failures": 0,
+        "variants": [
+          {
+            "field": "window",
+            "factor": 0.8,
+            "pnl": 4061.5668878599913,
+            "pf": 1.8217733041816928,
+            "trades": 640
+          },
+          {
+            "field": "window",
+            "factor": 1.2,
+            "pnl": 4249.527499991848,
+            "pf": 1.941958964530174,
+            "trades": 643
+          },
+          {
+            "field": "quantile",
+            "factor": 0.9,
+            "pnl": 3149.9298557224,
+            "pf": 1.3979061315684058,
+            "trades": 869
+          },
+          {
+            "field": "quantile",
+            "factor": 1.1,
+            "pnl": 4207.606114612659,
+            "pf": 2.5853655680064915,
+            "trades": 439
+          },
+          {
+            "field": "horizon",
+            "factor": 0.8,
+            "pnl": 3060.1836564420064,
+            "pf": 1.6699435199731507,
+            "trades": 652
+          },
+          {
+            "field": "horizon",
+            "factor": 1.2,
+            "pnl": 4168.996343744594,
+            "pf": 1.7270812183706927,
+            "trades": 645
+          }
+        ]
+      },
+      "parameter_pass": true,
+      "reverse_pass": true,
+      "survived_all": true,
+      "failures": []
+    },
+    {
+      "name": "XLY_5m_volz_fade_w18_q0.55_london_h36_cost2.0",
+      "timeframe": "5m",
+      "leader": "XLY",
+      "feature": "volz",
+      "mode": "fade",
+      "window": 18,
+      "quantile": 0.55,
+      "threshold": 0.49447887510243144,
+      "session": "london",
+      "horizon": 36,
+      "cost": 2.0,
+      "train": {
+        "trades": 482,
+        "tpd": 15.021750892760522,
+        "pnl": 1765.4311533809357,
+        "wr": 0.5518672199170125,
+        "pf": 1.2668053853427454,
+        "sh": 1.5437430682086646,
+        "dd": 2013.0885539490048
+      },
+      "val": {
+        "trades": 241,
+        "tpd": 17.061946902654867,
+        "pnl": 782.2511935774148,
+        "wr": 0.5394190871369294,
+        "pf": 1.400533993003344,
+        "sh": 1.9732664464144418,
+        "dd": 746.0005972580597
+      },
+      "old_test": {
+        "trades": 241,
+        "tpd": 22.4621359223301,
+        "pnl": 1176.8941808553027,
+        "wr": 0.5726141078838174,
+        "pf": 1.8699389412711573,
+        "sh": 3.581626063263899,
+        "dd": 729.4283036999796
+      },
+      "forward": {
+        "trades": 516,
+        "tpd": 23.111664074650076,
+        "pnl": 3743.5600971968397,
+        "wr": 0.5503875968992248,
+        "pf": 1.7525358849442192,
+        "sh": 4.9558547115005265,
+        "dd": 828.2273374954102
+      },
+      "reverse": {
+        "trades": 516,
+        "tpd": 23.111664074650076,
+        "pnl": -4930.502902803155,
+        "wr": 0.4166666666666667,
+        "pf": 0.4743764636664848,
+        "sh": -6.532046192635762,
+        "dd": 5716.850046147339
+      },
+      "old_gate_pass": true,
+      "bootstrap": {
+        "trials": 2000,
+        "block": 108,
+        "ci_low": 659.5859961679306,
+        "ci_high": 7298.717120277344
+      },
+      "bootstrap_pass": true,
+      "subperiod": {
+        "periods": [
+          1331.606224187996,
+          38.526969407081836,
+          1869.0043928498696,
+          504.4225107518917
+        ],
+        "negative_periods": 0,
+        "max_share": 0.4992585518392964,
+        "pass": true
+      },
+      "subperiod_pass": true,
+      "parameter": {
+        "pass": true,
+        "failures": 0,
+        "variants": [
+          {
+            "field": "window",
+            "factor": 0.8,
+            "pnl": 3404.504557600772,
+            "pf": 1.6158991598194796,
+            "trades": 548
+          },
+          {
+            "field": "window",
+            "factor": 1.2,
+            "pnl": 3444.1275423317206,
+            "pf": 1.7304722859801533,
+            "trades": 490
+          },
+          {
+            "field": "quantile",
+            "factor": 0.9,
+            "pnl": 3554.5973239760997,
+            "pf": 1.6007769638011347,
+            "trades": 578
+          },
+          {
+            "field": "quantile",
+            "factor": 1.1,
+            "pnl": 2851.277653203987,
+            "pf": 1.637242442867239,
+            "trades": 451
+          },
+          {
+            "field": "horizon",
+            "factor": 0.8,
+            "pnl": 3614.9200971968403,
+            "pf": 1.909891939720367,
+            "trades": 516
+          },
+          {
+            "field": "horizon",
+            "factor": 1.2,
+            "pnl": 3877.9790971968323,
+            "pf": 1.6601712209451631,
+            "trades": 516
+          }
+        ]
+      },
+      "parameter_pass": true,
+      "reverse_pass": true,
+      "survived_all": true,
+      "failures": []
+    },
+    {
+      "name": "XLY_5m_volz_fade_w18_q0.55_london_h30_cost2.0",
+      "timeframe": "5m",
+      "leader": "XLY",
+      "feature": "volz",
+      "mode": "fade",
+      "window": 18,
+      "quantile": 0.55,
+      "threshold": 0.49447887510243144,
+      "session": "london",
+      "horizon": 30,
+      "cost": 2.0,
+      "train": {
+        "trades": 482,
+        "tpd": 15.021750892760522,
+        "pnl": 2438.4481533809435,
+        "wr": 0.549792531120332,
+        "pf": 1.4624594505294366,
+        "sh": 2.343393321509862,
+        "dd": 1428.1452197532294
+      },
+      "val": {
+        "trades": 241,
+        "tpd": 17.061946902654867,
+        "pnl": 247.10819357741556,
+        "wr": 0.45228215767634855,
+        "pf": 1.1122088096974692,
+        "sh": 0.6297628028675197,
+        "dd": 844.1667836543165
+      },
+      "old_test": {
+        "trades": 242,
+        "tpd": 22.38150289017341,
+        "pnl": 1452.0478120279763,
+        "wr": 0.6446280991735537,
+        "pf": 2.297226871663176,
+        "sh": 4.842271790953682,
+        "dd": 480.5549950567404
+      },
+      "forward": {
+        "trades": 516,
+        "tpd": 23.111664074650076,
+        "pnl": 3648.5185971968363,
+        "wr": 0.5736434108527132,
+        "pf": 1.885243992835594,
+        "sh": 5.497571084217772,
+        "dd": 669.5380106613077
+      },
+      "reverse": {
+        "trades": 516,
+        "tpd": 23.111664074650076,
+        "pnl": -4835.461402803152,
+        "wr": 0.3992248062015504,
+        "pf": 0.42824267671076965,
+        "sh": -7.293335716655234,
+        "dd": 5214.555964334351
+      },
+      "old_gate_pass": true,
+      "bootstrap": {
+        "trials": 2000,
+        "block": 90,
+        "ci_low": 1212.517090436535,
+        "ci_high": 6425.644403124543
+      },
+      "bootstrap_pass": true,
+      "subperiod": {
+        "periods": [
+          1139.653724187992,
+          -63.562030592918106,
+          1562.438892849868,
+          1009.9880107518945
+        ],
+        "negative_periods": 1,
+        "max_share": 0.42823925690012726,
+        "pass": true
+      },
+      "subperiod_pass": true,
+      "parameter": {
+        "pass": true,
+        "failures": 0,
+        "variants": [
+          {
+            "field": "window",
+            "factor": 0.8,
+            "pnl": 3334.6290576007677,
+            "pf": 1.716815832084794,
+            "trades": 548
+          },
+          {
+            "field": "window",
+            "factor": 1.2,
+            "pnl": 3343.791542331729,
+            "pf": 1.8346233941863752,
+            "trades": 490
+          },
+          {
+            "field": "quantile",
+            "factor": 0.9,
+            "pnl": 3473.353823976101,
+            "pf": 1.6926282034546818,
+            "trades": 578
+          },
+          {
+            "field": "quantile",
+            "factor": 1.1,
+            "pnl": 2807.540153203986,
+            "pf": 1.766746153843465,
+            "trades": 451
+          },
+          {
+            "field": "horizon",
+            "factor": 0.8,
+            "pnl": 3111.2815971968366,
+            "pf": 1.9295580350859025,
+            "trades": 516
+          },
+          {
+            "field": "horizon",
+            "factor": 1.2,
+            "pnl": 3743.5600971968397,
+            "pf": 1.7525358849442192,
+            "trades": 516
+          }
+        ]
+      },
+      "parameter_pass": true,
+      "reverse_pass": true,
+      "survived_all": true,
+      "failures": []
+    },
+    {
+      "name": "UNG_5m_volz_follow_w6_q0.55_london_h36_cost2.0",
+      "timeframe": "5m",
+      "leader": "UNG",
+      "feature": "volz",
+      "mode": "follow",
+      "window": 6,
+      "quantile": 0.55,
+      "threshold": 0.597989691941306,
+      "session": "london",
+      "horizon": 36,
+      "cost": 2.0,
+      "train": {
+        "trades": 687,
+        "tpd": 23.602051771442206,
+        "pnl": 1438.2939026202198,
+        "wr": 0.4556040756914119,
+        "pf": 1.1362215808469027,
+        "sh": 0.9547440681106432,
+        "dd": 3300.798652544631
+      },
+      "val": {
+        "trades": 344,
+        "tpd": 24.792792792792792,
+        "pnl": 420.8310599027477,
+        "wr": 0.5058139534883721,
+        "pf": 1.1357436104411545,
+        "sh": 0.9729485803880644,
+        "dd": 923.8648553386826
+      },
+      "old_test": {
+        "trades": 344,
+        "tpd": 23.07756813417191,
+        "pnl": 146.51802790898358,
+        "wr": 0.5,
+        "pf": 1.0533586391284808,
+        "sh": 0.362692851959817,
+        "dd": 642.1393370960321
+      },
+      "forward": {
+        "trades": 760,
+        "tpd": 34.05102675793404,
+        "pnl": 3489.505475906046,
+        "wr": 0.5631578947368421,
+        "pf": 1.4643899117146433,
+        "sh": 3.7714810490789494,
+        "dd": 912.6727653706948
+      },
+      "reverse": {
+        "trades": 760,
+        "tpd": 34.05102675793404,
+        "pnl": -5226.845524093905,
+        "wr": 0.39342105263157895,
+        "pf": 0.5652987374298429,
+        "sh": -5.64500351642258,
+        "dd": 5664.715022053867
+      },
+      "old_gate_pass": true,
+      "bootstrap": {
+        "trials": 2000,
+        "block": 108,
+        "ci_low": 363.4316371825259,
+        "ci_high": 7216.402573042649
+      },
+      "bootstrap_pass": true,
+      "subperiod": {
+        "periods": [
+          2003.767849794934,
+          568.4918655640606,
+          804.6802560876392,
+          112.56550445941244
+        ],
+        "negative_periods": 0,
+        "max_share": 0.574226882184404,
+        "pass": true
+      },
+      "subperiod_pass": true,
+      "parameter": {
+        "pass": true,
+        "failures": 0,
+        "variants": [
+          {
+            "field": "window",
+            "factor": 0.8,
+            "pnl": 3392.020683859227,
+            "pf": 1.4408203615713826,
+            "trades": 760
+          },
+          {
+            "field": "window",
+            "factor": 1.2,
+            "pnl": 4045.802523222519,
+            "pf": 1.572303492853892,
+            "trades": 762
+          },
+          {
+            "field": "quantile",
+            "factor": 0.9,
+            "pnl": 3839.519614963334,
+            "pf": 1.463308750490297,
+            "trades": 846
+          },
+          {
+            "field": "quantile",
+            "factor": 1.1,
+            "pnl": 3327.2809291733774,
+            "pf": 1.4967707447234622,
+            "trades": 695
+          },
+          {
+            "field": "horizon",
+            "factor": 0.8,
+            "pnl": 3457.806475906042,
+            "pf": 1.553421162611239,
+            "trades": 760
+          },
+          {
+            "field": "horizon",
+            "factor": 1.2,
+            "pnl": 2911.7904759060552,
+            "pf": 1.3136887402113675,
+            "trades": 760
+          }
+        ]
+      },
+      "parameter_pass": true,
+      "reverse_pass": true,
+      "survived_all": true,
+      "failures": []
+    },
+    {
+      "name": "UNG_5m_volz_follow_w6_q0.65_london_h36_cost2.0",
+      "timeframe": "5m",
+      "leader": "UNG",
+      "feature": "volz",
+      "mode": "follow",
+      "window": 6,
+      "quantile": 0.65,
+      "threshold": 0.7672686347243236,
+      "session": "london",
+      "horizon": 36,
+      "cost": 2.0,
+      "train": {
+        "trades": 569,
+        "tpd": 19.074845768827842,
+        "pnl": 1606.5138039130607,
+        "wr": 0.4428822495606327,
+        "pf": 1.1910943549535404,
+        "sh": 1.1805797944268623,
+        "dd": 2758.2314284411486
+      },
+      "val": {
+        "trades": 285,
+        "tpd": 21.679873217115688,
+        "pnl": 390.94848249501086,
+        "wr": 0.5087719298245614,
+        "pf": 1.1477214862620737,
+        "sh": 0.9562076199076331,
+        "dd": 843.2474720567066
+      },
+      "old_test": {
+        "trades": 285,
+        "tpd": 19.11059371362049,
+        "pnl": 110.58014047272144,
+        "wr": 0.5017543859649123,
+        "pf": 1.0476607142069416,
+        "sh": 0.2945024970154079,
+        "dd": 722.5130431905628
+      },
+      "forward": {
+        "trades": 608,
+        "tpd": 27.240821406347234,
+        "pnl": 3169.314170375812,
+        "wr": 0.5674342105263158,
+        "pf": 1.5297802268093266,
+        "sh": 3.761299372054625,
+        "dd": 699.4883883512766
+      },
+      "reverse": {
+        "trades": 608,
+        "tpd": 27.240821406347234,
+        "pnl": -4556.284829624138,
+        "wr": 0.38980263157894735,
+        "pf": 0.543163456182313,
+        "sh": -5.402242655013246,
+        "dd": 5076.6963539325325
+      },
+      "old_gate_pass": true,
+      "bootstrap": {
+        "trials": 2000,
+        "block": 108,
+        "ci_low": 78.23994785363074,
+        "ci_high": 6508.949101362395
+      },
+      "bootstrap_pass": true,
+      "subperiod": {
+        "periods": [
+          1773.8428717271966,
+          596.5334566883197,
+          698.3200498961983,
+          100.61779206409759
+        ],
+        "negative_periods": 0,
+        "max_share": 0.5596929734223405,
+        "pass": true
+      },
+      "subperiod_pass": true,
+      "parameter": {
+        "pass": true,
+        "failures": 0,
+        "variants": [
+          {
+            "field": "window",
+            "factor": 0.8,
+            "pnl": 3799.668040155082,
+            "pf": 1.6660257051916785,
+            "trades": 602
+          },
+          {
+            "field": "window",
+            "factor": 1.2,
+            "pnl": 3765.3180471298556,
+            "pf": 1.6735572493877697,
+            "trades": 609
+          },
+          {
+            "field": "quantile",
+            "factor": 0.9,
+            "pnl": 3436.520030848084,
+            "pf": 1.4881813281169731,
+            "trades": 719
+          },
+          {
+            "field": "quantile",
+            "factor": 1.1,
+            "pnl": 3093.5769778306744,
+            "pf": 1.6415696180945354,
+            "trades": 501
+          },
+          {
+            "field": "horizon",
+            "factor": 0.8,
+            "pnl": 3030.959670375806,
+            "pf": 1.6196169180819155,
+            "trades": 608
+          },
+          {
+            "field": "horizon",
+            "factor": 1.2,
+            "pnl": 2658.0311703758225,
+            "pf": 1.3604744923290384,
+            "trades": 608
+          }
+        ]
+      },
+      "parameter_pass": true,
+      "reverse_pass": true,
+      "survived_all": true,
+      "failures": []
+    },
+    {
+      "name": "XLY_5m_volz_fade_w18_q0.55_london_h24_cost2.0",
+      "timeframe": "5m",
+      "leader": "XLY",
+      "feature": "volz",
+      "mode": "fade",
+      "window": 18,
+      "quantile": 0.55,
+      "threshold": 0.49447887510243144,
+      "session": "london",
+      "horizon": 24,
+      "cost": 2.0,
+      "train": {
+        "trades": 483,
+        "tpd": 15.030145867098867,
+        "pnl": 2517.3956216946317,
+        "wr": 0.5652173913043478,
+        "pf": 1.579818642579933,
+        "sh": 2.5711718637091314,
+        "dd": 1138.8815809226362
+      },
+      "val": {
+        "trades": 241,
+        "tpd": 17.12086827824371,
+        "pnl": 182.97811380095334,
+        "wr": 0.3983402489626556,
+        "pf": 1.0832411173001615,
+        "sh": 0.46753794001637333,
+        "dd": 844.4253101861956
+      },
+      "old_test": {
+        "trades": 242,
+        "tpd": 22.30272,
+        "pnl": 1023.1385111666992,
+        "wr": 0.6487603305785123,
+        "pf": 1.8389493829145762,
+        "sh": 3.6499397298829925,
+        "dd": 399.46476425556887
+      },
+      "forward": {
+        "trades": 516,
+        "tpd": 23.111664074650076,
+        "pnl": 3111.2815971968366,
+        "wr": 0.5910852713178295,
+        "pf": 1.9295580350859025,
+        "sh": 5.52427788427964,
+        "dd": 524.1815814763096
+      },
+      "reverse": {
+        "trades": 516,
+        "tpd": 23.111664074650076,
+        "pnl": -4298.224402803153,
+        "wr": 0.3546511627906977,
+        "pf": 0.4019165959697844,
+        "sh": -7.638208447633946,
+        "dd": 4298.224402803151
+      },
+      "old_gate_pass": true,
+      "bootstrap": {
+        "trials": 2000,
+        "block": 72,
+        "ci_low": 1068.8306630411294,
+        "ci_high": 5139.383501711845
+      },
+      "bootstrap_pass": true,
+      "subperiod": {
+        "periods": [
+          984.5312241879946,
+          111.62346940707599,
+          965.491892849873,
+          1049.6350107518936
+        ],
+        "negative_periods": 0,
+        "max_share": 0.33736419477349155,
+        "pass": true
+      },
+      "subperiod_pass": true,
+      "parameter": {
+        "pass": true,
+        "failures": 0,
+        "variants": [
+          {
+            "field": "window",
+            "factor": 0.8,
+            "pnl": 2611.6445576007673,
+            "pf": 1.673896970886301,
+            "trades": 548
+          },
+          {
+            "field": "window",
+            "factor": 1.2,
+            "pnl": 3054.9845423317197,
+            "pf": 2.007867312163698,
+            "trades": 490
+          },
+          {
+            "field": "quantile",
+            "factor": 0.9,
+            "pnl": 3057.3558239760987,
+            "pf": 1.7524988286390157,
+            "trades": 578
+          },
+          {
+            "field": "quantile",
+            "factor": 1.1,
+            "pnl": 2361.535153203986,
+            "pf": 1.782986970430235,
+            "trades": 451
+          },
+          {
+            "field": "horizon",
+            "factor": 0.8,
+            "pnl": 2195.6810971968453,
+            "pf": 1.7253215241956021,
+            "trades": 516
+          },
+          {
+            "field": "horizon",
+            "factor": 1.2,
+            "pnl": 3614.9200971968403,
+            "pf": 1.909891939720367,
+            "trades": 516
+          }
+        ]
+      },
+      "parameter_pass": true,
+      "reverse_pass": true,
+      "survived_all": true,
+      "failures": []
+    },
+    {
+      "name": "XLY_5m_volz_fade_w18_q0.55_london_h18_cost2.0",
+      "timeframe": "5m",
+      "leader": "XLY",
+      "feature": "volz",
+      "mode": "fade",
+      "window": 18,
+      "quantile": 0.55,
+      "threshold": 0.49447887510243144,
+      "session": "london",
+      "horizon": 18,
+      "cost": 2.0,
+      "train": {
+        "trades": 483,
+        "tpd": 15.030145867098867,
+        "pnl": 1870.4051216946173,
+        "wr": 0.5217391304347826,
+        "pf": 1.4625181935901033,
+        "sh": 1.9951126241719759,
+        "dd": 1275.6549723813346
+      },
+      "val": {
+        "trades": 241,
+        "tpd": 17.12086827824371,
+        "pnl": 307.0616138009468,
+        "wr": 0.3983402489626556,
+        "pf": 1.150612244953695,
+        "sh": 0.7995299102312907,
+        "dd": 735.7264090555618
+      },
+      "old_test": {
+        "trades": 242,
+        "tpd": 22.30272,
+        "pnl": 673.1445111666995,
+        "wr": 0.6363636363636364,
+        "pf": 1.5215226825661683,
+        "sh": 2.514522644987965,
+        "dd": 458.11576425556603
+      },
+      "forward": {
+        "trades": 516,
+        "tpd": 23.111664074650076,
+        "pnl": 2010.8855971968483,
+        "wr": 0.5833333333333334,
+        "pf": 1.6657681006692957,
+        "sh": 4.309113440347991,
+        "dd": 607.1757753668538
+      },
+      "reverse": {
+        "trades": 516,
+        "tpd": 23.111664074650076,
+        "pnl": -3197.8284028031644,
+        "wr": 0.35852713178294576,
+        "pf": 0.44328722203315657,
+        "sh": -6.862236490578174,
+        "dd": 3199.0426719777424
+      },
+      "old_gate_pass": true,
+      "bootstrap": {
+        "trials": 2000,
+        "block": 54,
+        "ci_low": 117.59972598073159,
+        "ci_high": 3859.621485949897
+      },
+      "bootstrap_pass": true,
+      "subperiod": {
+        "periods": [
+          570.4757241879995,
+          405.30096940708125,
+          408.2128928498698,
+          626.8960107518977
+        ],
+        "negative_periods": 0,
+        "max_share": 0.31175120634698644,
+        "pass": true
+      },
+      "subperiod_pass": true,
+      "parameter": {
+        "pass": true,
+        "failures": 0,
+        "variants": [
+          {
+            "field": "window",
+            "factor": 0.8,
+            "pnl": 1563.7650576007636,
+            "pf": 1.443520914432558,
+            "trades": 548
+          },
+          {
+            "field": "window",
+            "factor": 1.2,
+            "pnl": 2373.332542331731,
+            "pf": 1.9520182686938345,
+            "trades": 490
+          },
+          {
+            "field": "quantile",
+            "factor": 0.9,
+            "pnl": 1825.4963239761096,
+            "pf": 1.4967691067412334,
+            "trades": 578
+          },
+          {
+            "field": "quantile",
+            "factor": 1.1,
+            "pnl": 1709.364653203997,
+            "pf": 1.638569181505606,
+            "trades": 451
+          },
+          {
+            "field": "horizon",
+            "factor": 0.8,
+            "pnl": 1354.6870971968347,
+            "pf": 1.4645828776566137,
+            "trades": 516
+          },
+          {
+            "field": "horizon",
+            "factor": 1.2,
+            "pnl": 2759.1585971968398,
+            "pf": 1.8877291003978456,
+            "trades": 516
+          }
+        ]
+      },
+      "parameter_pass": true,
+      "reverse_pass": true,
+      "survived_all": true,
+      "failures": []
+    }
+  ],
+  "portfolio": {
+    "selected_count": 5,
+    "models": [
+      {
+        "name": "UNG_5m_volz_follow_w18_q0.55_london_h30_cost2.0",
+        "timeframe": "5m",
+        "leader": "UNG",
+        "feature": "volz",
+        "mode": "follow",
+        "window": 18,
+        "quantile": 0.55,
+        "threshold": 0.6771454669112625,
+        "session": "london",
+        "horizon": 30,
+        "cost": 2.0,
+        "train": {
+          "trades": 696,
+          "tpd": 23.32689398347492,
+          "pnl": 2271.436406720454,
+          "wr": 0.4540229885057471,
+          "pf": 1.2539614301779418,
+          "sh": 1.5836631403335677,
+          "dd": 3021.1123386546624
+        },
+        "val": {
+          "trades": 348,
+          "tpd": 26.277923439958048,
+          "pnl": 394.3489864486424,
+          "wr": 0.49712643678160917,
+          "pf": 1.1250758121865039,
+          "sh": 0.9022790943633211,
+          "dd": 1256.2776112696379
+        },
+        "old_test": {
+          "trades": 349,
+          "tpd": 23.577762139338493,
+          "pnl": 886.9218417569699,
+          "wr": 0.5386819484240688,
+          "pf": 1.3309862595439421,
+          "sh": 1.9802842068106625,
+          "dd": 1171.4953202667225
+        },
+        "forward": {
+          "trades": 798,
+          "tpd": 35.78141055581504,
+          "pnl": 6527.097745594414,
+          "wr": 0.6428571428571429,
+          "pf": 2.337584367933805,
+          "sh": 8.171882534174857,
+          "dd": 863.888330045651
+        },
+        "reverse": {
+          "trades": 798,
+          "tpd": 35.78141055581504,
+          "pnl": -8351.56625440555,
+          "wr": 0.31453634085213034,
+          "pf": 0.3395634466128769,
+          "sh": -10.427915249839383,
+          "dd": 8917.052049448992
+        },
+        "old_gate_pass": true,
+        "bootstrap": {
+          "trials": 2000,
+          "block": 90,
+          "ci_low": 1801.9791744756237,
+          "ci_high": 12145.555542173539
+        },
+        "bootstrap_pass": true,
+        "subperiod": {
+          "periods": [
+            3540.23973240198,
+            908.8808869579731,
+            2227.88878743564,
+            -149.91166120118018
+          ],
+          "negative_periods": 1,
+          "max_share": 0.5423911009746301,
+          "pass": true
+        },
+        "subperiod_pass": true,
+        "parameter": {
+          "pass": true,
+          "failures": 0,
+          "variants": [
+            {
+              "field": "window",
+              "factor": 0.8,
+              "pnl": 6444.93996936439,
+              "pf": 2.2848545117302352,
+              "trades": 791
+            },
+            {
+              "field": "window",
+              "factor": 1.2,
+              "pnl": 6912.77031974067,
+              "pf": 2.316816034551773,
+              "trades": 830
+            },
+            {
+              "field": "quantile",
+              "factor": 0.9,
+              "pnl": 7467.351022412415,
+              "pf": 2.380810346093291,
+              "trades": 900
+            },
+            {
+              "field": "quantile",
+              "factor": 1.1,
+              "pnl": 5873.740728222545,
+              "pf": 2.299416801124992,
+              "trades": 713
+            },
+            {
+              "field": "horizon",
+              "factor": 0.8,
+              "pnl": 5954.981745594414,
+              "pf": 2.3883516003370855,
+              "trades": 798
+            },
+            {
+              "field": "horizon",
+              "factor": 1.2,
+              "pnl": 6178.165245594406,
+              "pf": 1.962352353643341,
+              "trades": 798
+            }
+          ]
+        },
+        "parameter_pass": true,
+        "reverse_pass": true,
+        "survived_all": true,
+        "failures": []
+      },
+      {
+        "name": "USO_5m_volz_follow_w24_q0.55_london_h24_cost2.0",
+        "timeframe": "5m",
+        "leader": "USO",
+        "feature": "volz",
+        "mode": "follow",
+        "window": 24,
+        "quantile": 0.55,
+        "threshold": 0.7068577306895848,
+        "session": "london",
+        "horizon": 24,
+        "cost": 2.0,
+        "train": {
+          "trades": 673,
+          "tpd": 20.441257118751317,
+          "pnl": 1472.993229197407,
+          "wr": 0.4650817236255572,
+          "pf": 1.2222555803865307,
+          "sh": 1.3742581299866834,
+          "dd": 4491.610638565232
+        },
+        "val": {
+          "trades": 336,
+          "tpd": 33.42590673575129,
+          "pnl": 5.35652578774409,
+          "wr": 0.4880952380952381,
+          "pf": 1.0017544851043076,
+          "sh": 0.012716503376788847,
+          "dd": 1240.3053430652415
+        },
+        "old_test": {
+          "trades": 337,
+          "tpd": 22.65017502917153,
+          "pnl": 75.46448109757011,
+          "wr": 0.42433234421364985,
+          "pf": 1.0266014232042926,
+          "sh": 0.17641804390395616,
+          "dd": 1637.6169251474203
+        },
+        "forward": {
+          "trades": 779,
+          "tpd": 34.93491124260355,
+          "pnl": 6285.389513738146,
+          "wr": 0.631578947368421,
+          "pf": 3.0949653127485193,
+          "sh": 10.880185547777558,
+          "dd": 527.3288827715417
+        },
+        "reverse": {
+          "trades": 779,
+          "tpd": 34.93491124260355,
+          "pnl": -8054.258486261857,
+          "wr": 0.3119383825417201,
+          "pf": 0.22948013036416523,
+          "sh": -13.952993917542596,
+          "dd": 8373.372190785942
+        },
+        "old_gate_pass": true,
+        "bootstrap": {
+          "trials": 2000,
+          "block": 72,
+          "ci_low": 3565.2246124635644,
+          "ci_high": 8820.520102936138
+        },
+        "bootstrap_pass": true,
+        "subperiod": {
+          "periods": [
+            1101.6881014712071,
+            1568.3594964111153,
+            2268.658193221201,
+            1346.683722634622
+          ],
+          "negative_periods": 0,
+          "max_share": 0.36094154360084346,
+          "pass": true
+        },
+        "subperiod_pass": true,
+        "parameter": {
+          "pass": true,
+          "failures": 0,
+          "variants": [
+            {
+              "field": "window",
+              "factor": 0.8,
+              "pnl": 5437.683118417702,
+              "pf": 2.517515705286594,
+              "trades": 761
+            },
+            {
+              "field": "window",
+              "factor": 1.2,
+              "pnl": 6355.667570060421,
+              "pf": 2.962839622105883,
+              "trades": 819
+            },
+            {
+              "field": "quantile",
+              "factor": 0.9,
+              "pnl": 5961.182963535681,
+              "pf": 2.6075892961178906,
+              "trades": 839
+            },
+            {
+              "field": "quantile",
+              "factor": 1.1,
+              "pnl": 6308.361998155183,
+              "pf": 3.5661156968816368,
+              "trades": 718
+            },
+            {
+              "field": "horizon",
+              "factor": 0.8,
+              "pnl": 5130.983013738154,
+              "pf": 2.9589124601536145,
+              "trades": 779
+            },
+            {
+              "field": "horizon",
+              "factor": 1.2,
+              "pnl": 6913.238013738144,
+              "pf": 3.0920462082700912,
+              "trades": 779
+            }
+          ]
+        },
+        "parameter_pass": true,
+        "reverse_pass": true,
+        "survived_all": true,
+        "failures": []
+      },
+      {
+        "name": "XLF_5m_volz_fade_w24_q0.65_london_h36_cost2.0",
+        "timeframe": "5m",
+        "leader": "XLF",
+        "feature": "volz",
+        "mode": "fade",
+        "window": 24,
+        "quantile": 0.65,
+        "threshold": 0.7027139932747447,
+        "session": "london",
+        "horizon": 36,
+        "cost": 2.0,
+        "train": {
+          "trades": 496,
+          "tpd": 17.087081339712917,
+          "pnl": 3839.793642217385,
+          "wr": 0.6088709677419355,
+          "pf": 1.7000923999841464,
+          "sh": 3.4678190818832575,
+          "dd": 1675.6949016233498
+        },
+        "val": {
+          "trades": 248,
+          "tpd": 16.56400742115028,
+          "pnl": 1121.7584247544135,
+          "wr": 0.5564516129032258,
+          "pf": 1.6160243895752655,
+          "sh": 2.9710230157846187,
+          "dd": 800.0893856677765
+        },
+        "old_test": {
+          "trades": 249,
+          "tpd": 18.0,
+          "pnl": 136.7005347709932,
+          "wr": 0.5060240963855421,
+          "pf": 1.083117774464029,
+          "sh": 0.4673705029808672,
+          "dd": 586.5272280844306
+        },
+        "forward": {
+          "trades": 490,
+          "tpd": 21.96078431372549,
+          "pnl": 4420.275937676476,
+          "wr": 0.5428571428571428,
+          "pf": 2.5527550169960023,
+          "sh": 7.541258006960172,
+          "dd": 643.8082358543452
+        },
+        "reverse": {
+          "trades": 490,
+          "tpd": 21.96078431372549,
+          "pnl": -5544.627062323531,
+          "wr": 0.4142857142857143,
+          "pf": 0.29877559656764496,
+          "sh": -9.444663537455325,
+          "dd": 5673.469946450341
+        },
+        "old_gate_pass": true,
+        "bootstrap": {
+          "trials": 2000,
+          "block": 108,
+          "ci_low": 1000.0316844705058,
+          "ci_high": 8159.302483377799
+        },
+        "bootstrap_pass": true,
+        "subperiod": {
+          "periods": [
+            1413.2314875001834,
+            19.063444926491048,
+            2949.251610451035,
+            38.72939479876641
+          ],
+          "negative_periods": 0,
+          "max_share": 0.6672098421080276,
+          "pass": true
+        },
+        "subperiod_pass": true,
+        "parameter": {
+          "pass": true,
+          "failures": 0,
+          "variants": [
+            {
+              "field": "window",
+              "factor": 0.8,
+              "pnl": 3521.1155264755453,
+              "pf": 2.0391113896598068,
+              "trades": 494
+            },
+            {
+              "field": "window",
+              "factor": 1.2,
+              "pnl": 5412.70297951868,
+              "pf": 2.955223766166129,
+              "trades": 501
+            },
+            {
+              "field": "quantile",
+              "factor": 0.9,
+              "pnl": 4186.153030681703,
+              "pf": 2.0178038836764713,
+              "trades": 587
+            },
+            {
+              "field": "quantile",
+              "factor": 1.1,
+              "pnl": 4172.340813219863,
+              "pf": 2.830612201224979,
+              "trades": 407
+            },
+            {
+              "field": "horizon",
+              "factor": 0.8,
+              "pnl": 3054.4854376764733,
+              "pf": 2.08085573630667,
+              "trades": 490
+            },
+            {
+              "field": "horizon",
+              "factor": 1.2,
+              "pnl": 5843.236437676471,
+              "pf": 2.961956480177034,
+              "trades": 490
+            }
+          ]
+        },
+        "parameter_pass": true,
+        "reverse_pass": true,
+        "survived_all": true,
+        "failures": []
+      },
+      {
+        "name": "XLV_5m_volz_follow_w24_q0.75_all_h36_cost2.0",
+        "timeframe": "5m",
+        "leader": "XLV",
+        "feature": "volz",
+        "mode": "follow",
+        "window": 24,
+        "quantile": 0.75,
+        "threshold": 0.766573783566999,
+        "session": "all",
+        "horizon": 36,
+        "cost": 2.0,
+        "train": {
+          "trades": 522,
+          "tpd": 17.40805928670681,
+          "pnl": 2490.959760709152,
+          "wr": 0.5191570881226054,
+          "pf": 1.3517616916951523,
+          "sh": 2.3847051403917248,
+          "dd": 1874.5861566689323
+        },
+        "val": {
+          "trades": 261,
+          "tpd": 15.601494396014942,
+          "pnl": 1289.4715067933323,
+          "wr": 0.5440613026819924,
+          "pf": 1.5966786919638103,
+          "sh": 2.631752688936689,
+          "dd": 1123.1108227720122
+        },
+        "old_test": {
+          "trades": 262,
+          "tpd": 24.780295566502463,
+          "pnl": 638.474713176832,
+          "wr": 0.5305343511450382,
+          "pf": 1.323056917789427,
+          "sh": 1.7537376453109996,
+          "dd": 777.1959528531897
+        },
+        "forward": {
+          "trades": 645,
+          "tpd": 24.764698040261298,
+          "pnl": 4168.996343744594,
+          "wr": 0.5550387596899224,
+          "pf": 1.7270812183706927,
+          "sh": 5.0709330733791464,
+          "dd": 1457.000822336418
+        },
+        "reverse": {
+          "trades": 645,
+          "tpd": 24.764698040261298,
+          "pnl": -5754.116656255459,
+          "wr": 0.4248062015503876,
+          "pf": 0.4677707410715145,
+          "sh": -6.982828300538718,
+          "dd": 5953.252155123801
+        },
+        "old_gate_pass": true,
+        "bootstrap": {
+          "trials": 2000,
+          "block": 108,
+          "ci_low": 106.75332515137555,
+          "ci_high": 8378.095994200992
+        },
+        "bootstrap_pass": true,
+        "subperiod": {
+          "periods": [
+            1289.8271490637235,
+            -312.2061471118588,
+            727.4063400472013,
+            2463.969001745528
+          ],
+          "negative_periods": 1,
+          "max_share": 0.5910221066618615,
+          "pass": true
+        },
+        "subperiod_pass": true,
+        "parameter": {
+          "pass": true,
+          "failures": 0,
+          "variants": [
+            {
+              "field": "window",
+              "factor": 0.8,
+              "pnl": 4206.196652056265,
+              "pf": 1.714432353090885,
+              "trades": 638
+            },
+            {
+              "field": "window",
+              "factor": 1.2,
+              "pnl": 4304.748770264917,
+              "pf": 1.846380202827597,
+              "trades": 637
+            },
+            {
+              "field": "quantile",
+              "factor": 0.9,
+              "pnl": 3275.7546259954756,
+              "pf": 1.3662630661709372,
+              "trades": 863
+            },
+            {
+              "field": "quantile",
+              "factor": 1.1,
+              "pnl": 4350.240384885723,
+              "pf": 2.531983956501499,
+              "trades": 433
+            },
+            {
+              "field": "horizon",
+              "factor": 0.8,
+              "pnl": 3834.507156442014,
+              "pf": 1.751306032748711,
+              "trades": 652
+            },
+            {
+              "field": "horizon",
+              "factor": 1.2,
+              "pnl": 4138.858284518779,
+              "pf": 1.6448216369984228,
+              "trades": 638
+            }
+          ]
+        },
+        "parameter_pass": true,
+        "reverse_pass": true,
+        "survived_all": true,
+        "failures": []
+      },
+      {
+        "name": "XLY_5m_volz_fade_w18_q0.55_london_h36_cost2.0",
+        "timeframe": "5m",
+        "leader": "XLY",
+        "feature": "volz",
+        "mode": "fade",
+        "window": 18,
+        "quantile": 0.55,
+        "threshold": 0.49447887510243144,
+        "session": "london",
+        "horizon": 36,
+        "cost": 2.0,
+        "train": {
+          "trades": 482,
+          "tpd": 15.021750892760522,
+          "pnl": 1765.4311533809357,
+          "wr": 0.5518672199170125,
+          "pf": 1.2668053853427454,
+          "sh": 1.5437430682086646,
+          "dd": 2013.0885539490048
+        },
+        "val": {
+          "trades": 241,
+          "tpd": 17.061946902654867,
+          "pnl": 782.2511935774148,
+          "wr": 0.5394190871369294,
+          "pf": 1.400533993003344,
+          "sh": 1.9732664464144418,
+          "dd": 746.0005972580597
+        },
+        "old_test": {
+          "trades": 241,
+          "tpd": 22.4621359223301,
+          "pnl": 1176.8941808553027,
+          "wr": 0.5726141078838174,
+          "pf": 1.8699389412711573,
+          "sh": 3.581626063263899,
+          "dd": 729.4283036999796
+        },
+        "forward": {
+          "trades": 516,
+          "tpd": 23.111664074650076,
+          "pnl": 3743.5600971968397,
+          "wr": 0.5503875968992248,
+          "pf": 1.7525358849442192,
+          "sh": 4.9558547115005265,
+          "dd": 828.2273374954102
+        },
+        "reverse": {
+          "trades": 516,
+          "tpd": 23.111664074650076,
+          "pnl": -4930.502902803155,
+          "wr": 0.4166666666666667,
+          "pf": 0.4743764636664848,
+          "sh": -6.532046192635762,
+          "dd": 5716.850046147339
+        },
+        "old_gate_pass": true,
+        "bootstrap": {
+          "trials": 2000,
+          "block": 108,
+          "ci_low": 659.5859961679306,
+          "ci_high": 7298.717120277344
+        },
+        "bootstrap_pass": true,
+        "subperiod": {
+          "periods": [
+            1331.606224187996,
+            38.526969407081836,
+            1869.0043928498696,
+            504.4225107518917
+          ],
+          "negative_periods": 0,
+          "max_share": 0.4992585518392964,
+          "pass": true
+        },
+        "subperiod_pass": true,
+        "parameter": {
+          "pass": true,
+          "failures": 0,
+          "variants": [
+            {
+              "field": "window",
+              "factor": 0.8,
+              "pnl": 3404.504557600772,
+              "pf": 1.6158991598194796,
+              "trades": 548
+            },
+            {
+              "field": "window",
+              "factor": 1.2,
+              "pnl": 3444.1275423317206,
+              "pf": 1.7304722859801533,
+              "trades": 490
+            },
+            {
+              "field": "quantile",
+              "factor": 0.9,
+              "pnl": 3554.5973239760997,
+              "pf": 1.6007769638011347,
+              "trades": 578
+            },
+            {
+              "field": "quantile",
+              "factor": 1.1,
+              "pnl": 2851.277653203987,
+              "pf": 1.637242442867239,
+              "trades": 451
+            },
+            {
+              "field": "horizon",
+              "factor": 0.8,
+              "pnl": 3614.9200971968403,
+              "pf": 1.909891939720367,
+              "trades": 516
+            },
+            {
+              "field": "horizon",
+              "factor": 1.2,
+              "pnl": 3877.9790971968323,
+              "pf": 1.6601712209451631,
+              "trades": 516
+            }
+          ]
+        },
+        "parameter_pass": true,
+        "reverse_pass": true,
+        "survived_all": true,
+        "failures": []
+      }
+    ],
+    "allocator_policies": {
+      "edge_rank": {
+        "trades": 353,
+        "pnl": 395261.70256287686,
+        "return_pct": 7.905234051257537,
+        "pf": 1.5402339090571147,
+        "max_dd": 111136.98552227073,
+        "max_dd_pct": 2.2227397104454147
+      },
+      "inverse_vol": {
+        "trades": 380,
+        "pnl": 289244.93396448705,
+        "return_pct": 5.784898679289741,
+        "pf": 1.3633511646514405,
+        "max_dd": 112144.55424014007,
+        "max_dd_pct": 2.2428910848028014
+      },
+      "name_order": {
+        "trades": 363,
+        "pnl": 266401.4281503593,
+        "return_pct": 5.3280285630071855,
+        "pf": 1.334925371498157,
+        "max_dd": 112660.85784285498,
+        "max_dd_pct": 2.2532171568570996
+      }
+    },
+    "allocator_swing_ratio": 0.3260125470719464,
+    "allocator_pass": false,
+    "effective_bets": {
+      "participation_ratio": 3.3029501315854217,
+      "kaiser_components_gt_1": 2,
+      "eigenvalues": [
+        0.2398165864256734,
+        0.47402234971430257,
+        0.605642520066658,
+        1.5692697575210928,
+        2.111248786272273
+      ]
+    }
+  },
+  "required_framing": "Any surviving roster is an in-sample survivor of a stricter gate, not yet out-of-sample validated.",
+  "sample_rows": [
+    {
+      "name": "ACWI_5m_volz_follow_w2_q0.55_all_h6_cost2.0",
+      "timeframe": "5m",
+      "leader": "ACWI",
+      "feature": "volz",
+      "mode": "follow",
+      "window": 2,
+      "quantile": 0.55,
+      "threshold": 0.23208449598945244,
+      "session": "all",
+      "horizon": 6,
+      "cost": 2.0,
+      "train": {
+        "trades": 586,
+        "tpd": 17.44191814799504,
+        "pnl": -1689.2962104196858,
+        "wr": 0.4180887372013652,
+        "pf": 0.7253760343510801,
+        "sh": -1.8145584935567858,
+        "dd": 1775.419281853385
+      },
+      "val": {
+        "trades": 293,
+        "tpd": 28.165554072096125,
+        "pnl": -300.1352318024383,
+        "wr": 0.447098976109215,
+        "pf": 0.8736976596533006,
+        "sh": -0.6378045754548041,
+        "dd": 714.2835904850867
+      },
+      "old_test": {
+        "trades": 294,
+        "tpd": 21.4468085106383,
+        "pnl": -1176.4689154492523,
+        "wr": 0.445578231292517,
+        "pf": 0.546915000857068,
+        "sh": -2.974110993397961,
+        "dd": 1224.8931668486762
+      },
+      "forward": {
+        "trades": 827,
+        "tpd": 31.72296217368141,
+        "pnl": -1372.856918591241,
+        "wr": 0.4062877871825877,
+        "pf": 0.7666830494258355,
+        "sh": -2.2558321062637794,
+        "dd": 1481.8421018206009
+      },
+      "reverse": {
+        "trades": 0,
+        "tpd": 0.0,
+        "pnl": 0.0,
+        "wr": 0.0,
+        "pf": 0.0,
+        "sh": 0.0,
+        "dd": 0.0,
+        "not_run_reason": "old_gate_failed_or_forward_pnl_nonpositive"
+      },
+      "old_gate_pass": false,
+      "bootstrap": {
+        "trials": 2000,
+        "block": 18,
+        "ci_low": null,
+        "ci_high": null,
+        "normal_approx_ci_low": -2565.675990971352,
+        "not_run_reason": "old_gate_failed_no_forward_trades_or_normal_lower_bound_nonpositive"
+      },
+      "bootstrap_pass": false,
+      "subperiod": {
+        "periods": [
+          -398.78601641584646,
+          -1.440355943808413,
+          -523.3042610150594,
+          -449.32628521652686
+        ],
+        "negative_periods": 4,
+        "max_share": null,
+        "pass": false
+      },
+      "subperiod_pass": false,
+      "parameter": {
+        "pass": false,
+        "failures": null,
+        "variants": [],
+        "not_run_reason": "short_circuited_before_parameter_gate"
+      },
+      "parameter_pass": false,
+      "reverse_pass": false,
+      "survived_all": false,
+      "failures": [
+        "old_gate",
+        "bootstrap",
+        "subperiod",
+        "parameter",
+        "reverse"
+      ]
+    },
+    {
+      "name": "ACWI_5m_volz_follow_w2_q0.55_all_h12_cost2.0",
+      "timeframe": "5m",
+      "leader": "ACWI",
+      "feature": "volz",
+      "mode": "follow",
+      "window": 2,
+      "quantile": 0.55,
+      "threshold": 0.23208449598945244,
+      "session": "all",
+      "horizon": 12,
+      "cost": 2.0,
+      "train": {
+        "trades": 584,
+        "tpd": 17.398572463018517,
+        "pnl": -4059.8024557329227,
+        "wr": 0.4092465753424658,
+        "pf": 0.6124426078997142,
+        "sh": -2.8403452756037875,
+        "dd": 4276.2421416532725
+      },
+      "val": {
+        "trades": 292,
+        "tpd": 28.06006006006006,
+        "pnl": -88.0401660648069,
+        "wr": 0.4897260273972603,
+        "pf": 0.9744087671504831,
+        "sh": -0.14007576347608405,
+        "dd": 603.1794510637347
+      },
+      "old_test": {
+        "trades": 292,
+        "tpd": 21.52995391705069,
+        "pnl": -1558.990312336656,
+        "wr": 0.4006849315068493,
+        "pf": 0.5645383150270903,
+        "sh": -3.2731020505558996,
+        "dd": 1668.2973264746722
+      },
+      "forward": {
+        "trades": 821,
+        "tpd": 31.51799520127966,
+        "pnl": -1335.595494367333,
+        "wr": 0.46041412911084045,
+        "pf": 0.8449591888873237,
+        "sh": -1.5015009947884317,
+        "dd": 1589.711448567469
+      },
+      "reverse": {
+        "trades": 0,
+        "tpd": 0.0,
+        "pnl": 0.0,
+        "wr": 0.0,
+        "pf": 0.0,
+        "sh": 0.0,
+        "dd": 0.0,
+        "not_run_reason": "old_gate_failed_or_forward_pnl_nonpositive"
+      },
+      "old_gate_pass": false,
+      "bootstrap": {
+        "trials": 2000,
+        "block": 36,
+        "ci_low": null,
+        "ci_high": null,
+        "normal_approx_ci_low": -3079.0290172527625,
+        "not_run_reason": "old_gate_failed_no_forward_trades_or_normal_lower_bound_nonpositive"
+      },
+      "bootstrap_pass": false,
+      "subperiod": {
+        "periods": [
+          -687.0136673034199,
+          81.42027257238024,
+          -307.1329031944264,
+          -422.86919644186713
+        ],
+        "negative_periods": 3,
+        "max_share": null,
+        "pass": false
+      },
+      "subperiod_pass": false,
+      "parameter": {
+        "pass": false,
+        "failures": null,
+        "variants": [],
+        "not_run_reason": "short_circuited_before_parameter_gate"
+      },
+      "parameter_pass": false,
+      "reverse_pass": false,
+      "survived_all": false,
+      "failures": [
+        "old_gate",
+        "bootstrap",
+        "subperiod",
+        "parameter",
+        "reverse"
+      ]
+    },
+    {
+      "name": "ACWI_5m_volz_follow_w2_q0.55_all_h18_cost2.0",
+      "timeframe": "5m",
+      "leader": "ACWI",
+      "feature": "volz",
+      "mode": "follow",
+      "window": 2,
+      "quantile": 0.55,
+      "threshold": 0.23208449598945244,
+      "session": "all",
+      "horizon": 18,
+      "cost": 2.0,
+      "train": {
+        "trades": 581,
+        "tpd": 17.59680302870964,
+        "pnl": -6965.9779579637925,
+        "wr": 0.41308089500860584,
+        "pf": 0.50978761866783,
+        "sh": -4.121485642761328,
+        "dd": 7085.109046462026
+      },
+      "val": {
+        "trades": 290,
+        "tpd": 27.05539358600583,
+        "pnl": 81.11361478918931,
+        "wr": 0.5448275862068965,
+        "pf": 1.0194928907669378,
+        "sh": 0.11324211408144078,
+        "dd": 698.090367717929
+      },
+      "old_test": {
+        "trades": 291,
+        "tpd": 21.99685039370079,
+        "pnl": -1571.7949177629966,
+        "wr": 0.4261168384879725,
+        "pf": 0.6146154725620231,
+        "sh": -3.0042412722297582,
+        "dd": 1720.761266931548
+      },
+      "forward": {
+        "trades": 815,
+        "tpd": 31.312700106723586,
+        "pnl": -2480.861401421285,
+        "wr": 0.46134969325153374,
+        "pf": 0.7825502777607312,
+        "sh": -2.2992169108942657,
+        "dd": 2691.5478272002047
+      },
+      "reverse": {
+        "trades": 0,
+        "tpd": 0.0,
+        "pnl": 0.0,
+        "wr": 0.0,
+        "pf": 0.0,
+        "sh": 0.0,
+        "dd": 0.0,
+        "not_run_reason": "old_gate_failed_or_forward_pnl_nonpositive"
+      },
+      "old_gate_pass": false,
+      "bootstrap": {
+        "trials": 2000,
+        "block": 54,
+        "ci_low": null,
+        "ci_high": null,
+        "normal_approx_ci_low": -4595.7068184613345,
+        "not_run_reason": "old_gate_failed_no_forward_trades_or_normal_lower_bound_nonpositive"
+      },
+      "bootstrap_pass": false,
+      "subperiod": {
+        "periods": [
+          -1466.9999518820182,
+          -206.2652303443725,
+          -251.14619355364223,
+          -556.4500256412518
+        ],
+        "negative_periods": 4,
+        "max_share": null,
+        "pass": false
+      },
+      "subperiod_pass": false,
+      "parameter": {
+        "pass": false,
+        "failures": null,
+        "variants": [],
+        "not_run_reason": "short_circuited_before_parameter_gate"
+      },
+      "parameter_pass": false,
+      "reverse_pass": false,
+      "survived_all": false,
+      "failures": [
+        "old_gate",
+        "bootstrap",
+        "subperiod",
+        "parameter",
+        "reverse"
+      ]
+    },
+    {
+      "name": "ACWI_5m_volz_follow_w2_q0.55_all_h24_cost2.0",
+      "timeframe": "5m",
+      "leader": "ACWI",
+      "feature": "volz",
+      "mode": "follow",
+      "window": 2,
+      "quantile": 0.55,
+      "threshold": 0.23208449598945244,
+      "session": "all",
+      "horizon": 24,
+      "cost": 2.0,
+      "train": {
+        "trades": 578,
+        "tpd": 17.548387096774192,
+        "pnl": -5656.2324783269505,
+        "wr": 0.4359861591695502,
+        "pf": 0.624159698958012,
+        "sh": -3.029290231449501,
+        "dd": 6647.038759817449
+      },
+      "val": {
+        "trades": 289,
+        "tpd": 27.049723756906076,
+        "pnl": 490.7671372485106,
+        "wr": 0.5432525951557093,
+        "pf": 1.0982839345401307,
+        "sh": 0.5900569984688293,
+        "dd": 592.3488016232903
+      },
+      "old_test": {
+        "trades": 290,
+        "tpd": 21.846717237771383,
+        "pnl": -1540.1991174417883,
+        "wr": 0.41724137931034483,
+        "pf": 0.6315003223748654,
+        "sh": -2.858239762974198,
+        "dd": 1849.087982647481
+      },
+      "forward": {
+        "trades": 810,
+        "tpd": 31.145527369826436,
+        "pnl": -2789.5277564625535,
+        "wr": 0.4765432098765432,
+        "pf": 0.7902206218936366,
+        "sh": -2.257314218041429,
+        "dd": 3311.4011221400065
+      },
+      "reverse": {
+        "trades": 0,
+        "tpd": 0.0,
+        "pnl": 0.0,
+        "wr": 0.0,
+        "pf": 0.0,
+        "sh": 0.0,
+        "dd": 0.0,
+        "not_run_reason": "old_gate_failed_or_forward_pnl_nonpositive"
+      },
+      "old_gate_pass": false,
+      "bootstrap": {
+        "trials": 2000,
+        "block": 72,
+        "ci_low": null,
+        "ci_high": null,
+        "normal_approx_ci_low": -5211.6426569793675,
+        "not_run_reason": "old_gate_failed_no_forward_trades_or_normal_lower_bound_nonpositive"
+      },
+      "bootstrap_pass": false,
+      "subperiod": {
+        "periods": [
+          -1779.9363040559301,
+          -499.3244784106503,
+          -700.3967947769729,
+          190.12982078099964
+        ],
+        "negative_periods": 3,
+        "max_share": null,
+        "pass": false
+      },
+      "subperiod_pass": false,
+      "parameter": {
+        "pass": false,
+        "failures": null,
+        "variants": [],
+        "not_run_reason": "short_circuited_before_parameter_gate"
+      },
+      "parameter_pass": false,
+      "reverse_pass": false,
+      "survived_all": false,
+      "failures": [
+        "old_gate",
+        "bootstrap",
+        "subperiod",
+        "parameter",
+        "reverse"
+      ]
+    },
+    {
+      "name": "ACWI_5m_volz_follow_w2_q0.55_all_h30_cost2.0",
+      "timeframe": "5m",
+      "leader": "ACWI",
+      "feature": "volz",
+      "mode": "follow",
+      "window": 2,
+      "quantile": 0.55,
+      "threshold": 0.23208449598945244,
+      "session": "all",
+      "horizon": 30,
+      "cost": 2.0,
+      "train": {
+        "trades": 576,
+        "tpd": 17.49504323982282,
+        "pnl": -5068.610532259728,
+        "wr": 0.4479166666666667,
+        "pf": 0.6858369608359528,
+        "sh": -2.4641825051840214,
+        "dd": 5561.0347343462
+      },
+      "val": {
+        "trades": 288,
+        "tpd": 26.99121379759193,
+        "pnl": 899.553891415895,
+        "wr": 0.5729166666666666,
+        "pf": 1.1698688051543535,
+        "sh": 1.021013387404747,
+        "dd": 563.2385708437109
+      },
+      "old_test": {
+        "trades": 289,
+        "tpd": 21.765690376569037,
+        "pnl": -1399.4701739755678,
+        "wr": 0.43944636678200694,
+        "pf": 0.6652875994405137,
+        "sh": -2.4663218274908036,
+        "dd": 1751.5024770411528
+      },
+      "forward": {
+        "trades": 806,
+        "tpd": 31.020713617533076,
+        "pnl": -2928.2758578226185,
+        "wr": 0.43672456575682383,
+        "pf": 0.8040495449022944,
+        "sh": -2.140741637237589,
+        "dd": 3524.541648567077
+      },
+      "reverse": {
+        "trades": 0,
+        "tpd": 0.0,
+        "pnl": 0.0,
+        "wr": 0.0,
+        "pf": 0.0,
+        "sh": 0.0,
+        "dd": 0.0,
+        "not_run_reason": "old_gate_failed_or_forward_pnl_nonpositive"
+      },
+      "old_gate_pass": false,
+      "bootstrap": {
+        "trials": 2000,
+        "block": 90,
+        "ci_low": null,
+        "ci_high": null,
+        "normal_approx_ci_low": -5609.318997964684,
+        "not_run_reason": "old_gate_failed_no_forward_trades_or_normal_lower_bound_nonpositive"
+      },
+      "bootstrap_pass": false,
+      "subperiod": {
+        "periods": [
+          -1263.6805528243908,
+          -543.0352630123241,
+          -920.1872718102701,
+          -201.37277017563395
+        ],
+        "negative_periods": 4,
+        "max_share": null,
+        "pass": false
+      },
+      "subperiod_pass": false,
+      "parameter": {
+        "pass": false,
+        "failures": null,
+        "variants": [],
+        "not_run_reason": "short_circuited_before_parameter_gate"
+      },
+      "parameter_pass": false,
+      "reverse_pass": false,
+      "survived_all": false,
+      "failures": [
+        "old_gate",
+        "bootstrap",
+        "subperiod",
+        "parameter",
+        "reverse"
+      ]
+    }
+  ]
+}

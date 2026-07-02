@@ -1,5 +1,56 @@
 # AUDIT LOG — Full System Audit 2026-06-05
 
+## 2026-06-22 Production-hardening session
+
+[2026-06-22 | SECTION 0/2 | include/model/sequence_model.hpp:SequenceModelIO]
+ACTION: Audited all 191 tracked text files (35,990 lines) and traced the active train/infer checkpoint path.
+FOUND: The active model is 9 x 127 = 1,143 summary inputs, then 256 -> 128 -> 3 (326,147 parameters); it is not the legacy 176-input / 78,595-parameter model described below. FSQ2/FSQ3 accepted arbitrary vector lengths and could silently load an incompatible model.
+CHANGED: Replaced the active SequenceModel checkpoint envelope with a 32-byte FROM v1 header containing magic, version, architecture hash, parameter count, normalization presence and reserved bytes. Load now checks exact vector sizes. Added `from verify-checkpoint --checkpoint <path>`.
+VERIFIED: Directly compiled cli/verify_checkpoint.cpp and cli/main.cpp with MSVC x64 /std:c++20; both succeeded. A full build exceeded the available 120-second command window without returning diagnostics.
+NEXT: Validate the data loader timestamp contract and replace the remaining hardcoded cost model.
+
+[2026-06-22 | SECTION 2 | src/data/parquet_reader.cpp:ParquetReader]
+ACTION: Traced the tick-data boundary used by train, infer, walk-forward, and backtest.
+FOUND: The reader previously trusted positional columns and accepted any INT64 timestamp, including seconds, wrapped clocks, and out-of-order records.
+CHANGED: Enforced the six expected physical column types and added load-time UTC-millisecond range, row-count, and monotonicity checks across chunk boundaries.
+VERIFIED: Direct MSVC x64 compilation of src/data/parquet_reader.cpp succeeded.
+NEXT: Replace return-unit hardcoded commission/slippage defaults with named three-scenario execution costs.
+
+[2026-06-22 | SECTION 2 | cli/backtest.cpp:run_backtest; cli/cost_analysis.cpp:run_cost_analysis]
+ACTION: Replaced the backtest's hardcoded return-unit commission/slippage model.
+FOUND: The prior model mixed an observed spread return with hardcoded execution constants, so it could not express broker USD costs or the requested scenarios.
+CHANGED: Added costs configuration, converted commission and slippage from USD to return units using each trade's entry price, added fixed-spread override support, and added `cost-analysis` for optimistic/realistic/conservative runs. Realistic negative net edge emits a prominent non-profitable warning.
+VERIFIED: Direct MSVC x64 compilation of cli/backtest.cpp, cli/cost_analysis.cpp, and cli/main.cpp succeeded.
+NEXT: Reconfigure and complete a full executable build, then run CLI help and checkpoint verification against a newly generated fixture.
+
+[2026-06-22 | SECTION 2 | tools/checkpoint_smoke.cpp]
+ACTION: Added a focused checkpoint serialization smoke test.
+FOUND: The architecture resolves to 326,147 parameters from the current 1,143-input source definition.
+CHANGED: Added a standalone save-and-inspect test that removes its temporary checkpoint after validation.
+VERIFIED: Built and ran the test with the x64 Visual Studio toolchain; output: `checkpoint smoke passed: 326147 parameters`.
+NEXT: Continue the executable-path audit; full CMake builds currently exceed the command execution window and leave child compiler processes, so use targeted checks while investigating the build stall.
+
+[2026-06-22 | SECTION 2 | cli/infer.cpp:run_infer; cli/train.cpp:run_train]
+ACTION: Compared inference defaults with the active training configuration.
+FOUND: Inference hardcoded horizon=128 and confidence=0.65, while training defaulted to horizon=256 and used a separate hardcoded 0.45 validation gate.
+CHANGED: Made inference and training validation read window, stride, horizon, direction threshold, and confidence gate from config.toml with explicit CLI overrides.
+VERIFIED: Direct MSVC x64 compilation of cli/infer.cpp and cli/train.cpp succeeded.
+NEXT: Add an executable feature-parity test that compares train and inference preprocessing on the same synthetic tick stream.
+
+[2026-06-22 | SECTION 5 | cli/wf_metrics.hpp:daily_sharpe; cli/backtest.cpp:run_backtest]
+ACTION: Audited the reported Sharpe metric against the required UTC-calendar-day definition.
+FOUND: Backtest and walk-forward output only per-trade Sharpe, which is not annualized and excludes no-trade days.
+CHANGED: Added daily_sharpe that includes all UTC calendar days between first and last trade, treats no-trade days as zero P&L, returns zero for zero variance, and prints it in backtest output. Added a 252-day synthetic test with expected Sharpe 0.1*sqrt(252).
+VERIFIED: Direct MSVC x64 compilation of cli/backtest.cpp and cli/test.cpp succeeded.
+VERIFIED: tools/daily_sharpe_smoke.cpp built and ran; output `daily Sharpe smoke passed: 1.58745`.
+NEXT: Continue feature-parity and adversarial-validation work; full executable integration remains pending.
+
+[2026-06-22 | SECTION 2 | include/model/sequence_model.hpp:SequenceModelIO::CheckpointHeader]
+ACTION: Checked the binary checkpoint header layout against the required wire format.
+CHANGED: Added a compile-time 32-byte layout assertion for the FROM v1 header.
+VERIFIED: Rebuilt and ran the checkpoint smoke test; it passed with 326147 parameters.
+NEXT: Continue requirement-by-requirement validation.
+
 ## CRITICAL BUGS
 
 ### BUG 1: Second-pass normalization stats never saved (DEPLOYMENT BLOCKER)

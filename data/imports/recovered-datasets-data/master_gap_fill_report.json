@@ -1,0 +1,22 @@
+{
+  "input": "C:\\Users\\marti\\Desktop\\data\\MASTER_DATASET.parquet",
+  "output": "C:\\Users\\marti\\Desktop\\data\\MASTER_DATASET_FILLED.parquet",
+  "fill_source": "Dukascopy XAUUSD hourly .bi5 tick archive",
+  "fill_policy": "Only real Dukascopy ticks inside missing minute intervals are added. No interpolation or forward filling.",
+  "missing_intervals_checked": 126320,
+  "requested_archive_hours": 81559,
+  "available_archive_hours": 2395,
+  "archive_hours_with_fill_ticks": 1897,
+  "candidate_fill_bars_before_deduplication": 103187,
+  "candidate_fill_ticks_before_deduplication": 8870502,
+  "bars": 4976465,
+  "ticks": 477291748,
+  "external_gap_fill_bars": 103187,
+  "remaining_gap_events": 129666,
+  "remaining_missing_minutes": 7143384.0,
+  "remaining_core_weekday_gaps_ge_1h": 11505,
+  "non_increasing": 0,
+  "negative_gap": 0,
+  "bad_spread": 0,
+  "processing_seconds": 564.6707265377045
+}

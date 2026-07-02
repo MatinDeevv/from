@@ -1,0 +1,360 @@
+{
+  "created_utc": "2026-06-18T22:41:44.758345+00:00",
+  "download_log": [
+    {
+      "symbol": "XAGUSD",
+      "url": "https://datafeed.dukascopy.com/datafeed/XAGUSD/2023/00/03/10h_ticks.bi5",
+      "http_status": 200,
+      "bytes": 15549,
+      "payload_bytes": 74040,
+      "valid_bi5": true,
+      "pass": true
+    },
+    {
+      "symbol": "EURUSD",
+      "url": "https://datafeed.dukascopy.com/datafeed/EURUSD/2023/00/03/10h_ticks.bi5",
+      "http_status": 200,
+      "bytes": 46185,
+      "payload_bytes": 186040,
+      "valid_bi5": true,
+      "pass": true
+    },
+    {
+      "symbol": "USDJPY",
+      "url": "https://datafeed.dukascopy.com/datafeed/USDJPY/2023/00/03/10h_ticks.bi5",
+      "http_status": 200,
+      "bytes": 59074,
+      "payload_bytes": 300080,
+      "valid_bi5": true,
+      "pass": true
+    },
+    {
+      "symbol": "GBPUSD",
+      "url": "https://datafeed.dukascopy.com/datafeed/GBPUSD/2023/00/03/10h_ticks.bi5",
+      "http_status": 200,
+      "bytes": 38143,
+      "payload_bytes": 184560,
+      "valid_bi5": true,
+      "pass": true
+    },
+    {
+      "symbol": "USDCHF",
+      "url": "https://datafeed.dukascopy.com/datafeed/USDCHF/2023/00/03/10h_ticks.bi5",
+      "http_status": 200,
+      "bytes": 17766,
+      "payload_bytes": 88880,
+      "valid_bi5": true,
+      "pass": true
+    },
+    {
+      "symbol": "AUDUSD",
+      "url": "https://datafeed.dukascopy.com/datafeed/AUDUSD/2023/00/03/10h_ticks.bi5",
+      "http_status": 200,
+      "bytes": 30556,
+      "payload_bytes": 132480,
+      "valid_bi5": true,
+      "pass": true
+    },
+    {
+      "symbol": "NZDUSD",
+      "url": "https://datafeed.dukascopy.com/datafeed/NZDUSD/2023/00/03/10h_ticks.bi5",
+      "http_status": 200,
+      "bytes": 28033,
+      "payload_bytes": 136060,
+      "valid_bi5": true,
+      "pass": true
+    },
+    {
+      "symbol": "USDCAD",
+      "url": "https://datafeed.dukascopy.com/datafeed/USDCAD/2023/00/03/10h_ticks.bi5",
+      "http_status": 200,
+      "bytes": 20213,
+      "payload_bytes": 96600,
+      "valid_bi5": true,
+      "pass": true
+    },
+    {
+      "symbol": "EURGBP",
+      "url": "https://datafeed.dukascopy.com/datafeed/EURGBP/2023/00/03/10h_ticks.bi5",
+      "http_status": 200,
+      "bytes": 33364,
+      "payload_bytes": 169020,
+      "valid_bi5": true,
+      "pass": true
+    },
+    {
+      "symbol": "EURJPY",
+      "url": "https://datafeed.dukascopy.com/datafeed/EURJPY/2023/00/03/10h_ticks.bi5",
+      "http_status": 200,
+      "bytes": 53712,
+      "payload_bytes": 269540,
+      "valid_bi5": true,
+      "pass": true
+    },
+    {
+      "symbol": "GBPJPY",
+      "url": "https://datafeed.dukascopy.com/datafeed/GBPJPY/2023/00/03/10h_ticks.bi5",
+      "http_status": 200,
+      "bytes": 44376,
+      "payload_bytes": 223980,
+      "valid_bi5": true,
+      "pass": true
+    }
+  ],
+  "coverage": [
+    {
+      "symbol": "XAUUSD",
+      "source": "C:\\Users\\marti\\from\\data\\derived\\duka_XAUUSD_5m_20230101_20260522.parquet",
+      "start": "2023-01-04 00:00:00+00:00",
+      "end": "2026-05-22 13:50:00+00:00",
+      "bar_count": 164744
+    },
+    {
+      "symbol": "XAGUSD",
+      "source": "C:\\Users\\marti\\from\\data\\derived\\leader_XAGUSD_5m_20230101_20260521.parquet",
+      "start": "2023-01-09 16:00:00+00:00",
+      "end": "2026-05-21 22:55:00+00:00",
+      "bar_count": 2147
+    },
+    {
+      "symbol": "EURUSD",
+      "source": "C:\\Users\\marti\\from\\data\\derived\\leader_EURUSD_5m_20230101_20260521.parquet",
+      "start": "2023-01-13 08:00:00+00:00",
+      "end": "2026-05-20 03:55:00+00:00",
+      "bar_count": 1805
+    },
+    {
+      "symbol": "USDJPY",
+      "source": "C:\\Users\\marti\\from\\data\\derived\\leader_USDJPY_5m_20230101_20260521.parquet",
+      "start": "2023-01-03 17:00:00+00:00",
+      "end": "2026-05-18 01:55:00+00:00",
+      "bar_count": 2001
+    },
+    {
+      "symbol": "GBPUSD",
+      "source": "C:\\Users\\marti\\from\\data\\derived\\leader_GBPUSD_5m_20230101_20260521.parquet",
+      "start": "2023-01-02 00:00:00+00:00",
+      "end": "2026-05-19 18:55:00+00:00",
+      "bar_count": 2136
+    },
+    {
+      "symbol": "USDCHF",
+      "source": "C:\\Users\\marti\\from\\data\\derived\\leader_USDCHF_5m_20230101_20260521.parquet",
+      "start": "2023-01-05 18:00:00+00:00",
+      "end": "2026-05-21 07:55:00+00:00",
+      "bar_count": 2208
+    },
+    {
+      "symbol": "AUDUSD",
+      "source": "C:\\Users\\marti\\from\\data\\derived\\leader_AUDUSD_5m_20230101_20260521.parquet",
+      "start": "2023-01-02 01:00:00+00:00",
+      "end": "2026-05-18 01:55:00+00:00",
+      "bar_count": 2073
+    },
+    {
+      "symbol": "NZDUSD",
+      "source": "C:\\Users\\marti\\from\\data\\derived\\leader_NZDUSD_5m_20230101_20260521.parquet",
+      "start": "2023-01-02 21:25:00+00:00",
+      "end": "2026-05-19 08:55:00+00:00",
+      "bar_count": 1951
+    },
+    {
+      "symbol": "USDCAD",
+      "source": "C:\\Users\\marti\\from\\data\\derived\\leader_USDCAD_5m_20230101_20260521.parquet",
+      "start": "2023-01-03 18:00:00+00:00",
+      "end": "2026-05-21 06:55:00+00:00",
+      "bar_count": 1934
+    },
+    {
+      "symbol": "EURGBP",
+      "source": "C:\\Users\\marti\\from\\data\\derived\\leader_EURGBP_5m_20230101_20260521.parquet",
+      "start": "2023-01-01 23:15:00+00:00",
+      "end": "2026-05-19 11:55:00+00:00",
+      "bar_count": 2697
+    },
+    {
+      "symbol": "EURJPY",
+      "source": "C:\\Users\\marti\\from\\data\\derived\\leader_EURJPY_5m_20230101_20260521.parquet",
+      "start": "2023-01-03 08:00:00+00:00",
+      "end": "2026-05-19 10:55:00+00:00",
+      "bar_count": 2508
+    },
+    {
+      "symbol": "GBPJPY",
+      "source": "C:\\Users\\marti\\from\\data\\derived\\leader_GBPJPY_5m_20230101_20260521.parquet",
+      "start": "2023-01-10 10:00:00+00:00",
+      "end": "2026-05-21 10:55:00+00:00",
+      "bar_count": 2435
+    }
+  ],
+  "quality": [
+    {
+      "symbol": "XAGUSD",
+      "bars": 2147,
+      "start": "2023-01-09 16:00:00+00:00",
+      "end": "2026-05-21 22:55:00+00:00",
+      "gap_events_gt_10m": 178,
+      "max_gap_5m_bars": 8412.0
+    },
+    {
+      "symbol": "EURUSD",
+      "bars": 1805,
+      "start": "2023-01-13 08:00:00+00:00",
+      "end": "2026-05-20 03:55:00+00:00",
+      "gap_events_gt_10m": 151,
+      "max_gap_5m_bars": 13920.0
+    },
+    {
+      "symbol": "USDJPY",
+      "bars": 2001,
+      "start": "2023-01-03 17:00:00+00:00",
+      "end": "2026-05-18 01:55:00+00:00",
+      "gap_events_gt_10m": 167,
+      "max_gap_5m_bars": 10692.0
+    },
+    {
+      "symbol": "GBPUSD",
+      "bars": 2136,
+      "start": "2023-01-02 00:00:00+00:00",
+      "end": "2026-05-19 18:55:00+00:00",
+      "gap_events_gt_10m": 176,
+      "max_gap_5m_bars": 7500.0
+    },
+    {
+      "symbol": "USDCHF",
+      "bars": 2208,
+      "start": "2023-01-05 18:00:00+00:00",
+      "end": "2026-05-21 07:55:00+00:00",
+      "gap_events_gt_10m": 183,
+      "max_gap_5m_bars": 7320.0
+    },
+    {
+      "symbol": "AUDUSD",
+      "bars": 2073,
+      "start": "2023-01-02 01:00:00+00:00",
+      "end": "2026-05-18 01:55:00+00:00",
+      "gap_events_gt_10m": 169,
+      "max_gap_5m_bars": 11952.0
+    },
+    {
+      "symbol": "NZDUSD",
+      "bars": 1951,
+      "start": "2023-01-02 21:25:00+00:00",
+      "end": "2026-05-19 08:55:00+00:00",
+      "gap_events_gt_10m": 162,
+      "max_gap_5m_bars": 8868.0
+    },
+    {
+      "symbol": "USDCAD",
+      "bars": 1934,
+      "start": "2023-01-03 18:00:00+00:00",
+      "end": "2026-05-21 06:55:00+00:00",
+      "gap_events_gt_10m": 161,
+      "max_gap_5m_bars": 12156.0
+    },
+    {
+      "symbol": "EURGBP",
+      "bars": 2697,
+      "start": "2023-01-01 23:15:00+00:00",
+      "end": "2026-05-19 11:55:00+00:00",
+      "gap_events_gt_10m": 223,
+      "max_gap_5m_bars": 6240.0
+    },
+    {
+      "symbol": "EURJPY",
+      "bars": 2508,
+      "start": "2023-01-03 08:00:00+00:00",
+      "end": "2026-05-19 10:55:00+00:00",
+      "gap_events_gt_10m": 208,
+      "max_gap_5m_bars": 10536.0
+    },
+    {
+      "symbol": "GBPJPY",
+      "bars": 2435,
+      "start": "2023-01-10 10:00:00+00:00",
+      "end": "2026-05-21 10:55:00+00:00",
+      "gap_events_gt_10m": 201,
+      "max_gap_5m_bars": 15912.0
+    }
+  ],
+  "candidates_evaluated": 35640,
+  "validated_count": 0,
+  "validated": [],
+  "skip_counts": {
+    "XAGUSD|1|coverage below 80%": 3240,
+    "XAGUSD|2|coverage below 80%": 3240,
+    "XAGUSD|3|coverage below 80%": 3240,
+    "XAGUSD|4|coverage below 80%": 3240,
+    "XAGUSD|5|coverage below 80%": 3240,
+    "XAGUSD|6|coverage below 80%": 3240,
+    "EURUSD|1|coverage below 80%": 3240,
+    "EURUSD|2|coverage below 80%": 3240,
+    "EURUSD|3|coverage below 80%": 3240,
+    "EURUSD|4|coverage below 80%": 3240,
+    "EURUSD|5|coverage below 80%": 3240,
+    "EURUSD|6|coverage below 80%": 3240,
+    "USDJPY|1|coverage below 80%": 3240,
+    "USDJPY|2|coverage below 80%": 3240,
+    "USDJPY|3|coverage below 80%": 3240,
+    "USDJPY|4|coverage below 80%": 3240,
+    "USDJPY|5|coverage below 80%": 3240,
+    "USDJPY|6|coverage below 80%": 3240,
+    "GBPUSD|1|coverage below 80%": 3240,
+    "GBPUSD|2|coverage below 80%": 3240,
+    "GBPUSD|3|coverage below 80%": 3240,
+    "GBPUSD|4|coverage below 80%": 3240,
+    "GBPUSD|5|coverage below 80%": 3240,
+    "GBPUSD|6|coverage below 80%": 3240,
+    "USDCHF|1|coverage below 80%": 3240,
+    "USDCHF|2|coverage below 80%": 3240,
+    "USDCHF|3|coverage below 80%": 3240,
+    "USDCHF|4|coverage below 80%": 3240,
+    "USDCHF|5|coverage below 80%": 3240,
+    "USDCHF|6|coverage below 80%": 3240,
+    "AUDUSD|1|coverage below 80%": 3240,
+    "AUDUSD|2|coverage below 80%": 3240,
+    "AUDUSD|3|coverage below 80%": 3240,
+    "AUDUSD|4|coverage below 80%": 3240,
+    "AUDUSD|5|coverage below 80%": 3240,
+    "AUDUSD|6|coverage below 80%": 3240,
+    "NZDUSD|1|coverage below 80%": 3240,
+    "NZDUSD|2|coverage below 80%": 3240,
+    "NZDUSD|3|coverage below 80%": 3240,
+    "NZDUSD|4|coverage below 80%": 3240,
+    "NZDUSD|5|coverage below 80%": 3240,
+    "NZDUSD|6|coverage below 80%": 3240,
+    "USDCAD|1|coverage below 80%": 3240,
+    "USDCAD|2|coverage below 80%": 3240,
+    "USDCAD|3|coverage below 80%": 3240,
+    "USDCAD|4|coverage below 80%": 3240,
+    "USDCAD|5|coverage below 80%": 3240,
+    "USDCAD|6|coverage below 80%": 3240,
+    "EURGBP|1|coverage below 80%": 3240,
+    "EURGBP|2|coverage below 80%": 3240,
+    "EURGBP|3|coverage below 80%": 3240,
+    "EURGBP|4|coverage below 80%": 3240,
+    "EURGBP|5|coverage below 80%": 3240,
+    "EURGBP|6|coverage below 80%": 3240,
+    "EURJPY|1|coverage below 80%": 3240,
+    "EURJPY|2|coverage below 80%": 3240,
+    "EURJPY|3|coverage below 80%": 3240,
+    "EURJPY|4|coverage below 80%": 3240,
+    "EURJPY|5|coverage below 80%": 3240,
+    "EURJPY|6|coverage below 80%": 3240,
+    "GBPJPY|1|coverage below 80%": 3240,
+    "GBPJPY|2|coverage below 80%": 3240,
+    "GBPJPY|3|coverage below 80%": 3240,
+    "GBPJPY|4|coverage below 80%": 3240,
+    "GBPJPY|5|coverage below 80%": 3240,
+    "GBPJPY|6|coverage below 80%": 3240
+  },
+  "portfolio": {
+    "portfolio_pass": false,
+    "families": [],
+    "allocator_swing": null,
+    "effective_bets": 0.0,
+    "reason": "No validated metals+FX portfolio"
+  },
+  "final_holdout_opened": false,
+  "final_holdout_result": "not opened"
+}

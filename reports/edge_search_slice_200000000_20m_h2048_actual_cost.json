@@ -1,0 +1,29 @@
+{
+  "verdict":"NO_EDGE_FOUND",
+  "data":{"path":"C:\\Users\\marti\\Documents\\Quant Lab\\Data\\from\\XAUUSD_ticks_all.parquet","total_rows":539637174,"skip_ticks":200000000,"evaluated_ticks":20000000,"samples":312461,"cost_mult":1.00000000,"window":512,"stride":64,"horizon":2048},
+  "split":{"train":187476,"val_begin":187496,"val_end":249968,"test_begin":249988},
+  "candidate_count":16,
+  "gross_candidate_count":1735,
+  "combo_candidate_count":150,
+  "best":{"dim":2,"threshold":1.50000000,"mode":2,"train_pnl":29923.90000000,"train_sharpe":1.52696362,"train_trades":1638,"val_pnl":13085.75000000,"val_sharpe":4.74271779,"val_trades":211,"test_pnl":0.00000000,"test_sharpe":0.00000000,"test_trades":0,"test_2x_cost_pnl":0.00000000,"test_2x_cost_sharpe":0.00000000},
+  "best_combo":{"a_dim":40,"a_threshold":3.00000000,"a_mode":1,"b_dim":113,"b_threshold":2.50000000,"b_mode":1,"train_pnl":1791.85000000,"train_sharpe":6.29047189,"train_trades":45,"val_pnl":18966.60000000,"val_sharpe":5.64582427,"val_trades":188,"test_pnl":-5897.95000000,"test_sharpe":-16.93737395,"test_trades":87,"test_2x_cost_pnl":-8541.75000000,"test_2x_cost_sharpe":-24.45724477},
+  "top":[
+    {"rank":1,"dim":2,"threshold":1.50000000,"mode":2,"train_sharpe":1.52696362,"val_sharpe":4.74271779,"test_sharpe":0.00000000,"test_pnl":0.00000000,"test_2x_cost_pnl":0.00000000},
+    {"rank":2,"dim":0,"threshold":1.50000000,"mode":2,"train_sharpe":1.52044461,"val_sharpe":4.74271779,"test_sharpe":0.00000000,"test_pnl":0.00000000,"test_2x_cost_pnl":0.00000000},
+    {"rank":3,"dim":1,"threshold":1.50000000,"mode":2,"train_sharpe":1.51829381,"val_sharpe":4.74271779,"test_sharpe":0.00000000,"test_pnl":0.00000000,"test_2x_cost_pnl":0.00000000},
+    {"rank":4,"dim":55,"threshold":1.50000000,"mode":2,"train_sharpe":1.49446252,"val_sharpe":4.22907196,"test_sharpe":0.00000000,"test_pnl":0.00000000,"test_2x_cost_pnl":0.00000000},
+    {"rank":5,"dim":56,"threshold":1.50000000,"mode":2,"train_sharpe":1.48651413,"val_sharpe":4.22907196,"test_sharpe":0.00000000,"test_pnl":0.00000000,"test_2x_cost_pnl":0.00000000},
+    {"rank":6,"dim":54,"threshold":1.50000000,"mode":2,"train_sharpe":1.47816683,"val_sharpe":4.22907196,"test_sharpe":0.00000000,"test_pnl":0.00000000,"test_2x_cost_pnl":0.00000000},
+    {"rank":7,"dim":163,"threshold":1.50000000,"mode":2,"train_sharpe":1.46425376,"val_sharpe":4.10374104,"test_sharpe":0.00000000,"test_pnl":0.00000000,"test_2x_cost_pnl":0.00000000},
+    {"rank":8,"dim":109,"threshold":1.50000000,"mode":2,"train_sharpe":1.44368865,"val_sharpe":4.10374104,"test_sharpe":0.00000000,"test_pnl":0.00000000,"test_2x_cost_pnl":0.00000000},
+    {"rank":9,"dim":108,"threshold":1.50000000,"mode":2,"train_sharpe":1.43331863,"val_sharpe":4.01482439,"test_sharpe":0.00000000,"test_pnl":0.00000000,"test_2x_cost_pnl":0.00000000},
+    {"rank":10,"dim":110,"threshold":1.50000000,"mode":2,"train_sharpe":1.42650789,"val_sharpe":4.01482439,"test_sharpe":0.00000000,"test_pnl":0.00000000,"test_2x_cost_pnl":0.00000000},
+    {"rank":11,"dim":164,"threshold":1.50000000,"mode":2,"train_sharpe":1.40406693,"val_sharpe":4.01482439,"test_sharpe":0.00000000,"test_pnl":0.00000000,"test_2x_cost_pnl":0.00000000},
+    {"rank":12,"dim":162,"threshold":1.50000000,"mode":2,"train_sharpe":1.39019482,"val_sharpe":4.01482439,"test_sharpe":0.00000000,"test_pnl":0.00000000,"test_2x_cost_pnl":0.00000000},
+    {"rank":13,"dim":94,"threshold":2.50000000,"mode":3,"train_sharpe":0.32769369,"val_sharpe":2.16764838,"test_sharpe":-3.40887379,"test_pnl":-2487.40000000,"test_2x_cost_pnl":-4757.30000000},
+    {"rank":14,"dim":21,"threshold":3.00000000,"mode":2,"train_sharpe":0.49973459,"val_sharpe":1.30227215,"test_sharpe":-5.14158599,"test_pnl":-17542.65000000,"test_2x_cost_pnl":-29162.35000000},
+    {"rank":15,"dim":21,"threshold":5.00000000,"mode":2,"train_sharpe":4.04576832,"val_sharpe":0.85685984,"test_sharpe":-7.17224076,"test_pnl":-3361.30000000,"test_2x_cost_pnl":-5210.90000000},
+    {"rank":16,"dim":21,"threshold":4.00000000,"mode":2,"train_sharpe":1.48628755,"val_sharpe":0.06266784,"test_sharpe":-7.37096638,"test_pnl":-7232.15000000,"test_2x_cost_pnl":-11141.35000000}
+  ],
+  "elapsed_seconds":306.11104350
+}

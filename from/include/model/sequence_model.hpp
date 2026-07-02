@@ -27,7 +27,7 @@ namespace from {
 // Speed target: 500+ steps/sec on CPU with batch=32
 // ============================================================
 
-static constexpr size_t SEQ_IN_FEATURES = FROM_MAX_FEATURES;  // 22
+static constexpr size_t SEQ_IN_FEATURES = FROM_MAX_FEATURES;  // 127
 static constexpr size_t SEQ_WINDOW = 512;
 static constexpr size_t SEQ_NUM_CLASSES = 3;
 static constexpr size_t SEQ_NUM_SCALES = 9;
@@ -615,14 +615,79 @@ struct Ensemble {
 // ============================================================
 class SequenceModelIO {
 public:
+    static constexpr uint32_t kCheckpointVersion = 1;
+    // FNV-1a 64-bit hash of the canonical architecture string "1143,256,128,3".
+    static constexpr uint64_t kArchitectureHash = 0x258f81145f1c6b43ULL;
+    static constexpr uint64_t kParameterCount =
+        SEQ_HIDDEN1 * SEQ_SUMMARY_DIM + SEQ_HIDDEN1 +
+        SEQ_HIDDEN2 * SEQ_HIDDEN1 + SEQ_HIDDEN2 +
+        SEQ_NUM_CLASSES * SEQ_HIDDEN2 + SEQ_NUM_CLASSES;
+    static constexpr uint64_t kMaxVectorElements = 100000000ULL;
+
+    struct CheckpointHeader {
+        char magic[4];
+        uint32_t version;
+        uint64_t architecture_hash;
+        uint64_t parameter_count;
+        uint8_t normalization_stats_present;
+        uint8_t reserved[7];
+    };
+    static_assert(sizeof(CheckpointHeader) == 32, "FROM v1 checkpoint header must be exactly 32 bytes");
+
+    struct CheckpointInfo {
+        uint32_t version = 0;
+        uint64_t architecture_hash = 0;
+        uint64_t parameter_count = 0;
+        bool normalization_stats_present = false;
+    };
+
+    static bool inspect(const std::string& path, CheckpointInfo* info, std::string* error = nullptr) {
+        std::ifstream in(path, std::ios::binary);
+        if (!in) {
+            if (error) *error = "cannot open checkpoint";
+            return false;
+        }
+        CheckpointHeader header{};
+        in.read(reinterpret_cast<char*>(&header), sizeof(header));
+        if (!in) {
+            if (error) *error = "checkpoint is shorter than the FROM v1 header";
+            return false;
+        }
+        if (std::memcmp(header.magic, "FROM", 4) != 0) {
+            if (error) *error = "invalid magic (expected FROM; legacy FSQ checkpoints are unsupported)";
+            return false;
+        }
+        if (header.version != kCheckpointVersion) {
+            if (error) *error = "unsupported checkpoint version";
+            return false;
+        }
+        if (header.architecture_hash != kArchitectureHash) {
+            if (error) *error = "architecture hash mismatch";
+            return false;
+        }
+        if (header.parameter_count != kParameterCount) {
+            if (error) *error = "parameter count mismatch";
+            return false;
+        }
+        if (info) {
+            info->version = header.version;
+            info->architecture_hash = header.architecture_hash;
+            info->parameter_count = header.parameter_count;
+            info->normalization_stats_present = header.normalization_stats_present != 0;
+        }
+        return true;
+    }
+
     static void save(const SequenceModel& model, const std::string& path) {
         std::ofstream out(path, std::ios::binary);
-        if (!out) return;
+        require(static_cast<bool>(out), "Cannot write checkpoint: " + path);
+        require(model.w1.size() + model.b1.size() + model.w2.size() + model.b2.size() +
+                    model.w3.size() + model.b3.size() == kParameterCount,
+                "Model parameter count does not match SequenceModel architecture");
 
-        char magic[4] = {'F', 'S', 'Q', '3'};
-        out.write(magic, 4);
-        uint32_t version = 3;
-        out.write(reinterpret_cast<const char*>(&version), 4);
+        CheckpointHeader header{{'F', 'R', 'O', 'M'}, kCheckpointVersion, kArchitectureHash,
+                                kParameterCount, model.feat_norm_ready ? 1U : 0U, {0, 0, 0, 0, 0, 0, 0}};
+        out.write(reinterpret_cast<const char*>(&header), sizeof(header));
         out.write(reinterpret_cast<const char*>(&model.seed), 4);
         out.write(reinterpret_cast<const char*>(&model.lr), 4);
 
@@ -652,45 +717,40 @@ public:
             write_vec(model.feat_mean);
             write_vec(model.feat_std);
         }
+        require(static_cast<bool>(out), "Failed while writing checkpoint: " + path);
     }
 
     static bool load(const std::string& path, SequenceModel& model) {
+        std::string error;
+        if (!inspect(path, nullptr, &error)) return false;
         std::ifstream in(path, std::ios::binary);
         if (!in) return false;
 
-        char magic[4];
-        in.read(magic, 4);
-        // Accept both v2 (FSQ2) and v3 (FSQ3)
-        uint32_t version = 0;
-        if (std::memcmp(magic, "FSQ3", 4) == 0) {
-            in.read(reinterpret_cast<char*>(&version), 4);
-        } else if (std::memcmp(magic, "FSQ2", 4) == 0) {
-            in.read(reinterpret_cast<char*>(&version), 4);
-            version = 2;
-        } else {
-            return false;
-        }
-        if (version < 2 || version > 3) return false;
+        CheckpointHeader header{};
+        in.read(reinterpret_cast<char*>(&header), sizeof(header));
+        if (!in) return false;
 
         in.read(reinterpret_cast<char*>(&model.seed), 4);
         in.read(reinterpret_cast<char*>(&model.lr), 4);
 
-        auto read_vec = [&](std::vector<float>& v) {
-            uint64_t sz;
+        auto read_vec = [&](std::vector<float>& v, size_t expected) {
+            uint64_t sz = 0;
             in.read(reinterpret_cast<char*>(&sz), 8);
-            v.resize(static_cast<size_t>(sz));
+            if (!in || sz != expected || sz > kMaxVectorElements) return false;
+            v.resize(expected);
             in.read(reinterpret_cast<char*>(v.data()), static_cast<std::streamsize>(sz * 4));
+            return static_cast<bool>(in);
         };
 
-        read_vec(model.w1); read_vec(model.b1);
-        read_vec(model.w2); read_vec(model.b2);
-        read_vec(model.w3); read_vec(model.b3);
+        if (!read_vec(model.w1, SEQ_HIDDEN1 * SEQ_SUMMARY_DIM) || !read_vec(model.b1, SEQ_HIDDEN1) ||
+            !read_vec(model.w2, SEQ_HIDDEN2 * SEQ_HIDDEN1) || !read_vec(model.b2, SEQ_HIDDEN2) ||
+            !read_vec(model.w3, SEQ_NUM_CLASSES * SEQ_HIDDEN2) || !read_vec(model.b3, SEQ_NUM_CLASSES)) return false;
 
         // Regime gate
-        read_vec(model.regime.centroids.data);
+        if (!read_vec(model.regime.centroids.data, RegimeGate::NUM_REGIMES * RegimeGate::HIDDEN_DIM)) return false;
         model.regime.centroids.rows = RegimeGate::NUM_REGIMES;
         model.regime.centroids.cols = RegimeGate::HIDDEN_DIM;
-        read_vec(model.regime.covariance_diag.data);
+        if (!read_vec(model.regime.covariance_diag.data, RegimeGate::NUM_REGIMES * RegimeGate::HIDDEN_DIM)) return false;
         model.regime.covariance_diag.rows = RegimeGate::NUM_REGIMES;
         model.regime.covariance_diag.cols = RegimeGate::HIDDEN_DIM;
         uint64_t rc[3];
@@ -701,17 +761,15 @@ public:
         in.read(reinterpret_cast<char*>(&cal), 1);
         model.regime.calibrated = cal != 0;
 
-        // Second-pass normalization (v3+)
-        if (version >= 3) {
-            uint8_t has_fn = 0;
-            if (in.read(reinterpret_cast<char*>(&has_fn), 1) && has_fn) {
-                read_vec(model.feat_mean);
-                read_vec(model.feat_std);
-                model.feat_norm_ready = true;
-            }
+        uint8_t has_fn = 0;
+        if (!in.read(reinterpret_cast<char*>(&has_fn), 1)) return false;
+        if ((has_fn != 0) != (header.normalization_stats_present != 0)) return false;
+        model.feat_norm_ready = has_fn != 0;
+        if (model.feat_norm_ready) {
+            if (!read_vec(model.feat_mean, SEQ_SUMMARY_DIM) || !read_vec(model.feat_std, SEQ_SUMMARY_DIM)) return false;
         }
 
-        return true;
+        return static_cast<bool>(in);
     }
 };
 

@@ -1,0 +1,14 @@
+{
+  "created_utc": "2026-06-18T04:57:06.604343+00:00",
+  "instrument": "EURUSD",
+  "price_scale": 100000.0,
+  "start": "2026-04-01T00:00:00+00:00",
+  "end": "2026-05-01T00:00:00+00:00",
+  "hours_requested": 720,
+  "bars": 6321,
+  "first_bar": "2026-04-01 00:00:00+00:00",
+  "last_bar": "2026-04-30 23:55:00+00:00",
+  "errors": {
+    "1775138400000": "<HTTPError 503: 'Service Unavailable'>"
+  }
+}

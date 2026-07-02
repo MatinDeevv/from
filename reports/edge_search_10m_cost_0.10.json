@@ -1,0 +1,21 @@
+{
+  "verdict":"NO_EDGE_FOUND",
+  "data":{"path":"C:\\Users\\marti\\Documents\\Quant Lab\\Data\\from\\XAUUSD_ticks_all.parquet","total_rows":539637174,"evaluated_ticks":10000000,"samples":156239,"cost_mult":0.10000000},
+  "split":{"train":93743,"val_begin":93763,"val_end":124991,"test_begin":125011},
+  "candidate_count":11,
+  "best":{"dim":9,"threshold":2.50000000,"mode":3,"train_pnl":1827.84000000,"train_sharpe":0.85253255,"train_trades":373,"val_pnl":838.36000000,"val_sharpe":0.99705965,"val_trades":258,"test_pnl":2354.96000000,"test_sharpe":0.78280186,"test_trades":318,"test_2x_cost_pnl":-24933.60000000,"test_2x_cost_sharpe":-8.25318638},
+  "top":[
+    {"rank":1,"dim":9,"threshold":2.50000000,"mode":3,"train_sharpe":0.85253255,"val_sharpe":0.99705965,"test_sharpe":0.78280186,"test_pnl":2354.96000000,"test_2x_cost_pnl":-24933.60000000},
+    {"rank":2,"dim":9,"threshold":2.00000000,"mode":3,"train_sharpe":0.53343672,"val_sharpe":0.27849562,"test_sharpe":0.61517655,"test_pnl":2340.82000000,"test_2x_cost_pnl":-39491.10000000},
+    {"rank":3,"dim":207,"threshold":2.50000000,"mode":2,"train_sharpe":0.13221864,"val_sharpe":1.75745824,"test_sharpe":-1.11926108,"test_pnl":-699.64000000,"test_2x_cost_pnl":-22653.00000000},
+    {"rank":4,"dim":172,"threshold":2.00000000,"mode":2,"train_sharpe":0.01819368,"val_sharpe":0.29287693,"test_sharpe":-1.33816391,"test_pnl":-2103.36000000,"test_2x_cost_pnl":-24011.50000000},
+    {"rank":5,"dim":172,"threshold":1.50000000,"mode":2,"train_sharpe":0.02156527,"val_sharpe":0.12427888,"test_sharpe":-1.47532425,"test_pnl":-2966.08000000,"test_2x_cost_pnl":-35147.90000000},
+    {"rank":6,"dim":190,"threshold":0.75000000,"mode":3,"train_sharpe":0.25850940,"val_sharpe":2.19540831,"test_sharpe":-1.77707096,"test_pnl":-3644.90000000,"test_2x_cost_pnl":-33279.20000000},
+    {"rank":7,"dim":191,"threshold":0.75000000,"mode":3,"train_sharpe":0.27171302,"val_sharpe":2.11802780,"test_sharpe":-1.79761991,"test_pnl":-3680.46000000,"test_2x_cost_pnl":-33219.00000000},
+    {"rank":8,"dim":189,"threshold":0.75000000,"mode":3,"train_sharpe":0.26196391,"val_sharpe":2.14511954,"test_sharpe":-1.81402096,"test_pnl":-3715.82000000,"test_2x_cost_pnl":-33244.10000000},
+    {"rank":9,"dim":198,"threshold":2.50000000,"mode":6,"train_sharpe":0.00498620,"val_sharpe":0.22588544,"test_sharpe":-1.89769502,"test_pnl":-6421.42000000,"test_2x_cost_pnl":-49266.80000000},
+    {"rank":10,"dim":198,"threshold":2.00000000,"mode":3,"train_sharpe":0.02101682,"val_sharpe":0.82904945,"test_sharpe":-2.27102469,"test_pnl":-4011.42000000,"test_2x_cost_pnl":-35544.20000000},
+    {"rank":11,"dim":198,"threshold":2.50000000,"mode":3,"train_sharpe":0.30684341,"val_sharpe":1.27769000,"test_sharpe":-2.44649545,"test_pnl":-3474.58000000,"test_2x_cost_pnl":-25544.60000000}
+  ],
+  "elapsed_seconds":30.25104690
+}

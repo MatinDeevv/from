@@ -7,6 +7,7 @@
 #include "io/artifact.hpp"
 #include "model/direction_model.hpp"
 #include "model/sequence_model.hpp"
+#include "utils/config_parser.hpp"
 
 #include <algorithm>
 #include <filesystem>
@@ -19,10 +20,22 @@
 namespace from {
 
 int run_infer(const CliArgs& args) {
+    Config config;
+    const std::string config_path = args.get("--config", "config.toml");
+    if (std::filesystem::exists(config_path)) config.load(config_path);
     std::string model_path = args.get("--model", "weights.from");
     std::string input = args.get("--input", "XAUUSD_ticks_all.parquet");
     std::string output = args.get("--output", "signals.csv");
-    float threshold = std::stof(args.get("--threshold", "0.65"));
+    const float threshold = std::stof(args.get("--threshold",
+                                                std::to_string(config.get_float("inference.confidence_threshold", 0.50f))));
+    const size_t window = static_cast<size_t>(std::stoull(args.get("--window",
+                                                std::to_string(config.get_size("data.window_size", FROM_DEFAULT_WINDOW)))));
+    const size_t stride = static_cast<size_t>(std::stoull(args.get("--stride",
+                                                std::to_string(config.get_size("data.stride", 64)))));
+    const size_t horizon = static_cast<size_t>(std::stoull(args.get("--horizon",
+                                                std::to_string(config.get_size("data.horizon", FROM_DEFAULT_HORIZON)))));
+    const float direction_threshold = std::stof(args.get("--direction-threshold",
+                                                std::to_string(config.get_float("data.direction_threshold", 2.0f))));
     size_t tick_limit = static_cast<size_t>(std::stoull(args.get("--ticks", "10000")));
     bool use_ensemble = args.has("--ensemble");
     bool use_linear = args.has("--linear");
@@ -30,7 +43,8 @@ int run_infer(const CliArgs& args) {
     ParquetReader reader(input);
     TickProcessor processor;
     Normalizer normalizer(FROM_MAX_FEATURES);
-    Windower windower(512, 64, 128);
+    require(window > 0 && stride > 0 && horizon > 0, "Inference window, stride, and horizon must be positive");
+    Windower windower(window, stride, horizon, direction_threshold);
 
     std::ofstream out(output);
     require(static_cast<bool>(out), "Cannot write output: " + output);
@@ -51,7 +65,7 @@ int run_infer(const CliArgs& args) {
                 for (size_t c = 1; c < 3; ++c) if (probs[c] > probs[cls]) cls = c;
                 float conf = probs[cls];
                 const char* dir = conf < threshold ? "flat" : (cls == 0 ? "long" : (cls == 2 ? "short" : "flat"));
-                int64_t ts = features.time_ms.empty() ? 0 : features.time_ms[std::min(features.time_ms.size() - 1, emitted * 64 + 512)];
+                int64_t ts = features.time_ms.empty() ? 0 : features.time_ms[std::min(features.time_ms.size() - 1, emitted * stride + window)];
                 out << ts << "," << dir << "," << std::fixed << std::setprecision(4)
                     << conf << "," << probs[0] << "," << probs[1] << "," << probs[2] << "\n";
                 ++emitted;
@@ -151,7 +165,7 @@ int run_infer(const CliArgs& args) {
                 else if (best_dir == 2) dir = "short";
             }
 
-            int64_t ts = features.time_ms.empty() ? 0 : features.time_ms[std::min(features.time_ms.size() - 1, emitted * 64 + 512)];
+            int64_t ts = features.time_ms.empty() ? 0 : features.time_ms[std::min(features.time_ms.size() - 1, emitted * stride + window)];
 
             // Session from timestamp (UTC hour)
             int64_t ms_day = 24LL * 60LL * 60LL * 1000LL;

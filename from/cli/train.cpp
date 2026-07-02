@@ -85,6 +85,8 @@ int run_train(const CliArgs& args) {
     uint64_t freeze_after = static_cast<uint64_t>(cfg.get_size("data.normalize_freeze_after", 100000));
     float dir_threshold = arg_float(args, "--direction-threshold",
                                     cfg.get_float("data.direction_threshold", 2.0f));
+    float conf_threshold = arg_float(args, "--confidence-threshold",
+                                     cfg.get_float("inference.confidence_threshold", 0.50f));
 
     // ====================================================================
     // PHASE 1: Load data — use binary cache if available (instant), else
@@ -580,7 +582,6 @@ int run_train(const CliArgs& args) {
                 size_t pred_count[3] = {0,0,0};
                 size_t pred_correct[3] = {0,0,0};
                 size_t conf_trades = 0, conf_correct = 0;
-                float conf_threshold = 0.45f;  // 3-class chance ~0.33; 0.40 admits near-random
                 float total_edge = 0.0f;
                 float gross_profit = 0.0f, gross_loss = 0.0f;  // real after-cost PnL accumulators
                 double prob_sum[3] = {0.0, 0.0, 0.0};  // Track mean softmax output per class

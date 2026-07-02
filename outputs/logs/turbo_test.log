@@ -1,0 +1,7 @@
+[32m[CACHE] Loaded 500000 samples in 0.31s from XAUUSD_ticks_all.parquet.cache[0m
+[TRAIN] seed=42 params=78595 lr=1.0e-03 batch=512 train=497952 val=2048
+[35m[GPU] NVIDIA GeForce RTX 3050 Laptop GPU | 335MB VRAM used | 500000 samples on device[0m
+[32m[MODE] GPU + CPU hybrid — target 15,000+ steps/sec[0m
+
+cuBLAS error C:\Users\marti\from\from\include\cuda/gpu_trainer.hpp:201: 7
+ ** On entry to SGEMM  parameter number 10 had an illegal value

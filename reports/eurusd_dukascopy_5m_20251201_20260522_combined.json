@@ -1,0 +1,8 @@
+{
+  "bars": 35361,
+  "start": "2025-12-01 00:00:00+00:00",
+  "end": "2026-05-22 13:55:00+00:00",
+  "big_gap_count": 49,
+  "largest_gap_seconds": 173100.0,
+  "weekend_like_gaps": 23
+}

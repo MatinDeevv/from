@@ -1,0 +1,47 @@
+{
+  "created_utc": "2026-06-18T03:58:06.483137+00:00",
+  "rule": {
+    "leader": "SPY",
+    "window": 6,
+    "threshold_locked": 0.0005740430387565,
+    "horizon_bars": 9,
+    "cost_mult": 2.0,
+    "execution": "cooldown"
+  },
+  "data": {
+    "xau_csv": "C:\\Users\\marti\\from\\data\\derived\\xauusd_dukascopy_5m_forward_20260522_20260618.csv",
+    "rows_aligned": 3022,
+    "time_start": "2026-05-22 13:55:00+00:00",
+    "time_end": "2026-06-17 23:55:00+00:00",
+    "leader_errors": {}
+  },
+  "summary": {
+    "trades": 285,
+    "days": 26.34027777777778,
+    "trades_per_day": 10.819931452675982,
+    "pnl": -304.8086982093671,
+    "avg": -1.0695042042433933,
+    "win_rate": 0.4456140350877193,
+    "profit_factor": 0.8194713310837741,
+    "sharpe_trade": -1.0335645486857596,
+    "max_dd": 577.139723240554
+  },
+  "reverse_summary": {
+    "trades": 285,
+    "days": 26.34027777777778,
+    "trades_per_day": 10.819931452675982,
+    "pnl": -403.6996982093959,
+    "avg": -1.416490169155775,
+    "win_rate": 0.4631578947368421,
+    "profit_factor": 0.7675390039332837,
+    "sharpe_trade": -1.3665671058228446,
+    "max_dd": 467.1594914841255
+  },
+  "circular_controls": {
+    "trials": 1000,
+    "mean": -345.26036922588406,
+    "p95": 102.5556831735496,
+    "p99": 248.89571198413663,
+    "rank_pct": 0.558
+  }
+}

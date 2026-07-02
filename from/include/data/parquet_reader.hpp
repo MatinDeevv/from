@@ -45,9 +45,11 @@ private:
     size_t current_row_group_ = 0;
     TickChunk decoded_group_;
     size_t decoded_pos_ = 0;
+    int64_t last_timestamp_ms_ = -1;
 
     void parse_footer();
     TickChunk decode_row_group(size_t row_group_index);
+    void validate_tick_chunk(const TickChunk& chunk);
 
 public:
     explicit ParquetReader(const std::string& path);
